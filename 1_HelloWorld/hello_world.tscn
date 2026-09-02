@@ -1,8 +1,12 @@
 [gd_scene format=3 uid="uid://c5mti1wwsyb2o"]
 
 [ext_resource type="Script" uid="uid://cnojimic86kmr" path="res://1_HelloWorld/mateus_node.gd" id="1_uthtd"]
+[ext_resource type="Script" uid="uid://3xp6bj0exc3i" path="res://1_HelloWorld/hello_joana.gd" id="2_cxc5r"]
 
 [node name="HelloWorld" type="Node2D" unique_id=1962817140]
 
 [node name="MateusNode" type="Node2D" parent="." unique_id=507012115]
 script = ExtResource("1_uthtd")
+
+[node name="JoanaNode" type="Node" parent="." unique_id=2016820701]
+script = ExtResource("2_cxc5r")
