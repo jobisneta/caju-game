@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://c5mti1wwsyb2o"]
+
+[ext_resource type="Script" uid="uid://cnojimic86kmr" path="res://1_HelloWorld/mateus_node.gd" id="1_uthtd"]
+
+[node name="HelloWorld" type="Node2D" unique_id=1962817140]
+
+[node name="MateusNode" type="Node2D" parent="." unique_id=507012115]
+script = ExtResource("1_uthtd")
