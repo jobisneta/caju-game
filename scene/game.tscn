@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://vd3yerq666sm"]
+
+[ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://entidades/Personagens/Caju.tscn" id="1_5kiuu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dtg5i"]
+size = Vector2(183.9375, 33)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5kiuu"]
+size = Vector2(91.96875, 33)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dbls1"]
+size = Vector2(175.98438, 33)
+
+[node name="Game" type="Node2D" unique_id=955371309]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=504941164]
+position = Vector2(42, 94)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1513955687]
+position = Vector2(45, 85)
+shape = SubResource("RectangleShape2D_dtg5i")
+debug_color = Color(0.34094042, 0.5599773, 0.21907985, 0.41960785)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D" unique_id=226100290]
+position = Vector2(218, 68)
+shape = SubResource("RectangleShape2D_5kiuu")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D" unique_id=44743671]
+position = Vector2(337, 51)
+shape = SubResource("RectangleShape2D_5kiuu")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D" unique_id=1062673226]
+position = Vector2(486, 26)
+shape = SubResource("RectangleShape2D_dbls1")
+debug_color = Color(0.2901961, 0.627451, 0.23137255, 1)
+
+[node name="Caju" parent="." unique_id=124830768 instance=ExtResource("1_5kiuu")]
+position = Vector2(18, 25)
