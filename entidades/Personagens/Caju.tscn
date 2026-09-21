@@ -137,6 +137,6 @@ autoplay = "idle"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=145330986]
 limit_left = 0
-limit_right = 527
+limit_top = 0
 limit_bottom = 180
 position_smoothing_speed = 3.0
