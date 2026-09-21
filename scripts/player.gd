@@ -4,10 +4,23 @@ extends CharacterBody2D
 
 
 const SPEED = 100.0
-const JUMP_VELOCITY = -250.0
+#const JUMP_VELOCITY = -250.0
+const JUMP_VELOCITY = -300.0
 
+@export var is_active: bool = false
+@onready var camera: Camera2D = $Camera2D
+
+func _ready() -> void:
+	if is_active:
+		camera.make_current()
+	else:
+		camera.enabled = false
 
 func _physics_process(delta: float) -> void:
+	
+	if not is_active:
+		return
+	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -35,3 +48,12 @@ func _physics_process(delta: float) -> void:
 	else:
 		anim.play("jump_1")
 	move_and_slide()
+	
+func make_active() -> void:
+	is_active = true
+	camera.enabled = true
+	camera.make_current()
+
+func make_inactive() -> void:
+	is_active = false
+	camera.enabled = false

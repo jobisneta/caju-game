@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://vd3yerq666sm"]
 
 [ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://entidades/Personagens/Caju.tscn" id="1_5kiuu"]
+[ext_resource type="Script" uid="uid://cnaq8gn6bplt3" path="res://scene/game.gd" id="1_17rxn"]
 [ext_resource type="Texture2D" uid="uid://m3h5v0eis75c" path="res://assets/art/world/home/background.png" id="1_xlg7c"]
 [ext_resource type="Script" uid="uid://cxrl53bhor5cg" path="res://scripts/bottle.gd" id="2_33cqm"]
 [ext_resource type="Texture2D" uid="uid://djtey4uk53eux" path="res://assets/art/world/objects/bottle.png" id="3_xwcet"]
@@ -16,17 +17,19 @@ size = Vector2(9, 16)
 size = Vector2(320, 4)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_25nce"]
-size = Vector2(58.5, 96)
+size = Vector2(64, 10.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_464tc"]
 size = Vector2(32, 3)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7lwxd"]
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dtg5i"]
 size = Vector2(64, 4)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_17rxn"]
+size = Vector2(53, 182)
+
 [node name="Game" type="Node2D" unique_id=955371309]
+script = ExtResource("1_17rxn")
 
 [node name="background" type="Parallax2D" parent="." unique_id=1864044763]
 repeat_size = Vector2(320, 0)
@@ -35,9 +38,6 @@ limit_begin = Vector2(0, 0)
 [node name="Sprite2D" type="Sprite2D" parent="background" unique_id=481361544]
 position = Vector2(161, 88)
 texture = ExtResource("1_xlg7c")
-
-[node name="Caju" parent="." unique_id=124830768 instance=ExtResource("1_5kiuu")]
-position = Vector2(18, 25)
 
 [node name="bottle" type="Area2D" parent="." unique_id=489905522]
 position = Vector2(142, 68)
@@ -59,14 +59,14 @@ shape = SubResource("RectangleShape2D_6or6s")
 [node name="Sprite2D" type="Sprite2D" parent="floor" unique_id=1594671523]
 texture = ExtResource("4_xwcet")
 
-[node name="floor" type="StaticBody2D" parent="floor" unique_id=1543809430]
-position = Vector2(322, 0)
+[node name="floor2" type="StaticBody2D" parent="." unique_id=1543809430]
+position = Vector2(482, 178)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="floor/floor" unique_id=1670422806]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="floor2" unique_id=1670422806]
 position = Vector2(-2, 0)
 shape = SubResource("RectangleShape2D_6or6s")
 
-[node name="Sprite2D" type="Sprite2D" parent="floor/floor" unique_id=353612098]
+[node name="Sprite2D" type="Sprite2D" parent="floor2" unique_id=353612098]
 position = Vector2(-2, 0)
 texture = ExtResource("4_xwcet")
 
@@ -74,7 +74,7 @@ texture = ExtResource("4_xwcet")
 position = Vector2(142, 128)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="armario" unique_id=1579926414]
-position = Vector2(-0.75, 0)
+position = Vector2(0, -42.5)
 shape = SubResource("RectangleShape2D_25nce")
 
 [node name="Sprite2D" type="Sprite2D" parent="armario" unique_id=1338630420]
@@ -90,29 +90,14 @@ shape = SubResource("RectangleShape2D_464tc")
 [node name="Sprite2D" type="Sprite2D" parent="luminaria" unique_id=1508474600]
 texture = ExtResource("7_qpk70")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1095595984]
-position = Vector2(81, 164)
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D" unique_id=499751816]
-position = Vector2(21, -60)
-shape = SubResource("RectangleShape2D_7lwxd")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1373892901]
-position = Vector2(-34, -4)
-shape = SubResource("RectangleShape2D_7lwxd")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D" unique_id=654270942]
-position = Vector2(-6, -27)
-shape = SubResource("RectangleShape2D_7lwxd")
-
-[node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=112984371]
+[node name="prateleira" type="StaticBody2D" parent="." unique_id=112984371]
 position = Vector2(312, 106)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=1854742604]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="prateleira" unique_id=1854742604]
 position = Vector2(2, -9)
 shape = SubResource("RectangleShape2D_dtg5i")
 
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D2" unique_id=1418994808]
+[node name="Sprite2D" type="Sprite2D" parent="prateleira" unique_id=1418994808]
 position = Vector2(2, 5)
 texture = ExtResource("8_ll5lq")
 
@@ -120,10 +105,40 @@ texture = ExtResource("8_ll5lq")
 position = Vector2(418, 128)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="armario2" unique_id=1134526936]
-position = Vector2(-0.75, 0)
+position = Vector2(0, -42.75)
 shape = SubResource("RectangleShape2D_25nce")
 
 [node name="Sprite2D" type="Sprite2D" parent="armario2" unique_id=1368170478]
 texture = ExtResource("5_p1ry8")
+
+[node name="prateleira2" type="StaticBody2D" parent="." unique_id=1906839502]
+position = Vector2(245, 142)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="prateleira2" unique_id=1037016815]
+position = Vector2(2, -9)
+shape = SubResource("RectangleShape2D_dtg5i")
+
+[node name="Sprite2D" type="Sprite2D" parent="prateleira2" unique_id=1733318341]
+position = Vector2(2, 5)
+texture = ExtResource("8_ll5lq")
+
+[node name="Caju" parent="." unique_id=124830768 instance=ExtResource("1_5kiuu")]
+position = Vector2(18, 25)
+
+[node name="Caju2" parent="." unique_id=202326972 instance=ExtResource("1_5kiuu")]
+position = Vector2(583, 22)
+
+[node name="LeftWall" type="StaticBody2D" parent="." unique_id=884668486]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall" unique_id=87453296]
+position = Vector2(-26, 89)
+shape = SubResource("RectangleShape2D_17rxn")
+
+[node name="RightWall" type="StaticBody2D" parent="." unique_id=1393977230]
+position = Vector2(1206, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall" unique_id=407822278]
+position = Vector2(-538.5, 89)
+shape = SubResource("RectangleShape2D_17rxn")
 
 [connection signal="body_entered" from="bottle" to="bottle" method="_on_body_entered"]

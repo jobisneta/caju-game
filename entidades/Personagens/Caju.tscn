@@ -132,7 +132,7 @@ shape = SubResource("RectangleShape2D_dtg5i")
 
 [node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="." unique_id=604325165]
 sprite_frames = SubResource("SpriteFrames_gfli6")
-animation = &"jump_1"
+animation = &"walk"
 autoplay = "idle"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=145330986]

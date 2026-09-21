@@ -6,5 +6,5 @@
 [node name="HelloWorld" unique_id=1962817140 instance=ExtResource("1_dk2og")]
 script = ExtResource("2_3wbs3")
 
-[node name="JoanaNode" type="Node" parent="." index="1" unique_id=1597754127]
+[node name="JoanaNode2" type="Node" parent="." index="1" unique_id=1597754127]
 script = ExtResource("2_3wbs3")
