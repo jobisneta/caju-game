@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://vd3yerq666sm"]
+[gd_scene format=4 uid="uid://vd3yerq666sm"]
 
 [ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://entidades/Personagens/Caju.tscn" id="1_5kiuu"]
 [ext_resource type="Script" uid="uid://cnaq8gn6bplt3" path="res://scene/game.gd" id="1_17rxn"]
@@ -9,15 +9,14 @@
 [ext_resource type="Texture2D" uid="uid://rtw1ffmcij6r" path="res://assets/art/world/home/shelf.png" id="5_p1ry8"]
 [ext_resource type="Texture2D" uid="uid://ch3lqw3rgtkoq" path="res://assets/art/world/home/luminaria.png" id="7_qpk70"]
 [ext_resource type="Texture2D" uid="uid://cjx12c7kg0bmd" path="res://assets/art/world/home/shelf_2.png" id="8_ll5lq"]
+[ext_resource type="Texture2D" uid="uid://cv4noqjb4nm5e" path="res://assets/art/world/home/escada1.png" id="10_yq8tf"]
+[ext_resource type="Texture2D" uid="uid://ca55txe70npdk" path="res://assets/art/world/home/ground_sprite_sheet.png" id="11_ym5sv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gfli6"]
 size = Vector2(9, 16)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_6or6s"]
-size = Vector2(320, 4)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_25nce"]
-size = Vector2(64, 10.5)
+size = Vector2(60, 95)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_464tc"]
 size = Vector2(32, 3)
@@ -28,11 +27,42 @@ size = Vector2(64, 4)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_17rxn"]
 size = Vector2(53, 182)
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ym5sv"]
+texture = ExtResource("4_xwcet")
+texture_region_size = Vector2i(320, 5)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_dtg5i"]
+tile_size = Vector2i(320, 5)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_ym5sv")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_coyv1"]
+size = Vector2(47, 178)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sng2h"]
+texture = ExtResource("11_ym5sv")
+texture_region_size = Vector2i(5, 5)
+0:0/0 = 0
+0:1/0 = 0
+0:2/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_coyv1"]
+tile_size = Vector2i(5, 5)
+sources/0 = SubResource("TileSetAtlasSource_sng2h")
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_gfli6"]
+distance = -176.00111
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7eq50"]
+size = Vector2(20, 62)
+
 [node name="Game" type="Node2D" unique_id=955371309]
 script = ExtResource("1_17rxn")
 
 [node name="background" type="Parallax2D" parent="." unique_id=1864044763]
 repeat_size = Vector2(320, 0)
+repeat_times = 3
 limit_begin = Vector2(0, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="background" unique_id=481361544]
@@ -50,31 +80,11 @@ shape = SubResource("RectangleShape2D_gfli6")
 [node name="Sprite2D" type="Sprite2D" parent="bottle" unique_id=1747841635]
 texture = ExtResource("3_xwcet")
 
-[node name="floor" type="StaticBody2D" parent="." unique_id=1994047778]
-position = Vector2(160, 178)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="floor" unique_id=1703368623]
-shape = SubResource("RectangleShape2D_6or6s")
-
-[node name="Sprite2D" type="Sprite2D" parent="floor" unique_id=1594671523]
-texture = ExtResource("4_xwcet")
-
-[node name="floor2" type="StaticBody2D" parent="." unique_id=1543809430]
-position = Vector2(482, 178)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="floor2" unique_id=1670422806]
-position = Vector2(-2, 0)
-shape = SubResource("RectangleShape2D_6or6s")
-
-[node name="Sprite2D" type="Sprite2D" parent="floor2" unique_id=353612098]
-position = Vector2(-2, 0)
-texture = ExtResource("4_xwcet")
-
 [node name="armario" type="StaticBody2D" parent="." unique_id=2126304506]
 position = Vector2(142, 128)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="armario" unique_id=1579926414]
-position = Vector2(0, -42.5)
+position = Vector2(0, 0.125)
 shape = SubResource("RectangleShape2D_25nce")
 
 [node name="Sprite2D" type="Sprite2D" parent="armario" unique_id=1338630420]
@@ -105,14 +115,14 @@ texture = ExtResource("8_ll5lq")
 position = Vector2(418, 128)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="armario2" unique_id=1134526936]
-position = Vector2(0, -42.75)
+position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_25nce")
 
 [node name="Sprite2D" type="Sprite2D" parent="armario2" unique_id=1368170478]
 texture = ExtResource("5_p1ry8")
 
 [node name="prateleira2" type="StaticBody2D" parent="." unique_id=1906839502]
-position = Vector2(245, 142)
+position = Vector2(533, 109)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="prateleira2" unique_id=1037016815]
 position = Vector2(2, -9)
@@ -126,7 +136,7 @@ texture = ExtResource("8_ll5lq")
 position = Vector2(18, 25)
 
 [node name="Caju2" parent="." unique_id=202326972 instance=ExtResource("1_5kiuu")]
-position = Vector2(583, 22)
+position = Vector2(363, 160)
 
 [node name="LeftWall" type="StaticBody2D" parent="." unique_id=884668486]
 
@@ -138,7 +148,44 @@ shape = SubResource("RectangleShape2D_17rxn")
 position = Vector2(1206, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall" unique_id=407822278]
-position = Vector2(-538.5, 89)
+position = Vector2(-464, 298)
 shape = SubResource("RectangleShape2D_17rxn")
 
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1006473674]
+tile_set = SubResource("TileSet_dtg5i")
+
+[node name="escada" type="Area2D" parent="." unique_id=443326683]
+position = Vector2(935, 86)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="escada" unique_id=366691571]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_coyv1")
+
+[node name="Sprite2D" type="Sprite2D" parent="escada" unique_id=5689814]
+texture = ExtResource("10_yq8tf")
+
+[node name="chao_tilemap" type="TileMapLayer" parent="." unique_id=1848321623]
+tile_map_data = PackedByteArray("AAAAACMAAAAAAAAAAAABACMAAAAAAAEAAAACACMAAAAAAAEAAAADACMAAAAAAAEAAAAEACMAAAAAAAEAAAAFACMAAAAAAAEAAAAGACMAAAAAAAEAAAAHACMAAAAAAAEAAAAIACMAAAAAAAEAAAAJACMAAAAAAAEAAAAKACMAAAAAAAEAAAALACMAAAAAAAEAAAAMACMAAAAAAAEAAAANACMAAAAAAAEAAAAOACMAAAAAAAEAAAAPACMAAAAAAAEAAAAQACMAAAAAAAEAAAARACMAAAAAAAEAAAASACMAAAAAAAEAAAATACMAAAAAAAEAAAAUACMAAAAAAAEAAAAVACMAAAAAAAEAAAAWACMAAAAAAAEAAAAXACMAAAAAAAEAAAAYACMAAAAAAAEAAAAZACMAAAAAAAEAAAAaACMAAAAAAAEAAAAbACMAAAAAAAEAAAAcACMAAAAAAAEAAAAdACMAAAAAAAEAAAAeACMAAAAAAAEAAAAfACMAAAAAAAEAAAAgACMAAAAAAAEAAAAhACMAAAAAAAEAAAAiACMAAAAAAAEAAAAjACMAAAAAAAEAAAAkACMAAAAAAAEAAAAlACMAAAAAAAEAAAAmACMAAAAAAAEAAAAnACMAAAAAAAEAAAAoACMAAAAAAAEAAAApACMAAAAAAAEAAAAqACMAAAAAAAEAAAArACMAAAAAAAEAAAAsACMAAAAAAAEAAAAtACMAAAAAAAEAAAAuACMAAAAAAAEAAAAvACMAAAAAAAEAAAAwACMAAAAAAAEAAAAxACMAAAAAAAEAAAAyACMAAAAAAAEAAAAzACMAAAAAAAEAAAA0ACMAAAAAAAEAAAA1ACMAAAAAAAEAAAA2ACMAAAAAAAEAAAA3ACMAAAAAAAEAAAA4ACMAAAAAAAEAAAA5ACMAAAAAAAEAAAA6ACMAAAAAAAEAAAA7ACMAAAAAAAEAAAA8ACMAAAAAAAEAAAA9ACMAAAAAAAEAAAA+ACMAAAAAAAEAAAA/ACMAAAAAAAEAAABAACMAAAAAAAEAAABBACMAAAAAAAEAAABCACMAAAAAAAEAAABDACMAAAAAAAEAAABEACMAAAAAAAEAAABFACMAAAAAAAEAAABGACMAAAAAAAEAAABHACMAAAAAAAEAAABIACMAAAAAAAEAAABJACMAAAAAAAEAAABKACMAAAAAAAEAAABLACMAAAAAAAEAAABMACMAAAAAAAEAAABNACMAAAAAAAEAAABOACMAAAAAAAEAAABPACMAAAAAAAEAAABQACMAAAAAAAEAAABRACMAAAAAAAEAAABSACMAAAAAAAEAAABTACMAAAAAAAEAAABUACMAAAAAAAEAAABVACMAAAAAAAEAAABWACMAAAAAAAEAAABXACMAAAAAAAEAAABYACMAAAAAAAEAAABZACMAAAAAAAEAAABaACMAAAAAAAEAAABbACMAAAAAAAEAAABcACMAAAAAAAEAAABdACMAAAAAAAEAAABeACMAAAAAAAEAAABfACMAAAAAAAEAAABgACMAAAAAAAEAAABhACMAAAAAAAEAAABiACMAAAAAAAEAAABjACMAAAAAAAEAAABkACMAAAAAAAEAAABlACMAAAAAAAEAAABmACMAAAAAAAEAAABnACMAAAAAAAEAAABoACMAAAAAAAEAAABpACMAAAAAAAEAAABqACMAAAAAAAEAAABrACMAAAAAAAEAAABsACMAAAAAAAEAAABtACMAAAAAAAEAAABuACMAAAAAAAEAAABvACMAAAAAAAEAAABwACMAAAAAAAEAAABxACMAAAAAAAEAAAByACMAAAAAAAEAAABzACMAAAAAAAEAAAB0ACMAAAAAAAEAAAB1ACMAAAAAAAEAAAB2ACMAAAAAAAEAAAB3ACMAAAAAAAEAAAB4ACMAAAAAAAEAAAB5ACMAAAAAAAEAAAB6ACMAAAAAAAEAAAB7ACMAAAAAAAEAAAB8ACMAAAAAAAEAAAB9ACMAAAAAAAEAAAB+ACMAAAAAAAEAAAB/ACMAAAAAAAEAAACAACMAAAAAAAEAAACBACMAAAAAAAEAAACCACMAAAAAAAEAAACDACMAAAAAAAEAAACEACMAAAAAAAEAAACFACMAAAAAAAEAAACGACMAAAAAAAEAAACHACMAAAAAAAEAAACIACMAAAAAAAEAAACJACMAAAAAAAEAAACKACMAAAAAAAEAAACLACMAAAAAAAEAAACMACMAAAAAAAEAAACNACMAAAAAAAEAAACOACMAAAAAAAEAAACPACMAAAAAAAEAAACQACMAAAAAAAEAAACRACMAAAAAAAEAAACSACMAAAAAAAEAAACTACMAAAAAAAEAAACUACMAAAAAAAEAAACVACMAAAAAAAEAAACWACMAAAAAAAEAAACXACMAAAAAAAEAAACYACMAAAAAAAEAAACZACMAAAAAAAEAAACaACMAAAAAAAEAAACbACMAAAAAAAEAAACcACMAAAAAAAEAAACdACMAAAAAAAEAAACeACMAAAAAAAEAAACfACMAAAAAAAEAAACgACMAAAAAAAEAAAChACMAAAAAAAEAAACiACMAAAAAAAEAAACjACMAAAAAAAEAAACkACMAAAAAAAEAAAClACMAAAAAAAEAAACmACMAAAAAAAEAAACnACMAAAAAAAEAAACoACMAAAAAAAEAAACpACMAAAAAAAEAAACqACMAAAAAAAEAAACrACMAAAAAAAEAAACsACMAAAAAAAEAAACtACMAAAAAAAEAAACuACMAAAAAAAEAAACvACMAAAAAAAEAAACwACMAAAAAAAEAAACxACMAAAAAAAEAAACyACMAAAAAAAEAAACzACMAAAAAAAEAAAC0ACMAAAAAAAEAAAC1ACMAAAAAAAEAAAC2ACMAAAAAAAEAAAC3ACMAAAAAAAEAAAC4ACMAAAAAAAEAAAC5ACMAAAAAAAEAAAC6ACMAAAAAAAEAAAC7ACMAAAAAAAEAAAC8ACMAAAAAAAEAAAC9ACMAAAAAAAEAAAC+ACMAAAAAAAEAAAC/ACMAAAAAAAEAAADAACMAAAAAAAEAAADBACMAAAAAAAIAAAA=")
+tile_set = SubResource("TileSet_coyv1")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="chao_tilemap" unique_id=1272184738]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="chao_tilemap/StaticBody2D" unique_id=725971004]
+rotation = -0.0012449105
+shape = SubResource("WorldBoundaryShape2D_gfli6")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1338226734]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=234570580]
+position = Vector2(56, 155)
+shape = SubResource("RectangleShape2D_7eq50")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="StaticBody2D" unique_id=1094423979]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D/StaticBody2D" unique_id=95589105]
+position = Vector2(23, 173)
+shape = SubResource("RectangleShape2D_7eq50")
+
 [connection signal="body_entered" from="bottle" to="bottle" method="_on_body_entered"]
+[connection signal="body_entered" from="escada" to="." method="_on_escada_body_entered"]
+[connection signal="body_exited" from="escada" to="." method="_on_escada_body_exited"]

@@ -25,3 +25,11 @@ func switch_character() -> void:
 		caju2.make_inactive()
 		caju1.make_active()
 		current_player = caju1
+
+
+func _on_escada_body_entered(body: Node2D) -> void:
+	pass # Replace with function body.
+
+
+func _on_escada_body_exited(body: Node2D) -> void:
+	pass # Replace with function body.
