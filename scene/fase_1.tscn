@@ -1,16 +1,16 @@
 [gd_scene format=4 uid="uid://vd3yerq666sm"]
 
-[ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://src/entities/player/player.tscn" id="1_5kiuu"]
-[ext_resource type="Script" uid="uid://cnaq8gn6bplt3" path="res://scene/game.gd" id="1_17rxn"]
-[ext_resource type="Script" uid="uid://ccbgvga82euoq" path="res://src/entities/items/bottle/bottle.gd" id="2_33cqm"]
-[ext_resource type="Texture2D" uid="uid://m3h5v0eis75c" path="res://assets/art/world/home/background.png" id="3_xlg7c"]
-[ext_resource type="Texture2D" uid="uid://djtey4uk53eux" path="res://assets/art/world/objects/bottle.png" id="3_xwcet"]
-[ext_resource type="Texture2D" uid="uid://b2evywmehr5er" path="res://assets/art/world/home/ground.png" id="4_xwcet"]
-[ext_resource type="Texture2D" uid="uid://rtw1ffmcij6r" path="res://assets/art/world/home/shelf.png" id="5_p1ry8"]
-[ext_resource type="Texture2D" uid="uid://ch3lqw3rgtkoq" path="res://assets/art/world/home/luminaria.png" id="7_qpk70"]
-[ext_resource type="Texture2D" uid="uid://cjx12c7kg0bmd" path="res://assets/art/world/home/shelf_2.png" id="8_ll5lq"]
-[ext_resource type="Texture2D" uid="uid://cv4noqjb4nm5e" path="res://assets/art/world/home/escada1.png" id="10_yq8tf"]
-[ext_resource type="Texture2D" uid="uid://ca55txe70npdk" path="res://assets/art/world/home/ground_sprite_sheet.png" id="11_ym5sv"]
+[ext_resource type="Script" uid="uid://cnaq8gn6bplt3" path="res://scene/fase_base.gd" id="1_2giib"]
+[ext_resource type="Texture2D" uid="uid://m3h5v0eis75c" path="res://assets/art/world/home/background.png" id="2_sestj"]
+[ext_resource type="Script" uid="uid://ccbgvga82euoq" path="res://src/entities/items/bottle/bottle.gd" id="3_cxjtk"]
+[ext_resource type="Texture2D" uid="uid://djtey4uk53eux" path="res://assets/art/world/objects/bottle.png" id="4_og3t4"]
+[ext_resource type="Texture2D" uid="uid://rtw1ffmcij6r" path="res://assets/art/world/home/shelf.png" id="5_76qp2"]
+[ext_resource type="Texture2D" uid="uid://ch3lqw3rgtkoq" path="res://assets/art/world/home/luminaria.png" id="6_dissn"]
+[ext_resource type="Texture2D" uid="uid://cjx12c7kg0bmd" path="res://assets/art/world/home/shelf_2.png" id="7_clx2i"]
+[ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://src/entities/player/player.tscn" id="8_nfwpl"]
+[ext_resource type="Texture2D" uid="uid://b2evywmehr5er" path="res://assets/art/world/home/ground.png" id="9_eogyu"]
+[ext_resource type="Texture2D" uid="uid://cv4noqjb4nm5e" path="res://assets/art/world/home/escada1.png" id="10_2jkc4"]
+[ext_resource type="Texture2D" uid="uid://ca55txe70npdk" path="res://assets/art/world/home/ground_sprite_sheet.png" id="11_it4xx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gfli6"]
 size = Vector2(9, 16)
@@ -28,7 +28,7 @@ size = Vector2(64, 4)
 size = Vector2(53, 182)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ym5sv"]
-texture = ExtResource("4_xwcet")
+texture = ExtResource("9_eogyu")
 texture_region_size = Vector2i(320, 5)
 0:0/0 = 0
 
@@ -41,7 +41,7 @@ sources/0 = SubResource("TileSetAtlasSource_ym5sv")
 size = Vector2(47, 178)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sng2h"]
-texture = ExtResource("11_ym5sv")
+texture = ExtResource("11_it4xx")
 texture_region_size = Vector2i(5, 5)
 0:0/0 = 0
 0:1/0 = 0
@@ -57,8 +57,8 @@ distance = -176.00111
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7eq50"]
 size = Vector2(20, 62)
 
-[node name="Game" type="Node2D" unique_id=955371309]
-script = ExtResource("1_17rxn")
+[node name="fase_1" type="Node2D" unique_id=955371309]
+script = ExtResource("1_2giib")
 
 [node name="background" type="Parallax2D" parent="." unique_id=1106651168]
 repeat_size = Vector2(320, 0)
@@ -67,20 +67,20 @@ limit_begin = Vector2(0, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="background" unique_id=2146063981]
 position = Vector2(161, 88)
-texture = ExtResource("3_xlg7c")
+texture = ExtResource("2_sestj")
 
 [node name="bottle" type="Area2D" parent="." unique_id=1086200057]
 position = Vector2(142, 68)
 collision_layer = 8
 collision_mask = 2
-script = ExtResource("2_33cqm")
+script = ExtResource("3_cxjtk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="bottle" unique_id=1642962111]
 position = Vector2(0.5, 0)
 shape = SubResource("RectangleShape2D_gfli6")
 
 [node name="Sprite2D" type="Sprite2D" parent="bottle" unique_id=138194761]
-texture = ExtResource("3_xwcet")
+texture = ExtResource("4_og3t4")
 
 [node name="armario" type="StaticBody2D" parent="." unique_id=2126304506]
 position = Vector2(142, 128)
@@ -91,7 +91,7 @@ position = Vector2(0, 0.125)
 shape = SubResource("RectangleShape2D_25nce")
 
 [node name="Sprite2D" type="Sprite2D" parent="armario" unique_id=1481185034]
-texture = ExtResource("5_p1ry8")
+texture = ExtResource("5_76qp2")
 
 [node name="luminaria" type="StaticBody2D" parent="." unique_id=2021801871]
 position = Vector2(223, 24)
@@ -102,7 +102,7 @@ position = Vector2(0, 30.5)
 shape = SubResource("RectangleShape2D_464tc")
 
 [node name="Sprite2D" type="Sprite2D" parent="luminaria" unique_id=1882758647]
-texture = ExtResource("7_qpk70")
+texture = ExtResource("6_dissn")
 
 [node name="prateleira" type="StaticBody2D" parent="." unique_id=2106657750]
 position = Vector2(312, 106)
@@ -114,7 +114,7 @@ shape = SubResource("RectangleShape2D_dtg5i")
 
 [node name="Sprite2D" type="Sprite2D" parent="prateleira" unique_id=1527046195]
 position = Vector2(2, 5)
-texture = ExtResource("8_ll5lq")
+texture = ExtResource("7_clx2i")
 
 [node name="armario2" type="StaticBody2D" parent="." unique_id=248410941]
 position = Vector2(418, 128)
@@ -125,7 +125,7 @@ position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_25nce")
 
 [node name="Sprite2D" type="Sprite2D" parent="armario2" unique_id=71570523]
-texture = ExtResource("5_p1ry8")
+texture = ExtResource("5_76qp2")
 
 [node name="prateleira2" type="StaticBody2D" parent="." unique_id=1906839502]
 position = Vector2(533, 109)
@@ -136,13 +136,13 @@ shape = SubResource("RectangleShape2D_dtg5i")
 
 [node name="Sprite2D" type="Sprite2D" parent="prateleira2" unique_id=1492690010]
 position = Vector2(2, 5)
-texture = ExtResource("8_ll5lq")
+texture = ExtResource("7_clx2i")
 
-[node name="Caju" parent="." unique_id=492433676 instance=ExtResource("1_5kiuu")]
+[node name="Caju" parent="." unique_id=492433676 instance=ExtResource("8_nfwpl")]
 position = Vector2(18, 25)
 is_active = true
 
-[node name="Caju2" parent="." unique_id=202326972 instance=ExtResource("1_5kiuu")]
+[node name="Caju2" parent="." unique_id=202326972 instance=ExtResource("8_nfwpl")]
 position = Vector2(419, 20)
 
 [node name="LeftWall" type="StaticBody2D" parent="." unique_id=2099262670]
@@ -167,11 +167,12 @@ tile_set = SubResource("TileSet_dtg5i")
 position = Vector2(935, 86)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="escada" unique_id=366691571]
-position = Vector2(-0.5, 0)
+position = Vector2(-315, 3)
 shape = SubResource("RectangleShape2D_coyv1")
 
 [node name="Sprite2D" type="Sprite2D" parent="escada" unique_id=5689814]
-texture = ExtResource("10_yq8tf")
+position = Vector2(-314, 3)
+texture = ExtResource("10_2jkc4")
 
 [node name="chao_tilemap" type="TileMapLayer" parent="." unique_id=1848321623]
 tile_map_data = PackedByteArray("AAAAACMAAAAAAAAAAAABACMAAAAAAAEAAAACACMAAAAAAAEAAAADACMAAAAAAAEAAAAEACMAAAAAAAEAAAAFACMAAAAAAAEAAAAGACMAAAAAAAEAAAAHACMAAAAAAAEAAAAIACMAAAAAAAEAAAAJACMAAAAAAAEAAAAKACMAAAAAAAEAAAALACMAAAAAAAEAAAAMACMAAAAAAAEAAAANACMAAAAAAAEAAAAOACMAAAAAAAEAAAAPACMAAAAAAAEAAAAQACMAAAAAAAEAAAARACMAAAAAAAEAAAASACMAAAAAAAEAAAATACMAAAAAAAEAAAAUACMAAAAAAAEAAAAVACMAAAAAAAEAAAAWACMAAAAAAAEAAAAXACMAAAAAAAEAAAAYACMAAAAAAAEAAAAZACMAAAAAAAEAAAAaACMAAAAAAAEAAAAbACMAAAAAAAEAAAAcACMAAAAAAAEAAAAdACMAAAAAAAEAAAAeACMAAAAAAAEAAAAfACMAAAAAAAEAAAAgACMAAAAAAAEAAAAhACMAAAAAAAEAAAAiACMAAAAAAAEAAAAjACMAAAAAAAEAAAAkACMAAAAAAAEAAAAlACMAAAAAAAEAAAAmACMAAAAAAAEAAAAnACMAAAAAAAEAAAAoACMAAAAAAAEAAAApACMAAAAAAAEAAAAqACMAAAAAAAEAAAArACMAAAAAAAEAAAAsACMAAAAAAAEAAAAtACMAAAAAAAEAAAAuACMAAAAAAAEAAAAvACMAAAAAAAEAAAAwACMAAAAAAAEAAAAxACMAAAAAAAEAAAAyACMAAAAAAAEAAAAzACMAAAAAAAEAAAA0ACMAAAAAAAEAAAA1ACMAAAAAAAEAAAA2ACMAAAAAAAEAAAA3ACMAAAAAAAEAAAA4ACMAAAAAAAEAAAA5ACMAAAAAAAEAAAA6ACMAAAAAAAEAAAA7ACMAAAAAAAEAAAA8ACMAAAAAAAEAAAA9ACMAAAAAAAEAAAA+ACMAAAAAAAEAAAA/ACMAAAAAAAEAAABAACMAAAAAAAEAAABBACMAAAAAAAEAAABCACMAAAAAAAEAAABDACMAAAAAAAEAAABEACMAAAAAAAEAAABFACMAAAAAAAEAAABGACMAAAAAAAEAAABHACMAAAAAAAEAAABIACMAAAAAAAEAAABJACMAAAAAAAEAAABKACMAAAAAAAEAAABLACMAAAAAAAEAAABMACMAAAAAAAEAAABNACMAAAAAAAEAAABOACMAAAAAAAEAAABPACMAAAAAAAEAAABQACMAAAAAAAEAAABRACMAAAAAAAEAAABSACMAAAAAAAEAAABTACMAAAAAAAEAAABUACMAAAAAAAEAAABVACMAAAAAAAEAAABWACMAAAAAAAEAAABXACMAAAAAAAEAAABYACMAAAAAAAEAAABZACMAAAAAAAEAAABaACMAAAAAAAEAAABbACMAAAAAAAEAAABcACMAAAAAAAEAAABdACMAAAAAAAEAAABeACMAAAAAAAEAAABfACMAAAAAAAEAAABgACMAAAAAAAEAAABhACMAAAAAAAEAAABiACMAAAAAAAEAAABjACMAAAAAAAEAAABkACMAAAAAAAEAAABlACMAAAAAAAEAAABmACMAAAAAAAEAAABnACMAAAAAAAEAAABoACMAAAAAAAEAAABpACMAAAAAAAEAAABqACMAAAAAAAEAAABrACMAAAAAAAEAAABsACMAAAAAAAEAAABtACMAAAAAAAEAAABuACMAAAAAAAEAAABvACMAAAAAAAEAAABwACMAAAAAAAEAAABxACMAAAAAAAEAAAByACMAAAAAAAEAAABzACMAAAAAAAEAAAB0ACMAAAAAAAEAAAB1ACMAAAAAAAEAAAB2ACMAAAAAAAEAAAB3ACMAAAAAAAEAAAB4ACMAAAAAAAEAAAB5ACMAAAAAAAEAAAB6ACMAAAAAAAEAAAB7ACMAAAAAAAEAAAB8ACMAAAAAAAEAAAB9ACMAAAAAAAEAAAB+ACMAAAAAAAEAAAB/ACMAAAAAAAEAAACAACMAAAAAAAEAAACBACMAAAAAAAEAAACCACMAAAAAAAEAAACDACMAAAAAAAEAAACEACMAAAAAAAEAAACFACMAAAAAAAEAAACGACMAAAAAAAEAAACHACMAAAAAAAEAAACIACMAAAAAAAEAAACJACMAAAAAAAEAAACKACMAAAAAAAEAAACLACMAAAAAAAEAAACMACMAAAAAAAEAAACNACMAAAAAAAEAAACOACMAAAAAAAEAAACPACMAAAAAAAEAAACQACMAAAAAAAEAAACRACMAAAAAAAEAAACSACMAAAAAAAEAAACTACMAAAAAAAEAAACUACMAAAAAAAEAAACVACMAAAAAAAEAAACWACMAAAAAAAEAAACXACMAAAAAAAEAAACYACMAAAAAAAEAAACZACMAAAAAAAEAAACaACMAAAAAAAEAAACbACMAAAAAAAEAAACcACMAAAAAAAEAAACdACMAAAAAAAEAAACeACMAAAAAAAEAAACfACMAAAAAAAEAAACgACMAAAAAAAEAAAChACMAAAAAAAEAAACiACMAAAAAAAEAAACjACMAAAAAAAEAAACkACMAAAAAAAEAAAClACMAAAAAAAEAAACmACMAAAAAAAEAAACnACMAAAAAAAEAAACoACMAAAAAAAEAAACpACMAAAAAAAEAAACqACMAAAAAAAEAAACrACMAAAAAAAEAAACsACMAAAAAAAEAAACtACMAAAAAAAEAAACuACMAAAAAAAEAAACvACMAAAAAAAEAAACwACMAAAAAAAEAAACxACMAAAAAAAEAAACyACMAAAAAAAEAAACzACMAAAAAAAEAAAC0ACMAAAAAAAEAAAC1ACMAAAAAAAEAAAC2ACMAAAAAAAEAAAC3ACMAAAAAAAEAAAC4ACMAAAAAAAEAAAC5ACMAAAAAAAEAAAC6ACMAAAAAAAEAAAC7ACMAAAAAAAEAAAC8ACMAAAAAAAEAAAC9ACMAAAAAAAEAAAC+ACMAAAAAAAEAAAC/ACMAAAAAAAEAAADAACMAAAAAAAEAAADBACMAAAAAAAIAAAA=")
