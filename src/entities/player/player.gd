@@ -25,6 +25,9 @@ signal deactivated
 @export_group("State")
 @export var is_active: bool = false
 
+var na_escada: bool = false
+const VELOCIDADE_ESCALADA = 150.0 # Ajuste a velocidade como preferir
+
 # Internal kinematics
 var jump_velocity: float
 var jump_gravity: float
@@ -72,11 +75,27 @@ func _physics_process(delta: float) -> void:
 	else:
 		_process_inactive_physics(delta)
 	
-	# Apply gravity (both active and inactive players fall naturally!)
-	var gravity: float = jump_gravity if velocity.y < 0.0 else fall_gravity
-	if not is_on_floor():
-		velocity.y += gravity * delta
-	
+	# --- LÓGICA DE ESCADA VS GRAVIDADE ---
+	if na_escada:
+		# Lê diretamente as teclas físicas para garantir que funciona agora
+		var move_dir: float = 0.0
+		if Input.is_key_pressed(KEY_W) or Input.is_action_pressed("ui_up") or Input.is_action_pressed("up"):
+			move_dir -= 1.0
+		if Input.is_key_pressed(KEY_S) or Input.is_action_pressed("ui_down") or Input.is_action_pressed("down"):
+			move_dir += 1.0
+			
+		velocity.y = move_dir * VELOCIDADE_ESCALADA
+		
+		if anim:
+			if move_dir != 0.0:
+				anim.play("caju_climb")
+			else:
+				anim.pause()
+	else:
+		var gravity: float = jump_gravity if velocity.y < 0.0 else fall_gravity
+		if not is_on_floor():
+			velocity.y += gravity * delta
+			
 	# Check landing for signals
 	if not _was_on_floor and is_on_floor():
 		if has_node("/root/EventBus"):
@@ -101,7 +120,8 @@ func _process_active_input(delta: float) -> void:
 		_jump_buffer_timer = jump_buffer_time
 	
 	# Execute jump when buffer is valid and either on floor or in coyote time
-	if _jump_buffer_timer > 0.0 and _coyote_timer > 0.0:
+	# (Não permite pular se estiver no meio da escada para evitar bugs)
+	if _jump_buffer_timer > 0.0 and _coyote_timer > 0.0 and not na_escada:
 		_execute_jump()
 	
 	# Variable jump height: release early to perform micro-jumps
@@ -137,13 +157,19 @@ func _update_animation() -> void:
 	if not anim:
 		return
 	
+	# --- PRIORIDADE MÁXIMA: Escada ---
+	if na_escada:
+		anim.play("climb")
+		return # Interrompe aqui para não rodar mais nada!
+	
+	# --- Restantes animações (Chão / Pulo) ---
 	if is_on_floor():
 		if abs(velocity.x) > 5.0:
 			anim.play("walk")
 		else:
 			anim.play("idle")
 	else:
-			anim.play("jump_1")
+		anim.play("jump_1")
 
 func make_active() -> void:
 	is_active = true

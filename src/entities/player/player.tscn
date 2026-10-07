@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cmlkcuy4xqkcj"]
 
 [ext_resource type="Script" uid="uid://dtpnfsid3jmhx" path="res://src/entities/player/player.gd" id="1_7gxvo"]
+[ext_resource type="Texture2D" uid="uid://b6sk1al6abcxn" path="res://assets/art/characters/caju/caju_climb.png" id="2_0mfjg"]
 [ext_resource type="Texture2D" uid="uid://bth16nocigpj2" path="res://assets/art/characters/caju/caju_idle.png" id="2_j7u74"]
 [ext_resource type="Texture2D" uid="uid://csrlkyxoxjct4" path="res://assets/art/characters/caju/caju_jump.png" id="3_8prrk"]
 [ext_resource type="Texture2D" uid="uid://cv34ingrbmcwx" path="res://assets/art/characters/caju/caju_walk.png" id="3_nn3xb"]
@@ -63,6 +64,14 @@ region = Rect2(0, 96, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gfli6"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_0mfjg")
+}],
+"loop": 1,
+"name": &"climb",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 2.0,
 "texture": SubResource("AtlasTexture_nn3xb")
@@ -135,7 +144,7 @@ shape = SubResource("RectangleShape2D_dtg5i")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1001546926]
 sprite_frames = SubResource("SpriteFrames_gfli6")
-animation = &"idle"
+animation = &"climb"
 autoplay = "idle"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=405211235]
