@@ -1,9 +1,9 @@
 [gd_scene format=4 uid="uid://vd3yerq666sm"]
 
-[ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://entidades/Personagens/Caju.tscn" id="1_5kiuu"]
+[ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://src/entities/player/player.tscn" id="1_5kiuu"]
 [ext_resource type="Script" uid="uid://cnaq8gn6bplt3" path="res://scene/game.gd" id="1_17rxn"]
-[ext_resource type="Texture2D" uid="uid://m3h5v0eis75c" path="res://assets/art/world/home/background.png" id="1_xlg7c"]
-[ext_resource type="Script" uid="uid://cxrl53bhor5cg" path="res://scripts/bottle.gd" id="2_33cqm"]
+[ext_resource type="Script" uid="uid://ccbgvga82euoq" path="res://src/entities/items/bottle/bottle.gd" id="2_33cqm"]
+[ext_resource type="Texture2D" uid="uid://m3h5v0eis75c" path="res://assets/art/world/home/background.png" id="3_xlg7c"]
 [ext_resource type="Texture2D" uid="uid://djtey4uk53eux" path="res://assets/art/world/objects/bottle.png" id="3_xwcet"]
 [ext_resource type="Texture2D" uid="uid://b2evywmehr5er" path="res://assets/art/world/home/ground.png" id="4_xwcet"]
 [ext_resource type="Texture2D" uid="uid://rtw1ffmcij6r" path="res://assets/art/world/home/shelf.png" id="5_p1ry8"]
@@ -60,95 +60,104 @@ size = Vector2(20, 62)
 [node name="Game" type="Node2D" unique_id=955371309]
 script = ExtResource("1_17rxn")
 
-[node name="background" type="Parallax2D" parent="." unique_id=1864044763]
+[node name="background" type="Parallax2D" parent="." unique_id=1106651168]
 repeat_size = Vector2(320, 0)
 repeat_times = 3
 limit_begin = Vector2(0, 0)
 
-[node name="Sprite2D" type="Sprite2D" parent="background" unique_id=481361544]
+[node name="Sprite2D" type="Sprite2D" parent="background" unique_id=2146063981]
 position = Vector2(161, 88)
-texture = ExtResource("1_xlg7c")
+texture = ExtResource("3_xlg7c")
 
-[node name="bottle" type="Area2D" parent="." unique_id=489905522]
+[node name="bottle" type="Area2D" parent="." unique_id=1086200057]
 position = Vector2(142, 68)
+collision_layer = 8
+collision_mask = 2
 script = ExtResource("2_33cqm")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="bottle" unique_id=1189752131]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bottle" unique_id=1642962111]
 position = Vector2(0.5, 0)
 shape = SubResource("RectangleShape2D_gfli6")
 
-[node name="Sprite2D" type="Sprite2D" parent="bottle" unique_id=1747841635]
+[node name="Sprite2D" type="Sprite2D" parent="bottle" unique_id=138194761]
 texture = ExtResource("3_xwcet")
 
 [node name="armario" type="StaticBody2D" parent="." unique_id=2126304506]
 position = Vector2(142, 128)
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="armario" unique_id=1579926414]
 position = Vector2(0, 0.125)
 shape = SubResource("RectangleShape2D_25nce")
 
-[node name="Sprite2D" type="Sprite2D" parent="armario" unique_id=1338630420]
+[node name="Sprite2D" type="Sprite2D" parent="armario" unique_id=1481185034]
 texture = ExtResource("5_p1ry8")
 
-[node name="luminaria" type="StaticBody2D" parent="." unique_id=76053422]
+[node name="luminaria" type="StaticBody2D" parent="." unique_id=2021801871]
 position = Vector2(223, 24)
+collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="luminaria" unique_id=383844790]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="luminaria" unique_id=530493591]
 position = Vector2(0, 30.5)
 shape = SubResource("RectangleShape2D_464tc")
 
-[node name="Sprite2D" type="Sprite2D" parent="luminaria" unique_id=1508474600]
+[node name="Sprite2D" type="Sprite2D" parent="luminaria" unique_id=1882758647]
 texture = ExtResource("7_qpk70")
 
-[node name="prateleira" type="StaticBody2D" parent="." unique_id=112984371]
+[node name="prateleira" type="StaticBody2D" parent="." unique_id=2106657750]
 position = Vector2(312, 106)
+collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="prateleira" unique_id=1854742604]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="prateleira" unique_id=1660322571]
 position = Vector2(2, -9)
 shape = SubResource("RectangleShape2D_dtg5i")
 
-[node name="Sprite2D" type="Sprite2D" parent="prateleira" unique_id=1418994808]
+[node name="Sprite2D" type="Sprite2D" parent="prateleira" unique_id=1527046195]
 position = Vector2(2, 5)
 texture = ExtResource("8_ll5lq")
 
-[node name="armario2" type="StaticBody2D" parent="." unique_id=784549956]
+[node name="armario2" type="StaticBody2D" parent="." unique_id=248410941]
 position = Vector2(418, 128)
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="armario2" unique_id=1134526936]
 position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_25nce")
 
-[node name="Sprite2D" type="Sprite2D" parent="armario2" unique_id=1368170478]
+[node name="Sprite2D" type="Sprite2D" parent="armario2" unique_id=71570523]
 texture = ExtResource("5_p1ry8")
 
 [node name="prateleira2" type="StaticBody2D" parent="." unique_id=1906839502]
 position = Vector2(533, 109)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="prateleira2" unique_id=1037016815]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="prateleira2" unique_id=1677585457]
 position = Vector2(2, -9)
 shape = SubResource("RectangleShape2D_dtg5i")
 
-[node name="Sprite2D" type="Sprite2D" parent="prateleira2" unique_id=1733318341]
+[node name="Sprite2D" type="Sprite2D" parent="prateleira2" unique_id=1492690010]
 position = Vector2(2, 5)
 texture = ExtResource("8_ll5lq")
 
-[node name="Caju" parent="." unique_id=124830768 instance=ExtResource("1_5kiuu")]
+[node name="Caju" parent="." unique_id=492433676 instance=ExtResource("1_5kiuu")]
 position = Vector2(18, 25)
+is_active = true
 
 [node name="Caju2" parent="." unique_id=202326972 instance=ExtResource("1_5kiuu")]
-position = Vector2(363, 160)
+position = Vector2(419, 20)
 
-[node name="LeftWall" type="StaticBody2D" parent="." unique_id=884668486]
+[node name="LeftWall" type="StaticBody2D" parent="." unique_id=2099262670]
+collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall" unique_id=87453296]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall" unique_id=43039762]
 position = Vector2(-26, 89)
 shape = SubResource("RectangleShape2D_17rxn")
 
-[node name="RightWall" type="StaticBody2D" parent="." unique_id=1393977230]
-position = Vector2(1206, 0)
+[node name="RightWall" type="StaticBody2D" parent="." unique_id=1232587158]
+position = Vector2(667.5, 0)
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall" unique_id=407822278]
-position = Vector2(-464, 298)
+position = Vector2(319.5, 87)
 shape = SubResource("RectangleShape2D_17rxn")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1006473674]
@@ -180,9 +189,17 @@ shape = SubResource("WorldBoundaryShape2D_gfli6")
 position = Vector2(56, 155)
 shape = SubResource("RectangleShape2D_7eq50")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="StaticBody2D" unique_id=1094423979]
+[node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=1094423979]
+position = Vector2(1, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D/StaticBody2D" unique_id=95589105]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=95589105]
+position = Vector2(23, 173)
+shape = SubResource("RectangleShape2D_7eq50")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="." unique_id=1155162952]
+position = Vector2(215, -4)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3" unique_id=38960145]
 position = Vector2(23, 173)
 shape = SubResource("RectangleShape2D_7eq50")
 

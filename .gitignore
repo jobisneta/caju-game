@@ -1,1 +1,41 @@
+# Godot 4+ .gitignore
+
+# Godot-specific ignores
 .godot/
+*.translation
+
+# Export binaries & bundles
+build/
+bin/
+export/
+*.apk
+*.aab
+*.exe
+*.zip
+*.tar.gz
+*.pck
+*.wasm
+
+# Mono/C# specific (if applicable in future)
+.mono/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# OS-generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor cache and temporary files
+*.tmp
+*.bak
+*~

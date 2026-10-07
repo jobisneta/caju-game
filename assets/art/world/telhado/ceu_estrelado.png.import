@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://byxqd45ls6flu"
-path="res://.godot/imported/caju_andando.png-8ba51e5a5ce86778ad019470d662b3df.ctex"
+uid="uid://by8xhss6lmcqf"
+path="res://.godot/imported/ceu_estrelado.png-872bc3e71d5954d919765027a2a4ee1e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/art/characters/caju/caju_andando.png"
-dest_files=["res://.godot/imported/caju_andando.png-8ba51e5a5ce86778ad019470d662b3df.ctex"]
+source_file="res://assets/art/world/telhado/ceu_estrelado.png"
+dest_files=["res://.godot/imported/ceu_estrelado.png-872bc3e71d5954d919765027a2a4ee1e.ctex"]
 
 [params]
 

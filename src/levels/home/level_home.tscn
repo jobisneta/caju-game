@@ -1,0 +1,154 @@
+[gd_scene format=3 uid="uid://vd3yerq666sm"]
+
+[ext_resource type="Script" path="res://src/levels/home/level_home.gd" id="1_17rxn"]
+[ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://src/entities/player/player.tscn" id="1_5kiuu"]
+[ext_resource type="PackedScene" path="res://src/entities/items/bottle/bottle.tscn" id="2_33cqm"]
+[ext_resource type="Texture2D" uid="uid://m3h5v0eis75c" path="res://assets/art/world/home/background.png" id="3_xlg7c"]
+[ext_resource type="Texture2D" uid="uid://b2evywmehr5er" path="res://assets/art/world/home/ground.png" id="4_xwcet"]
+[ext_resource type="Texture2D" uid="uid://rtw1ffmcij6r" path="res://assets/art/world/home/shelf.png" id="5_p1ry8"]
+[ext_resource type="Texture2D" uid="uid://ch3lqw3rgtkoq" path="res://assets/art/world/home/luminaria.png" id="6_qpk70"]
+[ext_resource type="Texture2D" uid="uid://cjx12c7kg0bmd" path="res://assets/art/world/home/shelf_2.png" id="7_ll5lq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6or6s"]
+size = Vector2(320, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_25nce"]
+size = Vector2(64, 10.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_464tc"]
+size = Vector2(32, 3)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dtg5i"]
+size = Vector2(64, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_17rxn"]
+size = Vector2(53, 182)
+
+[node name="LevelHome" type="Node2D"]
+script = ExtResource("1_17rxn")
+
+[node name="Background" type="Parallax2D" parent="."]
+repeat_size = Vector2(320, 0)
+limit_begin = Vector2(0, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background"]
+position = Vector2(161, 88)
+texture = ExtResource("3_xlg7c")
+
+[node name="Environment" type="Node2D" parent="."]
+
+[node name="Floor" type="StaticBody2D" parent="Environment"]
+position = Vector2(160, 178)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Floor"]
+shape = SubResource("RectangleShape2D_6or6s")
+
+[node name="Sprite2D" type="Sprite2D" parent="Environment/Floor"]
+texture = ExtResource("4_xwcet")
+
+[node name="Floor2" type="StaticBody2D" parent="Environment"]
+position = Vector2(482, 178)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Floor2"]
+position = Vector2(-2, 0)
+shape = SubResource("RectangleShape2D_6or6s")
+
+[node name="Sprite2D" type="Sprite2D" parent="Environment/Floor2"]
+position = Vector2(-2, 0)
+texture = ExtResource("4_xwcet")
+
+[node name="Armario" type="StaticBody2D" parent="Environment"]
+position = Vector2(142, 128)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Armario"]
+position = Vector2(0, -42.5)
+shape = SubResource("RectangleShape2D_25nce")
+
+[node name="Sprite2D" type="Sprite2D" parent="Environment/Armario"]
+texture = ExtResource("5_p1ry8")
+
+[node name="Luminaria" type="StaticBody2D" parent="Environment"]
+position = Vector2(223, 24)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Luminaria"]
+position = Vector2(0, 30.5)
+shape = SubResource("RectangleShape2D_464tc")
+
+[node name="Sprite2D" type="Sprite2D" parent="Environment/Luminaria"]
+texture = ExtResource("6_qpk70")
+
+[node name="Prateleira" type="StaticBody2D" parent="Environment"]
+position = Vector2(312, 106)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Prateleira"]
+position = Vector2(2, -9)
+shape = SubResource("RectangleShape2D_dtg5i")
+
+[node name="Sprite2D" type="Sprite2D" parent="Environment/Prateleira"]
+position = Vector2(2, 5)
+texture = ExtResource("7_ll5lq")
+
+[node name="Armario2" type="StaticBody2D" parent="Environment"]
+position = Vector2(418, 128)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Armario2"]
+position = Vector2(0, -42.75)
+shape = SubResource("RectangleShape2D_25nce")
+
+[node name="Sprite2D" type="Sprite2D" parent="Environment/Armario2"]
+texture = ExtResource("5_p1ry8")
+
+[node name="Prateleira2" type="StaticBody2D" parent="Environment"]
+position = Vector2(245, 142)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Prateleira2"]
+position = Vector2(2, -9)
+shape = SubResource("RectangleShape2D_dtg5i")
+
+[node name="Sprite2D" type="Sprite2D" parent="Environment/Prateleira2"]
+position = Vector2(2, 5)
+texture = ExtResource("7_ll5lq")
+
+[node name="LeftWall" type="StaticBody2D" parent="Environment"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/LeftWall"]
+position = Vector2(-26, 89)
+shape = SubResource("RectangleShape2D_17rxn")
+
+[node name="RightWall" type="StaticBody2D" parent="Environment"]
+position = Vector2(667.5, 0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/RightWall"]
+position = Vector2(0, 89)
+shape = SubResource("RectangleShape2D_17rxn")
+
+[node name="Items" type="Node2D" parent="."]
+
+[node name="Bottle" parent="Items" instance=ExtResource("2_33cqm")]
+position = Vector2(142, 68)
+
+[node name="Caju" parent="." instance=ExtResource("1_5kiuu")]
+position = Vector2(18, 25)
+is_active = true
+
+[node name="Caju2" parent="." instance=ExtResource("1_5kiuu")]
+position = Vector2(583, 22)
+is_active = false

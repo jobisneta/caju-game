@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://c8m3k2v7w1xyq"]
+
+[ext_resource type="Script" path="res://src/entities/items/bottle/bottle.gd" id="1_btlsc"]
+[ext_resource type="Texture2D" uid="uid://djtey4uk53eux" path="res://assets/art/world/objects/bottle.png" id="2_btltx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gfli6"]
+size = Vector2(9, 16)
+
+[node name="Bottle" type="Area2D"]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_btlsc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_gfli6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_btltx")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
