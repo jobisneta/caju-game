@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://vd3yerq666sm"]
 
-[ext_resource type="Script" uid="uid://cnaq8gn6bplt3" path="res://scene/fase_base.gd" id="1_2giib"]
+[ext_resource type="Script" uid="uid://cnaq8gn6bplt3" path="res://src/levels/fase_base.gd" id="1_2giib"]
 [ext_resource type="Texture2D" uid="uid://m3h5v0eis75c" path="res://assets/art/world/home/background.png" id="2_sestj"]
 [ext_resource type="Script" uid="uid://ccbgvga82euoq" path="res://src/entities/items/bottle/bottle.gd" id="3_cxjtk"]
 [ext_resource type="Texture2D" uid="uid://djtey4uk53eux" path="res://assets/art/world/objects/bottle.png" id="4_og3t4"]
