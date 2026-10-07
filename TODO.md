@@ -1,20 +1,5 @@
-	Joana
-	animação coruja
+# TODO - Caju Game
 
-	animação do cachorro
-	cortina (animada)
-
-	
-	Mateus
-	arrumar subir a escada
-	bug pulo (v)
-	tutorial
-	quando subir a escada nova fase começa
-	implementação da cortina
-	vidros rolando ate ele, quebram e somem
-	fundo do quintal
-	desenhar o cortador de grama
-	
-	Geral
-	cortador de grama em loop
-	
+- [x] Pop-Up com tutorial para movimentação básica (WASD/setas) e ícone '?' para reabrir
+- [x] Corrigir mecânica de subir escada (evitar que personagens se movam juntos)
+- [x] Transição para nova fase quando ambos os personagens tocam a borda superior ao subir a escada

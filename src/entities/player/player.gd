@@ -77,20 +77,19 @@ func _physics_process(delta: float) -> void:
 	
 	# --- LÓGICA DE ESCADA VS GRAVIDADE ---
 	if na_escada:
-		# Lê diretamente as teclas físicas para garantir que funciona agora
-		var move_dir: float = 0.0
-		if Input.is_key_pressed(KEY_W) or Input.is_action_pressed("ui_up") or Input.is_action_pressed("up"):
-			move_dir -= 1.0
-		if Input.is_key_pressed(KEY_S) or Input.is_action_pressed("ui_down") or Input.is_action_pressed("down"):
-			move_dir += 1.0
-			
-		velocity.y = move_dir * VELOCIDADE_ESCALADA
-		
-		if anim:
-			if move_dir != 0.0:
-				anim.play("caju_climb")
-			else:
-				anim.pause()
+		if is_active:
+			# Somente o personagem ativo pode subir/descer a escada
+			# Suporta perfeitamente WASD (W/S) e setas direcionais (Cima/Baixo)
+			var move_dir: float = 0.0
+			if Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP) or Input.is_action_pressed("jump") or Input.is_action_pressed("ui_up"):
+				move_dir -= 1.0
+			if Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN) or Input.is_action_pressed("ui_down"):
+				move_dir += 1.0
+			velocity.y = move_dir * VELOCIDADE_ESCALADA
+		else:
+			# Personagem inativo fica parado na escada (sem gravidade, sem movimento)
+			velocity.y = 0.0
+			velocity.x = 0.0
 	else:
 		var gravity: float = jump_gravity if velocity.y < 0.0 else fall_gravity
 		if not is_on_floor():
@@ -159,7 +158,13 @@ func _update_animation() -> void:
 	
 	# --- PRIORIDADE MÁXIMA: Escada ---
 	if na_escada:
-		anim.play("climb")
+		if abs(velocity.y) > 1.0:
+			anim.play("climb")
+		else:
+			# Parado na escada: mostra frame da animação climb sem animar
+			if anim.animation != "climb":
+				anim.play("climb")
+			anim.pause()
 		return # Interrompe aqui para não rodar mais nada!
 	
 	# --- Restantes animações (Chão / Pulo) ---
