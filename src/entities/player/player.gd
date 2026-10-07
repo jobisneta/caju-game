@@ -143,18 +143,7 @@ func _update_animation() -> void:
 		else:
 			anim.play("idle")
 	else:
-		if velocity.y < 0.0:
-			# Play full jump animation on ascent
-			if anim.sprite_frames and anim.sprite_frames.has_animation("jump"):
-				anim.play("jump")
-			elif anim.sprite_frames and anim.sprite_frames.has_animation("jump_1"):
-				anim.play("jump_1")
-		else:
-			# Falling frame on descent
-			if anim.sprite_frames and anim.sprite_frames.has_animation("jump_1"):
-				anim.play("jump_1")
-			elif anim.sprite_frames and anim.sprite_frames.has_animation("jump"):
-				anim.play("jump")
+			anim.play("jump_1")
 
 func make_active() -> void:
 	is_active = true
