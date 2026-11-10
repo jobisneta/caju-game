@@ -107,7 +107,7 @@ scale = Vector2(1.1125001, 1.1125001)
 texture = ExtResource("3_wbjs8")
 
 [node name="telhado_tipo1" type="Sprite2D" parent="." unique_id=56811431]
-position = Vector2(152, 150)
+position = Vector2(152, 152)
 texture = ExtResource("4_6l4g0")
 region_enabled = true
 region_rect = Rect2(0, 0, 320, 60)
@@ -127,7 +127,7 @@ shape = SubResource("RectangleShape2D_dtg5i")
 shape = SubResource("SegmentShape2D_dtg5i")
 
 [node name="telhado_tipo2" type="Sprite2D" parent="." unique_id=1612343023]
-position = Vector2(565, 150)
+position = Vector2(555, 152)
 texture = ExtResource("4_6l4g0")
 region_enabled = true
 region_rect = Rect2(0, 60, 320, 60)
@@ -157,7 +157,7 @@ region_rect = Rect2(0, 120, 320, 60)
 show_behind_parent = true
 
 [node name="esquerda" type="CollisionShape2D" parent="telhado_tipo3/StaticBody2D" unique_id=834207942]
-position = Vector2(-120, 3)
+position = Vector2(-120, 5)
 shape = SubResource("SegmentShape2D_coyv1")
 
 [node name="cima" type="CollisionShape2D" parent="telhado_tipo3/StaticBody2D" unique_id=1852104058]
