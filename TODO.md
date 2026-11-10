@@ -14,3 +14,6 @@
 - [x] O jogador nao deve poder passar de fase sem ter coletado todos os itens.
 - [x] Criar um botao de interaçao para o Caju, tecla "E". Para o caju interagir com itens que pode derrubar.
 - [x] Na fase "res://src/levels/home/home_1.tscn", caju deve ser capaz de interagir a direita da "CaixaPos1". Isso deve derrubar a caixa para esquerda visualmente, porem quero que ela caia exatamente no lugar de "CaixaPos2".
+- [x] Verificar o implementaçao do personagem Tody na fase "res://src/levels/jardim/garden_1.tscn".
+- [x] Adicionar uma caixa como "res://assets/art/world/home/crate.png" na fase "res://src/levels/jardim/garden_1.tscn".
+- [x] Permitir que o Tody empurre a caixa ao se mover contra ela, apenas o Tody deve ser capaz de empurrar caixas.

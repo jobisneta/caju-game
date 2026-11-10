@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cme8yurk7n7ba" path="res://assets/art/characters/kiki/kiki_parada.png" id="2_parada"]
 [ext_resource type="Texture2D" uid="uid://dbx8h3ivklyxm" path="res://assets/art/characters/kiki/kiki_andando.png" id="3_andando"]
 [ext_resource type="Texture2D" uid="uid://k0flxnhl4b1n" path="res://assets/art/characters/kiki/kiki_voando.png" id="5_voando"]
+[ext_resource type="Texture2D" uid="uid://0ecxbjuenxv" path="res://assets/art/characters/kiki/kiki_pulando.png" id="6_pulando"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiki"]
 size = Vector2(15, 16)
@@ -78,7 +79,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("5_voando")
+"texture": ExtResource("6_pulando")
 }],
 "loop": 1,
 "name": &"jump",

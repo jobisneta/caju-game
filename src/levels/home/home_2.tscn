@@ -174,8 +174,6 @@ shape = SubResource("RectangleShape2D_17rxn")
 [node name="Bottle" parent="Items" unique_id=2115471042 instance=ExtResource("2_33cqm")]
 position = Vector2(418, 68)
 
-[node name="Bottles" type="Node2D" parent="." unique_id=1762679347]
-
 [node name="escada" type="Area2D" parent="." unique_id=1048669535]
 position = Vector2(931, 87.00001)
 rotation = 0.0041891816

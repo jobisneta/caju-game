@@ -55,45 +55,53 @@ tile_map_data = PackedByteArray("AAAJAAUAAAAAAAAAAAAdAAUAAAAAAAAAAAAxAAUAAAAAAAA
 tile_set = SubResource("TileSet_dtg5i")
 
 [node name="BackgroundTrees" type="Node2D" parent="." unique_id=1324319186]
+z_index = -1
 
 [node name="arvore_bg_7" type="Sprite2D" parent="BackgroundTrees" unique_id=1009402115]
 modulate = Color(0.65, 0.7, 0.85, 1)
+z_index = 1
 position = Vector2(1028, 122.999985)
 scale = Vector2(1.1125001, 1.1125001)
 texture = ExtResource("3_wbjs8")
 
 [node name="arvore_bg_6" type="Sprite2D" parent="BackgroundTrees" unique_id=707888759]
 modulate = Color(0.65, 0.7, 0.85, 1)
+z_index = 1
 position = Vector2(875.0001, 143)
 scale = Vector2(1.1125001, 1.1125001)
 texture = ExtResource("3_wbjs8")
 
 [node name="arvore_bg_5" type="Sprite2D" parent="BackgroundTrees" unique_id=641743324]
 modulate = Color(0.65, 0.7, 0.85, 1)
+z_index = 1
 position = Vector2(696.00006, 124)
 scale = Vector2(1.1125001, 1.1125001)
 texture = ExtResource("3_wbjs8")
 
 [node name="arvore_bg_4" type="Sprite2D" parent="BackgroundTrees" unique_id=1242170745]
 modulate = Color(0.65, 0.7, 0.85, 1)
+z_index = 1
 position = Vector2(543.00006, 133)
 scale = Vector2(1.1125001, 1.1125001)
 texture = ExtResource("3_wbjs8")
 
 [node name="arvore_bg_3" type="Sprite2D" parent="BackgroundTrees" unique_id=54940248]
 modulate = Color(0.65, 0.7, 0.85, 1)
+z_index = 1
 position = Vector2(437.00003, 120)
 scale = Vector2(1.1125001, 1.1125001)
 texture = ExtResource("3_wbjs8")
 
 [node name="arvore_bg_2" type="Sprite2D" parent="BackgroundTrees" unique_id=657408181]
 modulate = Color(0.65, 0.7, 0.85, 1)
+z_index = 1
 position = Vector2(251.00003, 140)
 scale = Vector2(1.1125001, 1.1125001)
 texture = ExtResource("3_wbjs8")
 
 [node name="arvore_bg_1" type="Sprite2D" parent="BackgroundTrees" unique_id=1990075305]
 modulate = Color(0.65, 0.7, 0.85, 1)
+z_index = 1
 position = Vector2(85.00001, 126)
 scale = Vector2(1.1125001, 1.1125001)
 texture = ExtResource("3_wbjs8")

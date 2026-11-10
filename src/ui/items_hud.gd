@@ -112,10 +112,14 @@ func flash_warning() -> void:
 	_is_flashing = true
 	var alert_color = Color(0.85, 0.15, 0.15)
 	var default_color = Color(0.12, 0.10, 0.08)
+	var transparent_color = Color(1, 1, 1, 0)
+
 	
 	var tween = create_tween()
 	tween.tween_property(label_prompt, "theme_override_colors/font_color", alert_color, 0.15)
 	tween.parallel().tween_property(label_count, "theme_override_colors/font_color", alert_color, 0.15)
+	tween.parallel().tween_property(item_icon, "modulate", alert_color, 0.15)
 	tween.tween_property(label_prompt, "theme_override_colors/font_color", default_color, 0.25)
 	tween.parallel().tween_property(label_count, "theme_override_colors/font_color", default_color, 0.25)
+	tween.parallel().tween_property(item_icon, "modulate", Color.WHITE, 0.25)
 	tween.finished.connect(func(): _is_flashing = false)

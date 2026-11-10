@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://ch6ia7vtm8i03" path="res://assets/art/characters/tody/tody_idle.png" id="2_d4wbx"]
 [ext_resource type="Texture2D" uid="uid://sspwnbo1q5im" path="res://assets/art/characters/tody/tody_pulando.png" id="3_d4wbx"]
 [ext_resource type="Texture2D" uid="uid://v2han5yvfdj3" path="res://assets/art/characters/tody/tody_andando.png" id="4_d4wbx"]
+[ext_resource type="Texture2D" uid="uid://b6md6vtvgrrig" path="res://assets/art/ui/personagem_tody.png" id="5_tody_portr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dtg5i"]
 size = Vector2(32, 39)
@@ -87,11 +88,24 @@ animations = [{
 "loop": 1,
 "name": &"walk",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d4wbx")
+}],
+"loop": 1,
+"name": &"climb",
+"speed": 5.0
 }]
 
-[node name="Caju" type="CharacterBody2D" unique_id=189020559 groups=["player"]]
+[node name="Tody" type="CharacterBody2D" unique_id=189020559 groups=["player"]]
 collision_layer = 2
 script = ExtResource("1_dadhg")
+character_id = "tody"
+character_name = "Tody"
+portrait_texture = ExtResource("5_tody_portr")
+can_push_crates = true
+push_speed = 60.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1913726606]
 visible = false
@@ -102,6 +116,7 @@ shape = SubResource("RectangleShape2D_dtg5i")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1001546926]
 sprite_frames = SubResource("SpriteFrames_gfli6")
 animation = &"idle"
+autoplay = "idle"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=405211235]
 process_callback = 0

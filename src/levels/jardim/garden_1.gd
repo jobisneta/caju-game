@@ -3,7 +3,7 @@ extends Node2D
 ## Legacy / Root game controller.
 ## Routes input to GameManager and supports fallback switching.
 
-const TutorialPopupClass = preload("res://src/ui/tutorial_popup_2.gd")
+const TutorialPopupClass = preload("res://src/ui/tutorial_popup.gd")
 const PlayerHUDClass = preload("res://src/ui/player_hud.gd")
 
 @export var caju: CharacterBody2D
@@ -25,7 +25,8 @@ func _ready() -> void:
 	else:
 		print("ERRO: Tody não foi encontrada!")
 
-	# Define o Caju como ativo
+	# Define o Caju como ativo inicial
+	current_player = caju
 	if caju and caju.has_method("make_active"):
 		caju.make_active()
 	else:
@@ -41,9 +42,10 @@ func _ready() -> void:
 	_setup_player_hud()
 
 func _setup_tutorial_popup() -> void:
-	var popup = TutorialPopupClass.new()
-	popup.name = "TutorialPopup"
-	add_child(popup)
+	if not has_node("TutorialPopup"):
+		var popup = TutorialPopupClass.new()
+		popup.name = "TutorialPopup"
+		add_child(popup)
 
 func _setup_player_hud() -> void:
 	if not has_node("PlayerHUD"):
@@ -69,11 +71,3 @@ func switch_character() -> void:
 			tody.make_inactive()
 			caju.make_active()
 			current_player = caju
-
-func _on_escada_body_entered(body: Node2D) -> void:
-	if "na_escada" in body:
-		body.na_escada = true
-
-func _on_escada_body_exited(body: Node2D) -> void:
-	if "na_escada" in body:
-		body.na_escada = false

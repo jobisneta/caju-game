@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dccu1j661k6gb" path="res://assets/art/characters/caju/caju_jump.png" id="4_wdttw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dtg5i"]
-size = Vector2(24, 20)
+size = Vector2(22, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nn3xb"]
 atlas = ExtResource("2_j7u74")
@@ -103,9 +103,8 @@ collision_layer = 2
 script = ExtResource("1_7gxvo")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1913726606]
-visible = false
 show_behind_parent = true
-position = Vector2(0, 6)
+position = Vector2(-1, 6)
 shape = SubResource("RectangleShape2D_dtg5i")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1001546926]

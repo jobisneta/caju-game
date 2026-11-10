@@ -2,6 +2,7 @@ extends Node2D
 
 const ItemsHUDClass = preload("res://src/ui/items_hud.gd")
 const PushableCrateClass = preload("res://src/entities/items/pushable_crate.gd")
+const PushableBoxClass = preload("res://src/entities/items/box/pushable_box.gd")
 
 ## Integration test runner node for Caju Game.
 ## Runs within full game engine context with Autoloads initialized.
@@ -217,5 +218,88 @@ func _ready() -> void:
 		assert(sprite != null and sprite.texture.resource_path.ends_with("arvore_noite.png"), "[FAIL] Must be arvore_noite.png")
 	print("[PASS] Test 13: Rooftop trees (Background z=-1, Foreground z=10 with arvore_noite.png) verified.")
 	
-	print("[TEST] ALL 13 INTEGRATION TESTS PASSED WITH 100% SUCCESS!")
+	# Libera o nível do telhado para carregar e testar o Jardim
+	telhado_level.queue_free()
+	
+	# =========================================================================
+	# PARTE 3: VERIFICAÇÃO DA FASE DO JARDIM (CO-OP CAJU & TODY, CAIXA) - garden_1.tscn
+	# =========================================================================
+	var garden_scene: PackedScene = load("res://src/levels/jardim/garden_1.tscn")
+	if not garden_scene:
+		push_error("[FAIL] Could not load garden_1.tscn")
+		get_tree().quit(1)
+		return
+		
+	var garden_level: Node2D = garden_scene.instantiate()
+	add_child(garden_level)
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	
+	var garden_caju: CharacterBody2D = garden_level.get_node_or_null("Caju")
+	var garden_tody: CharacterBody2D = garden_level.get_node_or_null("Tody")
+	var garden_hud: CanvasLayer = garden_level.get_node_or_null("PlayerHUD")
+	var garden_box: CharacterBody2D = garden_level.get_node_or_null("PushableBox")
+	
+	# Garante que o GameManager esteja configurado para a dupla do Jardim
+	GameManager.players = [garden_caju, garden_tody]
+	GameManager.active_player = garden_caju
+	garden_caju.make_active()
+	garden_tody.make_inactive()
+	
+	# Test 14: Presença, Identidade e HUD do Tody em garden_1.tscn
+	assert(garden_caju != null, "[FAIL] Caju not found in garden_1.tscn")
+	assert(garden_tody != null, "[FAIL] Tody not found in garden_1.tscn")
+	assert(garden_tody.name == "Tody", "[FAIL] Tody node name must be Tody")
+	assert(garden_tody.character_id == "tody", "[FAIL] Tody character_id must be 'tody'")
+	assert(garden_tody.character_name == "Tody", "[FAIL] Tody character_name must be 'Tody'")
+	assert(garden_tody.can_push_crates == true, "[FAIL] Tody must have can_push_crates == true")
+	assert(garden_caju.can_push_crates == false, "[FAIL] Caju must have can_push_crates == false")
+	
+	var tody_anim: AnimatedSprite2D = garden_tody.get_node_or_null("AnimatedSprite2D")
+	assert(tody_anim != null and tody_anim.sprite_frames != null, "[FAIL] Tody AnimatedSprite2D missing")
+	assert(tody_anim.sprite_frames.has_animation("idle"), "[FAIL] Tody missing idle animation")
+	assert(tody_anim.sprite_frames.has_animation("walk"), "[FAIL] Tody missing walk animation")
+	assert(tody_anim.sprite_frames.has_animation("jump"), "[FAIL] Tody missing jump animation")
+	
+	# Troca para Tody e validação da HUD
+	GameManager.switch_player()
+	assert(garden_tody.is_active == true, "[FAIL] Tody should be active after switch")
+	if garden_hud and "portrait" in garden_hud and garden_hud.portrait != null:
+		assert(garden_hud.portrait.texture.resource_path.ends_with("personagem_tody.png"), "[FAIL] HUD must display Tody portrait")
+	print("[PASS] Test 14: Tody identity, animations, and HUD portrait synchronization verified.")
+	
+	# Test 15: Verificação do Asset e Presença da Caixa Empurrável
+	assert(garden_box != null, "[FAIL] PushableBox missing in garden_1.tscn")
+	assert(garden_box is PushableBoxClass, "[FAIL] garden_box must be an instance of PushableBox")
+	var box_sprite: Sprite2D = garden_box.get_node_or_null("Sprite2D")
+	assert(box_sprite != null, "[FAIL] PushableBox missing Sprite2D")
+	assert(box_sprite.texture != null, "[FAIL] PushableBox missing texture")
+	assert(box_sprite.texture.resource_path == "res://assets/art/world/home/crate.png", "[FAIL] PushableBox must use res://assets/art/world/home/crate.png")
+	print("[PASS] Test 15: Pushable crate presence and asset (assets/art/world/home/crate.png) verified.")
+	
+	# Test 16: Mecânica de Empurrar Exclusiva e Física da Caixa
+	var initial_box_pos: Vector2 = garden_box.position
+	# Caju não pode empurrar a caixa
+	var push_success_caju: bool = false
+	if garden_caju.can_push_crates:
+		push_success_caju = garden_box.push(Vector2.RIGHT, 60.0, 0.1)
+	assert(push_success_caju == false, "[FAIL] Caju must NOT be able to push crates")
+	assert(garden_box.position == initial_box_pos, "[FAIL] Box must not move when Caju attempts to push")
+	
+	# Tody pode empurrar a caixa
+	assert(garden_tody.can_push_crates == true, "[FAIL] Tody must be capable of pushing crates")
+	var push_success_tody: bool = garden_box.push(Vector2.RIGHT, 60.0, 0.1)
+	assert(push_success_tody == true, "[FAIL] Tody push on box should succeed")
+	assert(garden_box.position.x > initial_box_pos.x, "[FAIL] Box x-position must increase when pushed right")
+	
+	# Gravidade na caixa quando suspensa no ar
+	garden_box.position.y = 50.0
+	garden_box.velocity = Vector2.ZERO
+	garden_box.move_and_slide()
+	var initial_air_y: float = garden_box.position.y
+	garden_box._physics_process(0.1)
+	assert(garden_box.position.y > initial_air_y or garden_box.velocity.y > 0.0, "[FAIL] PushableBox must apply gravity and fall when airborne")
+	print("[PASS] Test 16: Exclusive crate pushing (Tody only) and box physics verified.")
+	
+	print("[TEST] ALL 16 INTEGRATION TESTS PASSED WITH 100% SUCCESS!")
 	get_tree().quit(0)

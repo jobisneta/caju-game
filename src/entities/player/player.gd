@@ -20,6 +20,10 @@ signal interacted(target: Node2D)
 @export var glide_max_fall_speed: float = 35.0
 @export var glide_gravity_scale: float = 0.15
 
+@export_group("Push Mechanics")
+@export var can_push_crates: bool = false
+@export var push_speed: float = 60.0
+
 @export_group("Health")
 @export var max_health: int = 3
 @export var current_health: int = 3
@@ -129,6 +133,7 @@ func _physics_process(delta: float) -> void:
 	_was_on_floor = is_on_floor()
 	
 	move_and_slide()
+	_handle_push_crates(delta)
 	_update_animation()
 
 func _process_active_input(delta: float) -> void:
@@ -155,9 +160,8 @@ func _process_active_input(delta: float) -> void:
 		velocity.y *= 0.5
 
 	# Interaction with items / objects (Key 'E')
-	if (Input.is_action_just_pressed("interact")):
-		if Input.is_action_just_pressed("interact"):
-			interact_with_nearby()
+	if Input.is_action_just_pressed("interact"):
+		interact_with_nearby()
 
 func interact_with_nearby() -> bool:
 	if not is_inside_tree():
@@ -293,3 +297,22 @@ func set_health(val: int) -> void:
 func _exit_tree() -> void:
 	if has_node("/root/GameManager"):
 		get_node("/root/GameManager").unregister_player(self)
+
+func _handle_push_crates(delta: float) -> void:
+	if not is_active or not can_push_crates:
+		return
+	
+	var input_dir: float = _get_horizontal_input()
+	if input_dir == 0.0:
+		return
+		
+	for i in range(get_slide_collision_count()):
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		if collider and collider.has_method("push"):
+			var normal = collision.get_normal()
+			# Colisão horizontal na direção oposta à normal (ou seja, jogador indo contra a caixa)
+			if abs(normal.x) > 0.6 and sign(-normal.x) == sign(input_dir):
+				var pushed = collider.push(Vector2(input_dir, 0.0), push_speed, delta)
+				if pushed:
+					velocity.x = input_dir * push_speed

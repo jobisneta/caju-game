@@ -6,8 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://cx0udgr8km5cl" path="res://assets/art/world/jardim/arvore_dia.png" id="3_uojfd"]
 [ext_resource type="PackedScene" uid="uid://cbsapmr426cao" path="res://src/entities/player/tody.tscn" id="4_67724"]
 [ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://src/entities/player/caju.tscn" id="5_xg2l2"]
-[ext_resource type="PackedScene" uid="uid://bwlyq7dkge3ja" path="res://src/ui/player_hud.tscn" id="7_6pexq"]
+[ext_resource type="PackedScene" path="res://src/ui/player_hud.tscn" id="7_6pexq"]
 [ext_resource type="Texture2D" uid="uid://dpfpr4jlxaok7" path="res://assets/art/world/jardim/grama.png" id="8_uojfd"]
+[ext_resource type="PackedScene" path="res://src/entities/items/box/pushable_box.tscn" id="9_box"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_uojfd"]
 texture = ExtResource("2_ms7bx")
@@ -346,6 +347,9 @@ position = Vector2(162, 108)
 
 [node name="Caju" parent="." unique_id=390158007 instance=ExtResource("5_xg2l2")]
 position = Vector2(112, 119)
+
+[node name="PushableBox" parent="." unique_id=748291045 instance=ExtResource("9_box")]
+position = Vector2(260, 120)
 
 [node name="limite_esquerdo" type="StaticBody2D" parent="." unique_id=49162973]
 position = Vector2(-10, 86)

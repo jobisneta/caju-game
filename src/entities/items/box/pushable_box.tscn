@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://boxcratep1001"]
+
+[ext_resource type="Script" path="res://src/entities/items/box/pushable_box.gd" id="1_boxgd"]
+[ext_resource type="Texture2D" uid="uid://b37gyjxiyb5ii" path="res://assets/art/world/home/crate.png" id="2_cratetex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_box"]
+size = Vector2(30, 30)
+
+[node name="PushableBox" type="CharacterBody2D" groups=["pushable"]]
+collision_layer = 513
+collision_mask = 1
+script = ExtResource("1_boxgd")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_cratetex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_box")

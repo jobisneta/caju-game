@@ -106,35 +106,21 @@ func set_character_portrait(texture: Texture2D) -> void:
 	if portrait and texture:
 		portrait.texture = texture
 
-var _kiki_portrait: AtlasTexture = null
-
-func _get_kiki_portrait() -> AtlasTexture:
-	if _kiki_portrait == null:
-		_kiki_portrait = AtlasTexture.new()
-		_kiki_portrait.atlas = preload("res://assets/art/characters/kiki/kiki_parada.png")
-		_kiki_portrait.region = Rect2(4, 4, 24, 24)
-	return _kiki_portrait
-
-var _tody_portrait: AtlasTexture = null
-func _get_tody_portrait() -> AtlasTexture:
-	if _tody_portrait == null:
-		_tody_portrait = AtlasTexture.new()
-		_tody_portrait.atlas = preload("res://assets/art/characters/tody/tody_parado.png")
-		_tody_portrait.region = Rect2(4, 4, 24, 24)
-	return _tody_portrait
-
 func update_for_player(player: CharacterBody2D) -> void:
 	if not player:
 		return
 	if "current_health" in player:
 		set_health(player.current_health)
 	
-	if player.character_id == "caju":
-		set_character_portrait(TEXTURE_PORTRAIT_CAJU)
-	elif player.character_id == "kiki":
-		set_character_portrait(TEXTURE_PORTRAIT_KIKI)
-	elif player.character_id == "tody":
-		set_character_portrait(TEXTURE_PORTRAIT_TODY)
+	if "portrait_texture" in player and player.portrait_texture != null:
+		set_character_portrait(player.portrait_texture)
+	elif "character_id" in player:
+		if player.character_id == "caju":
+			set_character_portrait(TEXTURE_PORTRAIT_CAJU)
+		elif player.character_id == "kiki":
+			set_character_portrait(TEXTURE_PORTRAIT_KIKI)
+		elif player.character_id == "tody":
+			set_character_portrait(TEXTURE_PORTRAIT_TODY)
 
 func _update_hearts_display() -> void:
 	for i in range(heart_icons.size()):
