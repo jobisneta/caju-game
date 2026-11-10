@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://p1tlfcmqdtfg"]
+
+[ext_resource type="Script" uid="uid://bq0fnrf30lta2" path="res://src/ui/tela_inicial.gd" id="1_5l16s"]
+[ext_resource type="Texture2D" uid="uid://pge2d5s5j6lf" path="res://assets/art/ui/fundo.png" id="1_tg440"]
+[ext_resource type="Texture2D" uid="uid://chxne55pu5djo" path="res://assets/art/ui/logo.png" id="2_5l16s"]
+[ext_resource type="Texture2D" uid="uid://bqv7ss2fesp3b" path="res://assets/art/ui/botao_jogar.png" id="3_5qomr"]
+[ext_resource type="Texture2D" uid="uid://hb3k24h1sg0j" path="res://assets/art/ui/pressed_jogar.png" id="4_4y85x"]
+
+[node name="tela_inicial" type="Control" unique_id=777659891]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5l16s")
+
+[node name="Fundo" type="TextureRect" parent="." unique_id=148491366]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_tg440")
+
+[node name="Logo" type="TextureRect" parent="." unique_id=514668820]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -56.0
+offset_right = 80.0
+offset_bottom = 26.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_5l16s")
+
+[node name="botao_jogar" type="TextureButton" parent="." unique_id=1528276036]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -44.0
+offset_top = 34.0
+offset_right = 44.0
+offset_bottom = 74.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("3_5qomr")
+texture_pressed = ExtResource("4_4y85x")
+texture_hover = ExtResource("4_4y85x")
+
+[connection signal="pressed" from="botao_jogar" to="." method="_on_botao_jogar_pressed"]

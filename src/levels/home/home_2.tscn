@@ -177,7 +177,8 @@ position = Vector2(418, 68)
 [node name="Bottles" type="Node2D" parent="." unique_id=1762679347]
 
 [node name="escada" type="Area2D" parent="." unique_id=1048669535]
-position = Vector2(339, 83)
+position = Vector2(931, 87.00001)
+rotation = 0.0041891816
 collision_mask = 4294967295
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="escada" unique_id=2142778749]
@@ -189,7 +190,7 @@ position = Vector2(-314, 3)
 texture = ExtResource("9_0bqwe")
 
 [node name="Caju" parent="." unique_id=189020559 instance=ExtResource("11_uncqa")]
-position = Vector2(339, 83)
+position = Vector2(16, 19)
 
 [connection signal="body_entered" from="escada" to="." method="_on_escada_body_entered"]
 [connection signal="body_exited" from="escada" to="." method="_on_escada_body_exited"]

@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://buadouml14voj"]
+
+[ext_resource type="Script" uid="uid://bad30v17lo4s1" path="res://src/entities/items/galho/galho_ponte.gd" id="1_ye55l"]
+[ext_resource type="Texture2D" uid="uid://cf2vqvnxefi8j" path="res://assets/art/characters/mae_kiki/galho.png" id="2_56s6g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_coyv1"]
+size = Vector2(3.5, 3.125)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dtg5i"]
+size = Vector2(108, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gfli6"]
+size = Vector2(4.5, 3)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_dtg5i"]
+a = Vector2(-1, -2)
+b = Vector2(3, -2)
+
+[node name="GalhoPonte" type="CharacterBody2D" unique_id=1375605608]
+collision_layer = 0
+script = ExtResource("1_ye55l")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1014338703]
+texture = ExtResource("2_56s6g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1604529581]
+position = Vector2(-58, -1)
+shape = SubResource("RectangleShape2D_coyv1")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="." unique_id=1327575911]
+position = Vector2(-2, 1)
+shape = SubResource("RectangleShape2D_dtg5i")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="." unique_id=1269795151]
+position = Vector2(54, 0)
+shape = SubResource("RectangleShape2D_gfli6")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="." unique_id=562639262]
+position = Vector2(56, 1)
+shape = SubResource("SegmentShape2D_dtg5i")
+
+[node name="RayEsq" type="RayCast2D" parent="." unique_id=1974825681]
+position = Vector2(-54, 3)
+target_position = Vector2(0, 5)
+
+[node name="RayDir" type="RayCast2D" parent="." unique_id=1827282691]
+position = Vector2(51, 3)
+target_position = Vector2(0, 5)

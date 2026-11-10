@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://cnuglxy4qjde7"]
+
+[ext_resource type="Texture2D" uid="uid://pge2d5s5j6lf" path="res://assets/art/ui/fundo.png" id="1_6tix7"]
+[ext_resource type="Script" uid="uid://g4mwbt0rx7i7" path="res://src/ui/menu_principal.gd" id="1_myshi"]
+[ext_resource type="Texture2D" uid="uid://be8ir6wkk8sru" path="res://assets/art/ui/botao_novo.png" id="2_myshi"]
+[ext_resource type="Texture2D" uid="uid://gu04ejr6o20u" path="res://assets/art/ui/pressed_novo.png" id="3_bi5rm"]
+[ext_resource type="Texture2D" uid="uid://d36t2ja43rttg" path="res://assets/art/ui/botao_continuar.png" id="4_jqp5b"]
+[ext_resource type="Texture2D" uid="uid://bm8eq5qce0jqy" path="res://assets/art/ui/pressed_continuar.png" id="5_tblhy"]
+[ext_resource type="Texture2D" uid="uid://ci26v28mxcmk3" path="res://assets/art/ui/botao_opcoes.png" id="6_eoxi5"]
+[ext_resource type="Texture2D" uid="uid://ogi808wmbtsl" path="res://assets/art/ui/pressed_opcoes.png" id="7_kdtk0"]
+
+[node name="MenuPrincipal" type="Control" unique_id=1325345264]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_myshi")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1696330701]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_6tix7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=792832125]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+
+[node name="botao_novo" type="TextureButton" parent="VBoxContainer" unique_id=1518056191]
+layout_mode = 2
+texture_normal = ExtResource("2_myshi")
+texture_pressed = ExtResource("3_bi5rm")
+texture_hover = ExtResource("3_bi5rm")
+
+[node name="botao_continuar" type="TextureButton" parent="VBoxContainer" unique_id=328560182]
+layout_mode = 2
+texture_normal = ExtResource("4_jqp5b")
+texture_pressed = ExtResource("5_tblhy")
+texture_hover = ExtResource("5_tblhy")
+
+[node name="botao_opcoes" type="TextureButton" parent="VBoxContainer" unique_id=10886549]
+layout_mode = 2
+texture_normal = ExtResource("6_eoxi5")
+texture_pressed = ExtResource("7_kdtk0")
+texture_hover = ExtResource("7_kdtk0")
+
+[connection signal="pressed" from="VBoxContainer/botao_novo" to="." method="_on_botao_novo_pressed"]

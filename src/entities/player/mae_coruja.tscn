@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://b5jlh0hxrwnp6"]
+
+[ext_resource type="Script" uid="uid://bjd8vkcwvv6v5" path="res://src/entities/player/mae_coruja.gd" id="1_7cby7"]
+[ext_resource type="Texture2D" uid="uid://bpsmdpcefvegy" path="res://assets/art/characters/mae_kiki/mae_kiki_voando.png" id="2_hy2qm"]
+[ext_resource type="PackedScene" uid="uid://buadouml14voj" path="res://src/entities/items/galho/galho_ponte.tscn" id="2_wbiir"]
+[ext_resource type="Texture2D" uid="uid://2up2ld2ab5aa" path="res://assets/art/characters/mae_kiki/mae_kiki_galho.png" id="3_wbiir"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dtg5i"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_hy2qm")
+}],
+"loop": 1,
+"name": &"voando",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_wbiir")
+}],
+"loop": 1,
+"name": &"voando_galho",
+"speed": 5.0
+}]
+
+[node name="MaeCoruja" type="Node2D" unique_id=1220439768]
+script = ExtResource("1_7cby7")
+cena_galho = ExtResource("2_wbiir")
+
+[node name="animacoes" type="AnimatedSprite2D" parent="." unique_id=1576709762]
+sprite_frames = SubResource("SpriteFrames_dtg5i")
+animation = &"voando_galho"
+autoplay = "voando_galho"
+frame_progress = 0.30848345
