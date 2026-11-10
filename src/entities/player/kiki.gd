@@ -1,38 +1,49 @@
-extends Player # Herda automaticamente tudo do seu player.gd!
+extends Player 
 
 @export_group("Habilidade da Mãe")
 @export var cena_mae_coruja: PackedScene
-var mae_instancia = null
-var estado_habilidade = 0 # 0: Mãe disponível, 1: Mãe voando, 2: Galho já caiu
+@export var chamadas_maximas: int = 3
 
-# Sobrescrevemos a função de input ativo do player.gd
+var chamadas_restantes: int = 3
+var mae_instancia = null
+var estado_habilidade = 0 # 0: Livre, 1: Mãe voando, 2: Galho solto (mãe indo embora)
+
+func _ready() -> void:
+	super._ready() 
+	chamadas_restantes = chamadas_maximas
+
 func _process_active_input(delta: float) -> void:
-	# 1. Roda todo o código original (andar, pular, planar, interagir)
 	super._process_active_input(delta)
 	
-	# 2. Adiciona a lógica exclusiva da Kiki
-	# DICA: Criei uma ação "chamar_mae" para não conflitar com o seu "interact" 
-	# (senão ela chamaria a mãe toda vez que fosse ler uma placa com 'E')
+	# Usa o nome exato da sua ação no Input Map ("click_p")
 	if Input.is_action_just_pressed("click_p"):
 		usar_habilidade_galho()
 
 func usar_habilidade_galho() -> void:
-	if estado_habilidade == 0:
-		print("Kiki: Fiu fiu! (Assobio)") 
+	# Se o galho já caiu e a mãe saiu da cena (queue_free), libera para a próxima chamada
+	if estado_habilidade == 2 and not is_instance_valid(mae_instancia):
+		estado_habilidade = 0
 		
-		if cena_mae_coruja:
-			mae_instancia = cena_mae_coruja.instantiate()
-			# Adiciona a mãe na cena principal (fase) para ela não seguir a câmera da Kiki
-			get_tree().current_scene.add_child(mae_instancia)
+	if estado_habilidade == 0:
+		if chamadas_restantes > 0:
+			print("Kiki: Fiu fiu! (Assobio)") 
 			
-			# Define a rota de voo (da esquerda para a direita, acima da Kiki)
-			var pos_inicio = global_position + Vector2(-300, -105)
-			var pos_fim = global_position + Vector2(300, -40)
-			
-			mae_instancia.iniciar_voo(pos_inicio, pos_fim)
-			estado_habilidade = 1
+			if cena_mae_coruja:
+				mae_instancia = cena_mae_coruja.instantiate()
+				get_tree().current_scene.add_child(mae_instancia)
+				
+				# Mantém a sua rota original ajustada
+				var pos_inicio = global_position + Vector2(-300, -105)
+				var pos_fim = global_position + Vector2(300, -40)
+				
+				mae_instancia.iniciar_voo(pos_inicio, pos_fim)
+				estado_habilidade = 1
+		else:
+			print("Kiki: A mãe tá cansada! (Sem chamadas restantes)")
 			
 	elif estado_habilidade == 1:
-		if mae_instancia != null and mae_instancia.has_method("soltar_galho"):
+		if is_instance_valid(mae_instancia) and mae_instancia.has_method("soltar_galho"):
 			mae_instancia.soltar_galho()
-			estado_habilidade = 2 # Evita spam de galhos
+			chamadas_restantes -= 1
+			print("Galho solto! Usos restantes: ", chamadas_restantes)
+			estado_habilidade = 2 # Aguarda a mãe sair da tela para reativar

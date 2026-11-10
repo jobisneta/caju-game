@@ -51,7 +51,7 @@ distance = -10.0
 script = ExtResource("1_m0388")
 
 [node name="ceu_fundo" type="TileMapLayer" parent="." unique_id=86739168]
-tile_map_data = PackedByteArray("AAAJAAUAAAAAAAAAAAAdAAUAAAAAAAAAAAAxAAUAAAAAAAAAAABFAAUAAAAAAAAAAAAJABAAAAAAAAAAAAAdABAAAAAAAAAAAAAwABAAAAAAAAAAAABDABAAAAAAAAAAAABFABAAAAAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAAJAAUAAAAAAAAAAAAdAAUAAAAAAAAAAAAxAAUAAAAAAAAAAABFAAUAAAAAAAAAAAAJABAAAAAAAAAAAAAdABAAAAAAAAAAAAAwABAAAAAAAAAAAABDABAAAAAAAAAAAABFABAAAAAAAAAAAABZAAUAAAAAAAAAAABZABAAAAAAAAAAAABtAAUAAAAAAAAAAABtABAAAAAAAAAAAACBAAUAAAAAAAAAAACBABAAAAAAAAAAAACVAAUAAAAAAAAAAACVABAAAAAAAAAAAACoAAUAAAAAAAAAAACoABAAAAAAAAAAAAC7AAUAAAAAAAAAAABYAPr/AAAAAAAAAABsAPr/AAAAAAAAAACAAPr/AAAAAAAAAACUAPr/AAAAAAAAAACnAPr/AAAAAAAAAAC7APr/AAAAAAAAAAC7ABAAAAAAAAAAAABEAPr/AAAAAAAAAAAwAPr/AAAAAAAAAAAJAPr/AAAAAAAAAAAdAPr/AAAAAAAAAAAJAO//AAAAAAAAAAAdAO//AAAAAAAAAAAxAO//AAAAAAAAAABFAO//AAAAAAAAAABZAO//AAAAAAAAAABtAO//AAAAAAAAAACBAO//AAAAAAAAAACVAO7/AAAAAAAAAACVAO//AAAAAAAAAACpAO//AAAAAAAAAAC7AO//AAAAAAAAAAA=")
 tile_set = SubResource("TileSet_dtg5i")
 
 [node name="BackgroundTrees" type="Node2D" parent="." unique_id=1324319186]
@@ -168,6 +168,26 @@ shape = SubResource("RectangleShape2D_gfli6")
 position = Vector2(135, 1)
 shape = SubResource("SegmentShape2D_6or6s")
 
+[node name="telhado2_tipo1" type="Sprite2D" parent="." unique_id=2097542161]
+position = Vector2(1359, 150)
+texture = ExtResource("4_6l4g0")
+region_enabled = true
+region_rect = Rect2(0, 0, 320, 60)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="telhado2_tipo1" unique_id=934343506]
+show_behind_parent = true
+
+[node name="esquerda" type="CollisionShape2D" parent="telhado2_tipo1/StaticBody2D" unique_id=2075264564]
+position = Vector2(-158, -7)
+shape = SubResource("SegmentShape2D_gfli6")
+
+[node name="cima" type="CollisionShape2D" parent="telhado2_tipo1/StaticBody2D" unique_id=1682133440]
+position = Vector2(-0.5, -27)
+shape = SubResource("RectangleShape2D_dtg5i")
+
+[node name="direita" type="CollisionShape2D" parent="telhado2_tipo1/StaticBody2D" unique_id=1209296905]
+shape = SubResource("SegmentShape2D_dtg5i")
+
 [node name="Caju" parent="." unique_id=189020559 instance=ExtResource("5_x6kwn")]
 position = Vector2(91, 51)
 
@@ -181,9 +201,10 @@ position = Vector2(-10, 86)
 shape = SubResource("WorldBoundaryShape2D_pi8jn")
 
 [node name="limite_direito" type="StaticBody2D" parent="." unique_id=1381996912]
-position = Vector2(1116, 88)
+position = Vector2(3178, 17)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="limite_direito" unique_id=890504192]
+position = Vector2(-25, -16)
 shape = SubResource("WorldBoundaryShape2D_cb6yw")
 
 [node name="limite_baixo" type="StaticBody2D" parent="." unique_id=532383273]

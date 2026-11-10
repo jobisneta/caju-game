@@ -15,13 +15,13 @@ func _ready() -> void:
 	# Localiza o personagem na cena
 	if has_node("Caju"):
 		caju = get_node("Caju")
-		caju.set_camera_limits(0, 1115, 0, 180)
+		caju.set_camera_limits(0, 3178, 0, 180)
 	else:
 		print("ERRO: Caju não foi encontrado!")
 	
 	if has_node("Kiki"):
 		kiki = get_node("Kiki")
-		kiki.set_camera_limits(0, 1115, 0, 180)
+		kiki.set_camera_limits(0, 3178, 0, 180)
 	else:
 		print("ERRO: Kiki não foi encontrada!")
 
