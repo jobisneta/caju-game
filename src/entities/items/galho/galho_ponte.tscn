@@ -41,8 +41,8 @@ shape = SubResource("SegmentShape2D_dtg5i")
 
 [node name="RayEsq" type="RayCast2D" parent="." unique_id=1974825681]
 position = Vector2(-54, 3)
-target_position = Vector2(0, 5)
+target_position = Vector2(0, 10)
 
 [node name="RayDir" type="RayCast2D" parent="." unique_id=1827282691]
 position = Vector2(51, 3)
-target_position = Vector2(0, 5)
+target_position = Vector2(0, 10)

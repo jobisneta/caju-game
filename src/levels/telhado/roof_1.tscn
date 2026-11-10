@@ -127,7 +127,7 @@ shape = SubResource("RectangleShape2D_dtg5i")
 shape = SubResource("SegmentShape2D_dtg5i")
 
 [node name="telhado_tipo2" type="Sprite2D" parent="." unique_id=1612343023]
-position = Vector2(534, 150)
+position = Vector2(565, 150)
 texture = ExtResource("4_6l4g0")
 region_enabled = true
 region_rect = Rect2(0, 60, 320, 60)
