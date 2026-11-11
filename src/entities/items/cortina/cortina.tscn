@@ -1,0 +1,199 @@
+[gd_scene format=3 uid="uid://yc42dfdv06n7"]
+
+[ext_resource type="Texture2D" uid="uid://chg5qtpkl6f88" path="res://assets/art/world/home/cortina_balancando.png" id="1_balancando"]
+[ext_resource type="Texture2D" uid="uid://cmbog0n8poo38" path="res://assets/art/world/home/cortina.png" id="2_cortina"]
+[ext_resource type="Script" uid="uid://wiln16l3ygo" path="res://src/entities/items/cortina/cortina.gd" id="3_script"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb00"]
+atlas = ExtResource("1_balancando")
+region = Rect2(0, 0, 50, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb01"]
+atlas = ExtResource("1_balancando")
+region = Rect2(50, 0, 50, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb02"]
+atlas = ExtResource("1_balancando")
+region = Rect2(100, 0, 50, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb03"]
+atlas = ExtResource("1_balancando")
+region = Rect2(150, 0, 50, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb04"]
+atlas = ExtResource("1_balancando")
+region = Rect2(200, 0, 50, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb05"]
+atlas = ExtResource("1_balancando")
+region = Rect2(250, 0, 50, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb06"]
+atlas = ExtResource("1_balancando")
+region = Rect2(0, 45, 50, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb07"]
+atlas = ExtResource("1_balancando")
+region = Rect2(50, 45, 50, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb08"]
+atlas = ExtResource("1_balancando")
+region = Rect2(100, 45, 50, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb09"]
+atlas = ExtResource("1_balancando")
+region = Rect2(150, 45, 50, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb10"]
+atlas = ExtResource("1_balancando")
+region = Rect2(200, 45, 50, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb11"]
+atlas = ExtResource("1_balancando")
+region = Rect2(250, 45, 50, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb12"]
+atlas = ExtResource("1_balancando")
+region = Rect2(0, 90, 50, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb13"]
+atlas = ExtResource("1_balancando")
+region = Rect2(50, 90, 50, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb14"]
+atlas = ExtResource("1_balancando")
+region = Rect2(100, 90, 50, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb15"]
+atlas = ExtResource("1_balancando")
+region = Rect2(150, 90, 50, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_def0"]
+atlas = ExtResource("2_cortina")
+region = Rect2(0, 0, 30, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_def1"]
+atlas = ExtResource("2_cortina")
+region = Rect2(30, 0, 30, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_def2"]
+atlas = ExtResource("2_cortina")
+region = Rect2(60, 0, 30, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_def3"]
+atlas = ExtResource("2_cortina")
+region = Rect2(90, 0, 30, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_def4"]
+atlas = ExtResource("2_cortina")
+region = Rect2(120, 0, 30, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_def5"]
+atlas = ExtResource("2_cortina")
+region = Rect2(150, 0, 30, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_def6"]
+atlas = ExtResource("2_cortina")
+region = Rect2(180, 0, 30, 45)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cortina"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb00")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb01")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb02")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb03")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb04")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb05")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb06")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb07")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb08")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb09")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb11")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb12")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb13")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb14")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb15")
+}],
+"loop": 1,
+"name": &"cortina_balancando",
+"speed": 11.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_def0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_def1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_def2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_def3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_def4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_def5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_def6")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 4.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_agarre"]
+size = Vector2(10, 26)
+
+[node name="Cortina" type="AnimatedSprite2D" unique_id=714352854 groups=["cortina"]]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_cortina")
+animation = &"cortina_balancando"
+autoplay = "default"
+script = ExtResource("3_script")
+
+[node name="PontoAncora" type="Marker2D" parent="." unique_id=690780060]
+position = Vector2(0, 9.5)
+
+[node name="AreaAgarre" type="Area2D" parent="PontoAncora" unique_id=1913206069]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PontoAncora/AreaAgarre" unique_id=598332358]
+shape = SubResource("RectangleShape2D_agarre")

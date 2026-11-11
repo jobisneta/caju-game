@@ -53,6 +53,9 @@ var na_cortina: bool = false
 var cortina_atual: Node2D = null
 var ancora_atual: Marker2D = null
 
+var is_invulnerable: bool = false
+var last_safe_position: Vector2 = Vector2.ZERO
+
 # Internal kinematics
 var jump_velocity: float
 var jump_gravity: float
@@ -70,10 +73,13 @@ var _was_on_floor: bool = false
 func _ready() -> void:
 	add_to_group("player")
 	_calculate_kinematics()
+	last_safe_position = global_position
 	
-	# Register with GameManager if present
+	# Register with GameManager if present and sync shared health
 	if has_node("/root/GameManager"):
-		get_node("/root/GameManager").register_player(self)
+		var gm = get_node("/root/GameManager")
+		gm.register_player(self)
+		current_health = gm.shared_health
 	
 	if is_active:
 		make_active()
@@ -86,6 +92,10 @@ func _calculate_kinematics() -> void:
 	fall_gravity = (2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent)
 
 func _physics_process(delta: float) -> void:
+	# Track safe ground position for fall respawns
+	if is_on_floor() and not na_escada and not na_cortina:
+		last_safe_position = global_position
+
 	# Update coyote time
 	if is_on_floor():
 		_coyote_timer = coyote_time
@@ -131,32 +141,57 @@ func _physics_process(delta: float) -> void:
 			is_gliding = false
 			
 	if na_cortina:
-		# 1. Prende a posição do Caju ao marcador da cortina
-		global_position = ancora_atual.global_position
+		# 1. Prende e suaviza a posição do Caju ao marcador da cortina a 60 FPS
+		if is_instance_valid(ancora_atual):
+			global_position = global_position.lerp(ancora_atual.global_position, clampf(20.0 * delta, 0.0, 1.0))
 		
-		# (Opcional) Virar o sprite dependendo da rotação
-		if cortina_atual.rotation > 0:
-			anim.flip_h = false
-		elif cortina_atual.rotation < 0:
-			anim.flip_h = true
+		# 2. Virar o sprite dependendo da direção do balanço
+		if is_instance_valid(cortina_atual) and cortina_atual.has_method("get_swing_velocity"):
+			var swing_vel: float = cortina_atual.get_swing_velocity()
+			if swing_vel > 0.05:
+				if anim:
+					anim.flip_h = false
+			elif swing_vel < -0.05:
+				if anim:
+					anim.flip_h = true
+		elif is_instance_valid(cortina_atual) and cortina_atual.rotation != 0.0:
+			if cortina_atual.rotation > 0:
+				if anim:
+					anim.flip_h = false
+			elif cortina_atual.rotation < 0:
+				if anim:
+					anim.flip_h = true
 			
-		# Animação
-		if anim.animation != "clim": # Se tiver uma animação "hang", use-a aqui
+		# 3. Animação de segurar (Caju usa a animação "climb")
+		if anim and anim.animation != "climb":
 			anim.play("climb")
 			
-		# 2. Lógica para pular da cortina
+		# 4. Lógica para pular da cortina com transferência de impulso horizontal
 		if _is_jump_just_pressed():
+			var forca_horizontal: float = 0.0
+			if is_instance_valid(cortina_atual):
+				if cortina_atual.has_method("get_swing_velocity"):
+					var swing_factor: float = cortina_atual.get_swing_velocity()
+					forca_horizontal = swing_factor * 260.0
+				elif cortina_atual.rotation != 0.0:
+					forca_horizontal = sin(cortina_atual.rotation) * 450.0
+					
+				if cortina_atual.has_method("soltar_cortina"):
+					cortina_atual.soltar_cortina()
+					
 			na_cortina = false
+			cortina_atual = null
+			ancora_atual = null
 			
-			# Calcula o impulso baseado no ângulo em que a cortina está naquele exato frame.
-			# Multiplicamos o seno da rotação por uma força horizontal (ex: 400).
-			var forca_horizontal = sin(cortina_atual.rotation) * 450.0
-			
-			# Aplica o pulo vertical normal + a força do balanço horizontal
 			velocity.y = jump_velocity
-			velocity.x = forca_horizontal
-			
-			_coyote_timer = 0.0 # Evita pulo duplo fantasma
+			if abs(forca_horizontal) >= 30.0:
+				velocity.x = forca_horizontal
+			else:
+				var dir: float = _get_horizontal_input()
+				velocity.x = dir * speed
+				
+			_coyote_timer = 0.0
+			_jump_buffer_timer = 0.0
 			
 		return
 			
@@ -310,23 +345,79 @@ func set_camera_limits(left: int, right: int, top: int, bottom: int) -> void:
 		camera.limit_top = top
 		camera.limit_bottom = bottom
 
-func take_damage(amount: int = 1) -> void:
-	current_health = clampi(current_health - amount, 0, max_health)
+func take_damage(amount: int = 1, force: bool = false) -> void:
+	if is_invulnerable and not force:
+		return
+		
+	var is_lethal: bool = false
+	if is_inside_tree() and has_node("/root/GameManager"):
+		var gm = get_node("/root/GameManager")
+		if gm.shared_health - amount <= 0:
+			is_lethal = true
+		gm.take_shared_damage(amount)
+		current_health = gm.shared_health
+	else:
+		current_health = clampi(current_health - amount, 0, max_health)
+		if current_health <= 0:
+			is_lethal = true
+		
 	health_changed.emit(current_health, max_health)
-	if has_node("/root/EventBus"):
+	if is_inside_tree() and has_node("/root/EventBus"):
 		get_node("/root/EventBus").player_health_changed.emit(self, current_health, max_health)
+		
+	# Só ativa invulnerabilidade se o personagem sobreviveu ao dano
+	if not is_lethal:
+		trigger_invulnerability(1.0)
 
 func heal(amount: int = 1) -> void:
-	current_health = clampi(current_health + amount, 0, max_health)
+	if is_inside_tree() and has_node("/root/GameManager"):
+		var gm = get_node("/root/GameManager")
+		gm.heal_shared(amount)
+		current_health = gm.shared_health
+	else:
+		current_health = clampi(current_health + amount, 0, max_health)
+		
 	health_changed.emit(current_health, max_health)
-	if has_node("/root/EventBus"):
+	if is_inside_tree() and has_node("/root/EventBus"):
 		get_node("/root/EventBus").player_health_changed.emit(self, current_health, max_health)
 
 func set_health(val: int) -> void:
 	current_health = clampi(val, 0, max_health)
+	if is_inside_tree() and has_node("/root/GameManager"):
+		var gm = get_node("/root/GameManager")
+		gm.shared_health = current_health
+		
 	health_changed.emit(current_health, max_health)
-	if has_node("/root/EventBus"):
+	if is_inside_tree() and has_node("/root/EventBus"):
 		get_node("/root/EventBus").player_health_changed.emit(self, current_health, max_health)
+
+func trigger_invulnerability(duration: float = 1.0) -> void:
+	if not is_inside_tree():
+		return
+	is_invulnerable = true
+	var tween = create_tween()
+	if tween:
+		for i in range(int(duration / 0.16)):
+			tween.tween_property(self, "modulate:a", 0.3, 0.08)
+			tween.tween_property(self, "modulate:a", 1.0, 0.08)
+	var tree = get_tree()
+	if tree:
+		await tree.create_timer(duration).timeout
+	if is_inside_tree():
+		is_invulnerable = false
+		modulate.a = 1.0
+
+func respawn_at_last_safe_position() -> void:
+	if na_cortina:
+		if is_instance_valid(cortina_atual) and cortina_atual.has_method("soltar_cortina"):
+			cortina_atual.soltar_cortina()
+		na_cortina = false
+		cortina_atual = null
+		ancora_atual = null
+	if last_safe_position != Vector2.ZERO:
+		global_position = last_safe_position
+	velocity = Vector2.ZERO
+	trigger_invulnerability(1.2)
 
 func _exit_tree() -> void:
 	if has_node("/root/GameManager"):
@@ -357,6 +448,8 @@ func agarrar_cortina(cortina: Node2D, ancora: Marker2D) -> void:
 		na_cortina = true
 		cortina_atual = cortina
 		ancora_atual = ancora
+		if is_instance_valid(ancora):
+			global_position = ancora.global_position
 		
 		# Zera a velocidade do Caju para ele parar de cair
 		velocity = Vector2.ZERO

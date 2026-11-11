@@ -84,7 +84,7 @@ func _build_ui() -> void:
 	
 	# Instruções de controle com cor escura legível
 	var controls_text = Label.new()
-	controls_text.text = "• Mover: W / A / S / D  ou  ← / ↑ / ↓ / →\n• Interagir: E\n• Trocar Personagem: TAB"
+	controls_text.text = "• Mover: W / A / S / D  ou  ← / ↑ / ↓ / →\n• Interagir: P (ou E)\n• Trocar Personagem: TAB"
 	controls_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	controls_text.add_theme_font_size_override("font_size", 7)
 	controls_text.add_theme_color_override("font_color", Color(0.22, 0.19, 0.18))

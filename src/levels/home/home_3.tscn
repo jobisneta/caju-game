@@ -4,9 +4,8 @@
 [ext_resource type="Script" uid="uid://b6ix8bbc6u8vf" path="res://src/levels/home/home_3.gd" id="1_t4ir5"]
 [ext_resource type="Texture2D" uid="uid://ca55txe70npdk" path="res://assets/art/world/home/ground_sprite_sheet.png" id="2_t4ir5"]
 [ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://src/entities/player/caju.tscn" id="3_lggft"]
-[ext_resource type="Texture2D" uid="uid://chg5qtpkl6f88" path="res://assets/art/world/home/cortina_balancando.png" id="5_d6xpi"]
-[ext_resource type="Texture2D" uid="uid://cmbog0n8poo38" path="res://assets/art/world/home/cortina.png" id="5_lggft"]
-[ext_resource type="Script" uid="uid://wiln16l3ygo" path="res://src/entities/items/cortina/cortina.gd" id="7_1y5c6"]
+[ext_resource type="PackedScene" path="res://src/entities/items/cortina/cortina.tscn" id="4_cortina"]
+[ext_resource type="Texture2D" uid="uid://b4buqfkrfenfh" path="res://assets/art/world/home/chair.png" id="4_d6xpi"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_d6xpi"]
 texture = ExtResource("1_34n0u")
@@ -40,271 +39,8 @@ normal = Vector2(1, 0)
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_d6xpi"]
 normal = Vector2(-1, 0)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_xqttg"]
-atlas = ExtResource("5_d6xpi")
-region = Rect2(0, 0, 50, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_33d1v"]
-atlas = ExtResource("5_d6xpi")
-region = Rect2(50, 0, 50, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_x6f0o"]
-atlas = ExtResource("5_d6xpi")
-region = Rect2(100, 0, 50, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fter7"]
-atlas = ExtResource("5_d6xpi")
-region = Rect2(150, 0, 50, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_eh8a7"]
-atlas = ExtResource("5_d6xpi")
-region = Rect2(200, 0, 50, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_btn3d"]
-atlas = ExtResource("5_d6xpi")
-region = Rect2(250, 0, 50, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_f7a83"]
-atlas = ExtResource("5_d6xpi")
-region = Rect2(0, 45, 50, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mbrlr"]
-atlas = ExtResource("5_d6xpi")
-region = Rect2(50, 45, 50, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_itlou"]
-atlas = ExtResource("5_d6xpi")
-region = Rect2(100, 45, 50, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_akker"]
-atlas = ExtResource("5_d6xpi")
-region = Rect2(150, 45, 50, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_1kvlf"]
-atlas = ExtResource("5_d6xpi")
-region = Rect2(200, 45, 50, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gxnlx"]
-atlas = ExtResource("5_d6xpi")
-region = Rect2(250, 45, 50, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gnd6w"]
-atlas = ExtResource("5_d6xpi")
-region = Rect2(0, 90, 50, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_weegf"]
-atlas = ExtResource("5_d6xpi")
-region = Rect2(50, 90, 50, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_m4evx"]
-atlas = ExtResource("5_d6xpi")
-region = Rect2(100, 90, 50, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_h6tna"]
-atlas = ExtResource("5_d6xpi")
-region = Rect2(150, 90, 50, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_lggft"]
-atlas = ExtResource("5_lggft")
-region = Rect2(0, 0, 30, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_d6xpi"]
-atlas = ExtResource("5_lggft")
-region = Rect2(30, 0, 30, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_1y5c6"]
-atlas = ExtResource("5_lggft")
-region = Rect2(60, 0, 30, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_adq47"]
-atlas = ExtResource("5_lggft")
-region = Rect2(90, 0, 30, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_36j0p"]
-atlas = ExtResource("5_lggft")
-region = Rect2(120, 0, 30, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ctc7o"]
-atlas = ExtResource("5_lggft")
-region = Rect2(150, 0, 30, 45)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xwkhs"]
-atlas = ExtResource("5_lggft")
-region = Rect2(180, 0, 30, 45)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_dtg5i"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xqttg")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_33d1v")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_x6f0o")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fter7")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_eh8a7")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_btn3d")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_f7a83")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_mbrlr")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_itlou")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_akker")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_1kvlf")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gxnlx")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gnd6w")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_weegf")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_m4evx")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_h6tna")
-}],
-"loop": 1,
-"name": &"cortina_balancando",
-"speed": 11.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_lggft")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_d6xpi")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_1y5c6")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_adq47")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_36j0p")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ctc7o")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xwkhs")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ctc7o")
-}],
-"loop": 1,
-"name": &"default",
-"speed": 4.0
-}]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_dtg5i"]
-size = Vector2(7, 26)
-
-[sub_resource type="Animation" id="Animation_1y5c6"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("PontoAncora:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 9.5)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("PontoAncora:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-
-[sub_resource type="Animation" id="Animation_adq47"]
-resource_name = "balancar"
-length = 9.0
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(1, 2, 3, 4, 5, 6, 7, 8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 0, 0, 0, 0, 0, 0, 0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("PontoAncora:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(1, 2, 3, 4, 5, 6, 7, 8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 9.5), Vector2(0, 9.5), Vector2(0, 9.5), Vector2(0, 9.5), Vector2(0, 9.5), Vector2(0, 9.5), Vector2(0, 9.5), Vector2(0, 9.5)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("PontoAncora:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 2, 3, 4, 5, 6),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [0.0, 0.017453292, 0.034906585, 0.05235988, 0.06981317, 0.08726646]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_36j0p"]
-_data = {
-&"RESET": SubResource("Animation_1y5c6"),
-&"balancar": SubResource("Animation_adq47")
-}
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pi8jn"]
+size = Vector2(32, 4)
 
 [node name="Home3" type="Node2D" unique_id=793194412]
 script = ExtResource("1_t4ir5")
@@ -347,47 +83,27 @@ collision_mask = 0
 position = Vector2(0, 1)
 shape = SubResource("WorldBoundaryShape2D_d6xpi")
 
-[node name="cortina" type="AnimatedSprite2D" parent="." unique_id=391726368]
-position = Vector2(110, 95)
-scale = Vector2(2, 2)
-sprite_frames = SubResource("SpriteFrames_dtg5i")
-animation = &"cortina_balancando"
-autoplay = "default"
-script = ExtResource("7_1y5c6")
+[node name="Cadeira" type="StaticBody2D" parent="." unique_id=1467727229]
+position = Vector2(76, 140)
 
-[node name="PontoAncora" type="Marker2D" parent="cortina" unique_id=2132121064]
-position = Vector2(0, 9.5)
+[node name="Sprite2D" type="Sprite2D" parent="Cadeira" unique_id=626721773]
+texture = ExtResource("4_d6xpi")
 
-[node name="AreaAgarre" type="Area2D" parent="cortina/PontoAncora" unique_id=227642134]
-position = Vector2(0, -9.5)
-collision_layer = 0
-collision_mask = 2
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cadeira" unique_id=918167506]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_pi8jn")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="cortina/PontoAncora/AreaAgarre" unique_id=1361327845]
-position = Vector2(0, 2.5)
-shape = SubResource("RectangleShape2D_dtg5i")
+[node name="cortina" parent="." unique_id=1503581861 instance=ExtResource("4_cortina")]
+position = Vector2(131, 44)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="cortina" unique_id=347119416]
-libraries/ = SubResource("AnimationLibrary_36j0p")
-autoplay = &"balancar"
-
-[node name="cortina2" type="AnimatedSprite2D" parent="." unique_id=207934586]
+[node name="cortina2" parent="." unique_id=543348799 instance=ExtResource("4_cortina")]
 position = Vector2(231, 44)
-scale = Vector2(2, 2)
-sprite_frames = SubResource("SpriteFrames_dtg5i")
-autoplay = "default"
 
-[node name="cortina3" type="AnimatedSprite2D" parent="." unique_id=1035314288]
+[node name="cortina3" parent="." unique_id=1785106043 instance=ExtResource("4_cortina")]
 position = Vector2(436, 44)
-scale = Vector2(2, 2)
-sprite_frames = SubResource("SpriteFrames_dtg5i")
-autoplay = "default"
 
-[node name="cortina4" type="AnimatedSprite2D" parent="." unique_id=2091941713]
+[node name="cortina4" parent="." unique_id=639242676 instance=ExtResource("4_cortina")]
 position = Vector2(586, 44)
-scale = Vector2(2, 2)
-sprite_frames = SubResource("SpriteFrames_dtg5i")
-autoplay = "default"
 
 [node name="Caju" parent="." unique_id=189020559 instance=ExtResource("3_lggft")]
 position = Vector2(19, 71)

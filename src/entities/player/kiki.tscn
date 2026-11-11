@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dbx8h3ivklyxm" path="res://assets/art/characters/kiki/kiki_andando.png" id="3_andando"]
 [ext_resource type="Texture2D" uid="uid://k0flxnhl4b1n" path="res://assets/art/characters/kiki/kiki_voando.png" id="5_voando"]
 [ext_resource type="Texture2D" uid="uid://0ecxbjuenxv" path="res://assets/art/characters/kiki/kiki_pulando.png" id="6_pulando"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/personagem_kiki.png" id="7_kiki_portr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kiki"]
 size = Vector2(15, 16)
@@ -106,7 +107,11 @@ animations = [{
 [node name="Kiki" type="CharacterBody2D" unique_id=208912837 groups=["player"]]
 collision_layer = 2
 script = ExtResource("1_g2xdi")
+character_id = "kiki"
+character_name = "Kiki"
+portrait_texture = ExtResource("7_kiki_portr")
 cena_mae_coruja = ExtResource("2_ksn8l")
+jump_height = 32.0
 can_glide = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=149812734]

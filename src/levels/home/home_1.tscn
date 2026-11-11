@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://b4buqfkrfenfh" path="res://assets/art/world/home/chair.png" id="8_oivcu"]
 [ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://src/entities/player/caju.tscn" id="9_noxfy"]
 [ext_resource type="Texture2D" uid="uid://bjusljfxultd1" path="res://assets/raw/crate.png" id="9_oivcu"]
-[ext_resource type="PackedScene" uid="uid://bwlyq7dkge3ja" path="res://src/ui/player_hud.tscn" id="10_tefyx"]
+[ext_resource type="PackedScene" path="res://src/ui/player_hud.tscn" id="10_tefyx"]
 [ext_resource type="Script" uid="uid://cdyme22tybtux" path="res://src/entities/items/pushable_crate.gd" id="11_crate"]
 [ext_resource type="PackedScene" uid="uid://c6v2j8xap2lkn" path="res://src/ui/items_hud.tscn" id="12_ihud"]
 

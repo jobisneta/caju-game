@@ -58,3 +58,5 @@ texture_pressed = ExtResource("7_kdtk0")
 texture_hover = ExtResource("7_kdtk0")
 
 [connection signal="pressed" from="VBoxContainer/botao_novo" to="." method="_on_botao_novo_pressed"]
+[connection signal="pressed" from="VBoxContainer/botao_continuar" to="." method="_on_botao_continuar_pressed"]
+[connection signal="pressed" from="VBoxContainer/botao_opcoes" to="." method="_on_botao_opcoes_pressed"]

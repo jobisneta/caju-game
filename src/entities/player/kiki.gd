@@ -15,9 +15,15 @@ func _ready() -> void:
 func _process_active_input(delta: float) -> void:
 	super._process_active_input(delta)
 	
-	# Usa o nome exato da sua ação no Input Map ("click_p")
-	if Input.is_action_just_pressed("click_p"):
+	# Caso click_p seja acionado isoladamente
+	if Input.is_action_just_pressed("click_p") and not Input.is_action_just_pressed("interact"):
+		interact_with_nearby()
+
+func interact_with_nearby() -> bool:
+	var did_interact: bool = super.interact_with_nearby()
+	if not did_interact:
 		usar_habilidade_galho()
+	return did_interact
 
 func usar_habilidade_galho() -> void:
 	# Se o galho já caiu e a mãe saiu da cena (queue_free), libera para a próxima chamada

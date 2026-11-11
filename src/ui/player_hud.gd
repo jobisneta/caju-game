@@ -25,7 +25,10 @@ func _ready() -> void:
 		_build_ui()
 	
 	_connect_events()
-	set_health(max_health)
+	if has_node("/root/GameManager"):
+		set_health(get_node("/root/GameManager").shared_health)
+	else:
+		set_health(max_health)
 
 func _build_ui() -> void:
 	if get_node_or_null("HUDControl"):
@@ -109,7 +112,9 @@ func set_character_portrait(texture: Texture2D) -> void:
 func update_for_player(player: CharacterBody2D) -> void:
 	if not player:
 		return
-	if "current_health" in player:
+	if has_node("/root/GameManager"):
+		set_health(get_node("/root/GameManager").shared_health)
+	elif "current_health" in player:
 		set_health(player.current_health)
 	
 	if "portrait_texture" in player and player.portrait_texture != null:
@@ -132,10 +137,5 @@ func _update_hearts_display() -> void:
 func _on_player_swapped(active_player: CharacterBody2D) -> void:
 	update_for_player(active_player)
 
-func _on_player_health_changed(player: CharacterBody2D, new_health: int, _max_h: int) -> void:
-	if has_node("/root/GameManager"):
-		var gm = get_node("/root/GameManager")
-		if gm.active_player == null or gm.active_player == player:
-			set_health(new_health)
-	else:
-		set_health(new_health)
+func _on_player_health_changed(_player: CharacterBody2D, new_health: int, _max_h: int) -> void:
+	set_health(new_health)

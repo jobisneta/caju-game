@@ -89,7 +89,10 @@ func _on_level_finished() -> void:
 	if _completed:
 		return
 	_completed = true
-	print("Parabéns! Fase 2 concluída com ambos os personagens!")
+	print("Parabéns! Fase 2 concluída! Transitando para Fase 3...")
 	
 	if has_node("/root/EventBus"):
 		get_node("/root/EventBus").level_completed.emit()
+		
+	await get_tree().create_timer(0.4).timeout
+	get_tree().change_scene_to_file("res://src/levels/home/home_3.tscn")

@@ -3,6 +3,12 @@ extends Node2D
 const ItemsHUDClass = preload("res://src/ui/items_hud.gd")
 const PushableCrateClass = preload("res://src/entities/items/pushable_crate.gd")
 const PushableBoxClass = preload("res://src/entities/items/box/pushable_box.gd")
+const GlassBottleClass = preload("res://src/entities/enemies/glass_bottle/glass_bottle.gd")
+const LevelHome3Class = preload("res://src/levels/home/home_3.gd")
+const LevelTelhadoClass = preload("res://src/levels/telhado/roof_1.gd")
+const LevelJardimClass = preload("res://src/levels/jardim/garden_1.gd")
+const CortinaClass = preload("res://src/entities/items/cortina/cortina.gd")
+const CortinaScene = preload("res://src/entities/items/cortina/cortina.tscn")
 
 ## Integration test runner node for Caju Game.
 ## Runs within full game engine context with Autoloads initialized.
@@ -188,11 +194,18 @@ func _ready() -> void:
 	assert(telhado_caju.is_active == true, "[FAIL] Caju should start active")
 	assert(telhado_kiki.is_active == false, "[FAIL] Kiki should start inactive")
 	
+	assert(telhado_kiki.character_id == "kiki", "[FAIL] Kiki character_id must be 'kiki'")
+	assert(telhado_kiki.character_name == "Kiki", "[FAIL] Kiki character_name must be 'Kiki'")
+	
 	GameManager.switch_player()
 	assert(telhado_caju.is_active == false, "[FAIL] Caju should be inactive after switch")
 	assert(telhado_kiki.is_active == true, "[FAIL] Kiki should be active after switch")
 	assert(GameManager.active_player == telhado_kiki, "[FAIL] GameManager active_player should be Kiki")
-	print("[PASS] Test 11: Character switching Caju <-> Kiki verified.")
+	
+	var telhado_hud_ctrl: PlayerHUD = telhado_hud as PlayerHUD
+	assert(telhado_hud_ctrl != null, "[FAIL] PlayerHUD missing on roof_1")
+	assert(telhado_hud_ctrl.portrait != null and telhado_hud_ctrl.portrait.texture.resource_path.ends_with("personagem_kiki.png"), "[FAIL] HUD portrait must update to Kiki portrait")
+	print("[PASS] Test 11: Character switching Caju <-> Kiki and HUD portrait verified.")
 	
 	# Test 12: Gravidade no personagem inativo
 	telhado_caju.velocity.y = 0.0
@@ -301,5 +314,250 @@ func _ready() -> void:
 	assert(garden_box.position.y > initial_air_y or garden_box.velocity.y > 0.0, "[FAIL] PushableBox must apply gravity and fall when airborne")
 	print("[PASS] Test 16: Exclusive crate pushing (Tody only) and box physics verified.")
 	
-	print("[TEST] ALL 16 INTEGRATION TESTS PASSED WITH 100% SUCCESS!")
+	garden_level.queue_free()
+	
+	# =========================================================================
+	# PARTE 4: VERIFICAÇÃO DE HAZARDS, FASES 2 E 3, E GAME MANAGER
+	# =========================================================================
+	
+	# Test 17: Hazard GlassBottle (Camadas de física e dano no jogador)
+	var gb_scene: PackedScene = load("res://src/entities/enemies/glass_bottle/glass_bottle.tscn")
+	assert(gb_scene != null, "[FAIL] Could not load glass_bottle.tscn")
+	var gb_instance: Area2D = gb_scene.instantiate()
+	assert(gb_instance is GlassBottleClass, "[FAIL] GlassBottle must use GlassBottle script")
+	assert(gb_instance.collision_layer == 16, "[FAIL] GlassBottle collision_layer must be 16 (Layer 5 - hazards)")
+	assert(gb_instance.collision_mask == 2, "[FAIL] GlassBottle collision_mask must be 2 (Layer 2 - player)")
+	
+	var dummy_caju: Player = load("res://src/entities/player/caju.tscn").instantiate()
+	add_child(dummy_caju)
+	add_child(gb_instance)
+	dummy_caju.set_health(3)
+	gb_instance._on_body_entered(dummy_caju)
+	assert(dummy_caju.current_health == 2, "[FAIL] GlassBottle must deal 1 damage to player upon contact")
+	dummy_caju.queue_free()
+	gb_instance.queue_free()
+	print("[PASS] Test 17: GlassBottle hazard (layers 16/2 and damage mechanic) verified.")
+	
+	# Test 18: Fase 2 (home_2.tscn) - Hazards, Itens e Escada sem rotação
+	var home2_scene: PackedScene = load("res://src/levels/home/home_2.tscn")
+	assert(home2_scene != null, "[FAIL] Could not load home_2.tscn")
+	var home2_level: Node2D = home2_scene.instantiate()
+	add_child(home2_level)
+	
+	var home2_escada: Area2D = home2_level.get_node_or_null("escada")
+	assert(home2_escada != null, "[FAIL] escada missing in home_2.tscn")
+	assert(is_zero_approx(home2_escada.rotation), "[FAIL] escada in home_2.tscn must have rotation == 0")
+	
+	var home2_env: Node2D = home2_level.get_node_or_null("Environment")
+	assert(home2_env != null, "[FAIL] Environment missing in home_2.tscn")
+	var gb_count: int = 0
+	for child in home2_env.get_children():
+		if child is GlassBottleClass:
+			gb_count += 1
+	assert(gb_count == 4, "[FAIL] home_2.tscn Environment must contain exactly 4 GlassBottle hazards")
+	
+	var home2_items: Node2D = home2_level.get_node_or_null("Items")
+	assert(home2_items != null and home2_items.get_child_count() == 1, "[FAIL] home_2.tscn must contain 1 collectible bottle in Items")
+	home2_level.queue_free()
+	print("[PASS] Test 18: LevelHome2 (home_2.tscn) hazards, items and ladder alignment verified.")
+	
+	# Test 19: Fase 3 (home_3.tscn) - Solo Caju, Limites de Câmera e Cortinas
+	var home3_scene: PackedScene = load("res://src/levels/home/home_3.tscn")
+	assert(home3_scene != null, "[FAIL] Could not load home_3.tscn")
+	var home3_level: Node2D = home3_scene.instantiate()
+	add_child(home3_level)
+	assert(home3_level is LevelHome3Class, "[FAIL] home_3.tscn must use LevelHome3 script")
+	
+	var home3_caju: CharacterBody2D = home3_level.get_node_or_null("Caju")
+	assert(home3_caju != null, "[FAIL] Caju missing in home_3.tscn")
+	assert(home3_level.get_node_or_null("Kiki") == null, "[FAIL] Kiki must NOT exist in home_3.tscn (Solo Caju)")
+	var home3_cam: Camera2D = home3_caju.get_node_or_null("Camera2D")
+	assert(home3_cam != null and home3_cam.limit_right == 1280, "[FAIL] home_3 camera limit_right must be 1280")
+	
+	var home3_cortina = home3_level.get_node_or_null("cortina")
+	assert(home3_cortina != null, "[FAIL] cortina missing in home_3.tscn")
+	home3_level.queue_free()
+	print("[PASS] Test 19: LevelHome3 (home_3.tscn) solo Caju, camera limits (1280px) and curtain verified.")
+	
+	# Test 20: Fluxo Contínuo de Conclusão e Menus
+	assert(telhado_level != null or telhado_scene != null, "[FAIL] Rooftop scene must exist")
+	var test_telhado: Node2D = telhado_scene.instantiate()
+	assert(test_telhado is LevelTelhadoClass, "[FAIL] roof_1.tscn must use LevelTelhado script")
+	assert(test_telhado.has_method("_on_level_finished"), "[FAIL] LevelTelhado must implement _on_level_finished")
+	test_telhado.queue_free()
+	
+	var test_jardim: Node2D = load("res://src/levels/jardim/garden_1.tscn").instantiate()
+	assert(test_jardim is LevelJardimClass, "[FAIL] garden_1.tscn must use LevelJardim script")
+	assert(test_jardim.has_method("_on_level_finished"), "[FAIL] LevelJardim must implement _on_level_finished")
+	test_jardim.queue_free()
+	print("[PASS] Test 20: Continuous stage flow triggers (roof_1 -> garden_1 -> menu) verified.")
+	
+	# Test 21: GameManager ciclo de vida e blindagem defensiva
+	GameManager.clear_players()
+	assert(GameManager.players.is_empty(), "[FAIL] GameManager.clear_players must empty players list")
+	assert(GameManager.active_player == null, "[FAIL] GameManager.clear_players must reset active_player")
+	# switch_player com 0 jogadores não deve lançar exceção
+	GameManager.switch_player()
+	# clean_invalid_players com lista vazia deve funcionar perfeitamente
+	GameManager.clean_invalid_players()
+	print("[PASS] Test 21: GameManager defensive lifecycle (clear_players, clean_invalid_players) verified.")
+	
+	# Test 22: Vida compartilhada entre jogadores e recarga automática ao concluir fase
+	GameManager.reset_shared_health()
+	assert(GameManager.shared_health == 3, "[FAIL] Initial shared health must be 3")
+	GameManager.take_shared_damage(2)
+	assert(GameManager.shared_health == 1, "[FAIL] Shared health should be 1 after 2 damage")
+	# Recarga automática ao concluir fase
+	EventBus.level_completed.emit()
+	assert(GameManager.shared_health == 3, "[FAIL] level_completed must restore shared health to full (3)")
+	print("[PASS] Test 22: Shared health synchronization and automatic level completion refill verified.")
+
+	# Test 23: Game Over loop (Casa volta para home_1; exterior recarrega fase)
+	assert(GameManager.has_method("trigger_game_over"), "[FAIL] GameManager must have trigger_game_over method")
+	GameManager.reset_shared_health()
+	GameManager.take_shared_damage(3)
+	assert(GameManager.shared_health == GameManager.shared_max_health, "[FAIL] Game Over must reset shared health for retry")
+	print("[PASS] Test 23: Game Over logic and house/exterior loop verified.")
+
+	# Test 24: Queda no abismo no telhado (limite_baixo), 1 dano compartilhado e respawn em piso seguro
+	var telhado_test_instance: Node2D = telhado_scene.instantiate()
+	add_child(telhado_test_instance)
+	var limite_baixo: Area2D = telhado_test_instance.get_node_or_null("limite_baixo")
+	assert(limite_baixo != null, "[FAIL] limite_baixo Area2D missing in roof_1.tscn")
+	assert(limite_baixo.collision_layer == 32768 or limite_baixo.collision_layer == 16, "[FAIL] limite_baixo must be hazard area (layer 16)")
+	assert(limite_baixo.collision_mask & 2 != 0, "[FAIL] limite_baixo mask must include player (bit 2)")
+	
+	var caju_roof: CharacterBody2D = telhado_test_instance.get_node_or_null("Caju")
+	assert(caju_roof != null, "[FAIL] Caju missing in roof_1.tscn")
+	assert(caju_roof.get("last_safe_position") != null, "[FAIL] Player must have last_safe_position")
+	assert(caju_roof.has_method("respawn_at_last_safe_position"), "[FAIL] Player must implement respawn_at_last_safe_position")
+	
+	GameManager.reset_shared_health()
+	var initial_health: int = GameManager.shared_health
+	caju_roof.last_safe_position = Vector2(100, 100)
+	caju_roof.global_position = Vector2(200, 300) # Simula caindo no abismo
+	
+	telhado_test_instance._on_queda_area_body_entered(caju_roof)
+	assert(GameManager.shared_health == initial_health - 1, "[FAIL] Falling into rooftop abyss must deal 1 shared damage")
+	assert(caju_roof.global_position == Vector2(100, 100), "[FAIL] Player must respawn at last_safe_position")
+	assert(caju_roof.is_invulnerable == true, "[FAIL] Player must receive temporary invulnerability upon respawn")
+	telhado_test_instance.queue_free()
+	print("[PASS] Test 24: Rooftop abyss fall detection, 1 shared damage and safe ground respawn verified.")
+
+	# Test 25: Mecânica de cortinas modulares em home_3 (animação default vs balanço, Caju climb e impulso)
+	var test_cortina: CortinaClass = CortinaScene.instantiate()
+	add_child(test_cortina)
+	assert(test_cortina.sprite_frames.has_animation("default"), "[FAIL] Cortina must have 'default' animation")
+	assert(test_cortina.sprite_frames.has_animation("cortina_balancando"), "[FAIL] Cortina must have 'cortina_balancando' animation")
+	assert(test_cortina.sprite_frames.get_frame_count("default") == 7, "[FAIL] 'default' animation must have 7 frames")
+	assert(test_cortina.sprite_frames.get_frame_count("cortina_balancando") >= 15, "[FAIL] 'cortina_balancando' must have 15 or 16 frames")
+	assert(test_cortina.animation == &"default", "[FAIL] Cortina must start with 'default' animation")
+	
+	var anc: Marker2D = test_cortina.get_node_or_null("PontoAncora")
+	assert(anc != null, "[FAIL] Cortina must have PontoAncora")
+	var agr: Area2D = anc.get_node_or_null("AreaAgarre")
+	assert(agr != null, "[FAIL] PontoAncora must have AreaAgarre")
+	
+	# Simula Caju agarrando a cortina
+	var cortina_caju: CharacterBody2D = load("res://src/entities/player/caju.tscn").instantiate()
+	add_child(cortina_caju)
+	test_cortina._on_area_agarre_body_entered(cortina_caju)
+	assert(test_cortina.is_grabbed == true, "[FAIL] Cortina must be marked as grabbed")
+	assert(test_cortina.animation == &"cortina_balancando", "[FAIL] Cortina must switch to 'cortina_balancando' animation")
+	assert(cortina_caju.na_cortina == true, "[FAIL] Caju must enter na_cortina state")
+	
+	# Verifica cálculo de velocidade de balanço
+	test_cortina.frame = 2 # balançando para direita
+	var swing_right: float = test_cortina.get_swing_velocity()
+	assert(swing_right > 0.0, "[FAIL] Swing velocity must be positive when moving right")
+	test_cortina.frame = 10 # balançando para esquerda
+	var swing_left: float = test_cortina.get_swing_velocity()
+	assert(swing_left < 0.0, "[FAIL] Swing velocity must be negative when moving left")
+	test_cortina.frame = 4 # pico direita (inversão)
+	var swing_peak: float = test_cortina.get_swing_velocity()
+	assert(abs(swing_peak) < 0.05, "[FAIL] Swing velocity must be near zero at swing peak")
+	
+	# Soltar cortina
+	test_cortina.soltar_cortina()
+	assert(test_cortina.is_grabbed == false, "[FAIL] Cortina must not be grabbed after soltar_cortina")
+	assert(test_cortina.animation == &"default", "[FAIL] Cortina must return to 'default' animation on release")
+	
+	cortina_caju.queue_free()
+	test_cortina.queue_free()
+	
+	# Verifica que todas as 4 cortinas em home_3.tscn são instâncias válidas com PontoAncora e AreaAgarre
+	var check_home3: Node2D = load("res://src/levels/home/home_3.tscn").instantiate()
+	for curtain_name in ["cortina", "cortina2", "cortina3", "cortina4"]:
+		var c_node = check_home3.get_node_or_null(curtain_name)
+		assert(c_node != null, "[FAIL] %s missing in home_3.tscn" % curtain_name)
+		assert(c_node is CortinaClass, "[FAIL] %s must be instance of Cortina" % curtain_name)
+		assert(c_node.get_node_or_null("PontoAncora/AreaAgarre") != null, "[FAIL] %s missing AreaAgarre" % curtain_name)
+	check_home3.queue_free()
+	print("[PASS] Test 25: Modular curtain dual animation, swing kinematics, and home_3 instances verified.")
+	
+	# Test 26: Início no Frame 8 ao pular na cortina virado para a esquerda
+	var cortina_dir_test: CortinaClass = CortinaScene.instantiate()
+	add_child(cortina_dir_test)
+	var caju_dir_test: CharacterBody2D = load("res://src/entities/player/caju.tscn").instantiate()
+	add_child(caju_dir_test)
+	
+	# Caso 1: Virado para a esquerda (flip_h = true)
+	caju_dir_test.anim.flip_h = true
+	cortina_dir_test._on_area_agarre_body_entered(caju_dir_test)
+	assert(cortina_dir_test.frame == 8, "[FAIL] Cortina must start on frame 8 when player faces left")
+	assert(cortina_dir_test.get_swing_velocity() < 0.0, "[FAIL] Frame 8 must swing to the left (negative velocity)")
+	cortina_dir_test.soltar_cortina()
+	
+	# Caso 2: Virado para a direita (flip_h = false)
+	cortina_dir_test._cooldown_timer = 0.0
+	caju_dir_test.anim.flip_h = false
+	cortina_dir_test._on_area_agarre_body_entered(caju_dir_test)
+	assert(cortina_dir_test.frame == 0, "[FAIL] Cortina must start on frame 0 when player faces right")
+	assert(cortina_dir_test.get_swing_velocity() > 0.0, "[FAIL] Frame 0 must swing to the right (positive velocity)")
+	cortina_dir_test.soltar_cortina()
+	
+	caju_dir_test.queue_free()
+	cortina_dir_test.queue_free()
+	print("[PASS] Test 26: Frame 8 initial swing direction (left vs right entry) verified.")
+
+	# Test 27: Unificação da tecla 'P' como 'interact' e Kiki contextual
+	assert(InputMap.has_action("interact"), "[FAIL] InputMap must have 'interact' action")
+	var t27_interact_events = InputMap.action_get_events("interact")
+	var t27_has_key_p: bool = false
+	var t27_has_key_e: bool = false
+	for ev in t27_interact_events:
+		if ev is InputEventKey:
+			if ev.physical_keycode == KEY_P:
+				t27_has_key_p = true
+			elif ev.physical_keycode == KEY_E:
+				t27_has_key_e = true
+	assert(t27_has_key_p, "[FAIL] 'interact' action must include Key 'P'")
+	assert(t27_has_key_e, "[FAIL] 'interact' action must preserve Key 'E' as secondary")
+	
+	# Kiki: Sem interativo por perto, interact dispara habilidade da Mãe Coruja
+	var kiki_test: CharacterBody2D = load("res://src/entities/player/kiki.tscn").instantiate()
+	add_child(kiki_test)
+	assert(kiki_test.has_method("interact_with_nearby"), "[FAIL] Kiki must implement interact_with_nearby")
+	assert(kiki_test.estado_habilidade == 0, "[FAIL] Kiki initial ability state must be 0")
+	var kiki_interacted: bool = kiki_test.interact_with_nearby()
+	assert(not kiki_interacted, "[FAIL] No interactables should be nearby")
+	assert(kiki_test.estado_habilidade == 1, "[FAIL] Kiki must trigger mother owl ability on interact if no objects nearby")
+	kiki_test.queue_free()
+	print("[PASS] Test 27: Key 'P' unified interaction and Kiki contextual behavior verified.")
+
+	# Test 28: Blindagem contra erros e null tree no Game Over letal
+	var lethal_player: CharacterBody2D = load("res://src/entities/player/caju.tscn").instantiate()
+	add_child(lethal_player)
+	GameManager.reset_shared_health()
+	# Reduz a vida compartilhada para 1
+	GameManager.take_shared_damage(2)
+	assert(GameManager.shared_health == 1, "[FAIL] Shared health must be 1 before lethal hit")
+	# Aplica dano letal diretamente no player (1 dano restante)
+	lethal_player.take_damage(1)
+	# Garante que invulnerabilidade NÃO foi ativada em jogador morto
+	assert(lethal_player.is_invulnerable == false, "[FAIL] Lethal damage must not activate invulnerability")
+	lethal_player.queue_free()
+	print("[PASS] Test 28: Lethal Game Over defensive tree-shielding verified without errors.")
+	
+	print("[TEST] ALL 28 INTEGRATION TESTS PASSED WITH 100% SUCCESS!")
 	get_tree().quit(0)

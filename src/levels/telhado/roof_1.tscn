@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://crj2jfgr3c0of" path="res://assets/art/world/telhado/telhado.png" id="4_6l4g0"]
 [ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://src/entities/player/caju.tscn" id="5_x6kwn"]
 [ext_resource type="PackedScene" uid="uid://c6v2oak8kiki1" path="res://src/entities/player/kiki.tscn" id="6_ldnl6"]
-[ext_resource type="PackedScene" uid="uid://bwlyq7dkge3ja" path="res://src/ui/player_hud.tscn" id="7_ty5dn"]
+[ext_resource type="PackedScene" path="res://src/ui/player_hud.tscn" id="7_ty5dn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_taheu"]
 texture = ExtResource("2_x6kwn")
@@ -207,8 +207,10 @@ position = Vector2(3178, 17)
 position = Vector2(-25, -16)
 shape = SubResource("WorldBoundaryShape2D_cb6yw")
 
-[node name="limite_baixo" type="StaticBody2D" parent="." unique_id=532383273]
+[node name="limite_baixo" type="Area2D" parent="." unique_id=532383273]
 position = Vector2(357, 220)
+collision_layer = 16
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="limite_baixo" unique_id=1578172215]
 position = Vector2(-139, 31)
@@ -236,3 +238,5 @@ scale = Vector2(1.8125, 1.8125)
 texture = ExtResource("3_wbjs8")
 
 [node name="PlayerHUD" parent="." unique_id=279387564 instance=ExtResource("7_ty5dn")]
+
+[connection signal="body_entered" from="limite_baixo" to="." method="_on_queda_area_body_entered"]

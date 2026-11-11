@@ -8,9 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://ch3lqw3rgtkoq" path="res://assets/art/world/home/luminaria.png" id="6_qpk70"]
 [ext_resource type="Texture2D" uid="uid://cjx12c7kg0bmd" path="res://assets/art/world/home/shelf_2.png" id="7_ll5lq"]
 [ext_resource type="Texture2D" uid="uid://du380aepr3bs1" path="res://assets/art/world/home/shelf_3.png" id="7_qvkdx"]
-[ext_resource type="Texture2D" uid="uid://b8ewkbocxqst7" path="res://assets/art/world/objects/glass_bottle.png" id="8_uncqa"]
 [ext_resource type="Texture2D" uid="uid://cv4noqjb4nm5e" path="res://assets/art/world/home/escada1.png" id="9_0bqwe"]
 [ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://src/entities/player/caju.tscn" id="11_uncqa"]
+[ext_resource type="PackedScene" uid="uid://bp40bxaq7qoca" path="res://src/entities/enemies/glass_bottle/glass_bottle.tscn" id="12_gbhazard"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6b1k3"]
 texture = ExtResource("3_xlg7c")
@@ -35,8 +35,11 @@ size = Vector2(64, 10.5)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pi8jn"]
 size = Vector2(64, 4)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_17rxn"]
-size = Vector2(53, 182)
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_pi8jn"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_vjuni"]
+normal = Vector2(-1, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wxgli"]
 size = Vector2(36, 170)
@@ -130,44 +133,31 @@ texture = ExtResource("7_qvkdx")
 position = Vector2(0, -46)
 shape = SubResource("RectangleShape2D_pi8jn")
 
-[node name="Bottle4" type="Node2D" parent="Environment" unique_id=760144183]
+[node name="GlassBottle4" parent="Environment" unique_id=760144183 instance=ExtResource("12_gbhazard")]
 position = Vector2(124, 95)
 
-[node name="Sprite2D" type="Sprite2D" parent="Environment/Bottle4" unique_id=993736405]
-texture = ExtResource("8_uncqa")
-
-[node name="Bottle3" type="Node2D" parent="Environment" unique_id=917908215]
+[node name="GlassBottle3" parent="Environment" unique_id=917908215 instance=ExtResource("12_gbhazard")]
 position = Vector2(124, 139)
 
-[node name="Sprite2D" type="Sprite2D" parent="Environment/Bottle3" unique_id=950130177]
-texture = ExtResource("8_uncqa")
-
-[node name="Bottle2" type="Node2D" parent="Environment" unique_id=1979197508]
+[node name="GlassBottle2" parent="Environment" unique_id=1979197508 instance=ExtResource("12_gbhazard")]
 position = Vector2(146, 117)
 
-[node name="Sprite2D" type="Sprite2D" parent="Environment/Bottle2" unique_id=2083080870]
-texture = ExtResource("8_uncqa")
-
-[node name="Bottle" type="Node2D" parent="Environment" unique_id=702071793]
+[node name="GlassBottle1" parent="Environment" unique_id=702071793 instance=ExtResource("12_gbhazard")]
 position = Vector2(163, 95)
 
-[node name="Sprite2D" type="Sprite2D" parent="Environment/Bottle" unique_id=9815136]
-texture = ExtResource("8_uncqa")
-
 [node name="LeftWall" type="StaticBody2D" parent="Environment" unique_id=1539741054]
+position = Vector2(-1, 88)
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/LeftWall" unique_id=688724974]
-position = Vector2(-26, 89)
-shape = SubResource("RectangleShape2D_17rxn")
+shape = SubResource("WorldBoundaryShape2D_pi8jn")
 
 [node name="RightWall" type="StaticBody2D" parent="Environment" unique_id=234376239]
-position = Vector2(667.5, 0)
+position = Vector2(646, 109)
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/RightWall" unique_id=626716453]
-position = Vector2(0, 89)
-shape = SubResource("RectangleShape2D_17rxn")
+shape = SubResource("WorldBoundaryShape2D_vjuni")
 
 [node name="Items" type="Node2D" parent="." unique_id=338428424]
 
@@ -175,20 +165,19 @@ shape = SubResource("RectangleShape2D_17rxn")
 position = Vector2(418, 68)
 
 [node name="escada" type="Area2D" parent="." unique_id=1048669535]
-position = Vector2(931, 87.00001)
-rotation = 0.0041891816
+position = Vector2(26, 89)
 collision_mask = 4294967295
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="escada" unique_id=2142778749]
-position = Vector2(-314, -1)
+position = Vector2(-1, -7.6293945e-06)
 shape = SubResource("RectangleShape2D_wxgli")
 
 [node name="Sprite2D" type="Sprite2D" parent="escada" unique_id=476115573]
-position = Vector2(-314, 3)
+position = Vector2(0, -7.6293945e-06)
 texture = ExtResource("9_0bqwe")
 
 [node name="Caju" parent="." unique_id=189020559 instance=ExtResource("11_uncqa")]
-position = Vector2(16, 19)
+position = Vector2(612, 160)
 
 [connection signal="body_entered" from="escada" to="." method="_on_escada_body_entered"]
 [connection signal="body_exited" from="escada" to="." method="_on_escada_body_exited"]

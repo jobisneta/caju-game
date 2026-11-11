@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://c5mti1wwsyb2o"]
 
-[ext_resource type="Script" uid="uid://cnojimic86kmr" path="res://1_HelloWorld/mateus_node.gd" id="1_uthtd"]
-[ext_resource type="Script" uid="uid://dpw8ho7nsihyi" path="res://1_HelloWorld/hello_world.gd" id="1_x41yp"]
-[ext_resource type="Script" uid="uid://3xp6bj0exc3i" path="res://1_HelloWorld/hello_joana.gd" id="2_cxc5r"]
+[ext_resource type="Script" uid="uid://cnojimic86kmr" path="res://tests/prototypes/1_HelloWorld/mateus_node.gd" id="1_uthtd"]
+[ext_resource type="Script" uid="uid://dpw8ho7nsihyi" path="res://tests/prototypes/1_HelloWorld/hello_world.gd" id="1_x41yp"]
+[ext_resource type="Script" uid="uid://3xp6bj0exc3i" path="res://tests/prototypes/1_HelloWorld/hello_joana.gd" id="2_cxc5r"]
 [ext_resource type="Texture2D" uid="uid://hi3g844766v4" path="res://icon.svg" id="3_vfpfj"]
-[ext_resource type="Script" uid="uid://dame8esx28hj5" path="res://1_HelloWorld/character_body_2d.gd" id="4_cdqa0"]
-[ext_resource type="Script" uid="uid://dj72lrudwnug3" path="res://1_HelloWorld/character_body_2d_2.gd" id="6_taepc"]
+[ext_resource type="Script" uid="uid://dame8esx28hj5" path="res://tests/prototypes/1_HelloWorld/character_body_2d.gd" id="4_cdqa0"]
+[ext_resource type="Script" uid="uid://dj72lrudwnug3" path="res://tests/prototypes/1_HelloWorld/character_body_2d_2.gd" id="6_taepc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pi8jn"]
 size = Vector2(124, 120.75472)

@@ -112,7 +112,6 @@ func flash_warning() -> void:
 	_is_flashing = true
 	var alert_color = Color(0.85, 0.15, 0.15)
 	var default_color = Color(0.12, 0.10, 0.08)
-	var transparent_color = Color(1, 1, 1, 0)
 
 	
 	var tween = create_tween()

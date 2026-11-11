@@ -1,8 +1,8 @@
-[gd_scene format=3 uid="uid://bwlyq7dkge3ja"]
+[gd_scene format=3]
 
-[ext_resource type="Script" uid="uid://codvtvgpaw1g0" path="res://src/ui/player_hud.gd" id="1_hudgd"]
-[ext_resource type="Texture2D" uid="uid://bvkunyq4dv8qu" path="res://assets/art/ui/personagem_caju.png" id="2_portr"]
-[ext_resource type="Texture2D" uid="uid://djdxi8hhbkwp6" path="res://assets/art/ui/coracao_cheio.png" id="3_heart"]
+[ext_resource type="Script" path="res://src/ui/player_hud.gd" id="1_hudgd"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/personagem_caju.png" id="2_portr"]
+[ext_resource type="Texture2D" path="res://assets/art/ui/coracao_cheio.png" id="3_heart"]
 
 [node name="PlayerHUD" type="CanvasLayer" unique_id=576224389]
 layer = 10
