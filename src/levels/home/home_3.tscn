@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://b6ix8bbc6u8vf" path="res://src/levels/home/home_3.gd" id="1_t4ir5"]
 [ext_resource type="Texture2D" uid="uid://ca55txe70npdk" path="res://assets/art/world/home/ground_sprite_sheet.png" id="2_t4ir5"]
 [ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://src/entities/player/caju.tscn" id="3_lggft"]
-[ext_resource type="PackedScene" path="res://src/entities/items/cortina/cortina.tscn" id="4_cortina"]
+[ext_resource type="PackedScene" uid="uid://yc42dfdv06n7" path="res://src/entities/items/cortina/cortina.tscn" id="4_cortina"]
 [ext_resource type="Texture2D" uid="uid://b4buqfkrfenfh" path="res://assets/art/world/home/chair.png" id="4_d6xpi"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_d6xpi"]

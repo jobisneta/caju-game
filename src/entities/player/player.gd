@@ -150,17 +150,17 @@ func _physics_process(delta: float) -> void:
 			var swing_vel: float = cortina_atual.get_swing_velocity()
 			if swing_vel > 0.05:
 				if anim:
-					anim.flip_h = false
+					anim.flip_h = true
 			elif swing_vel < -0.05:
 				if anim:
-					anim.flip_h = true
+					anim.flip_h = false
 		elif is_instance_valid(cortina_atual) and cortina_atual.rotation != 0.0:
 			if cortina_atual.rotation > 0:
 				if anim:
-					anim.flip_h = false
+					anim.flip_h = true
 			elif cortina_atual.rotation < 0:
 				if anim:
-					anim.flip_h = true
+					anim.flip_h = false
 			
 		# 3. Animação de segurar (Caju usa a animação "climb")
 		if anim and anim.animation != "climb":
