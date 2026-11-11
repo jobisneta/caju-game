@@ -49,6 +49,10 @@ var na_escada: bool = false
 var is_gliding: bool = false
 const VELOCIDADE_ESCALADA = 150.0 # Ajuste a velocidade como preferir
 
+var na_cortina: bool = false
+var cortina_atual: Node2D = null
+var ancora_atual: Marker2D = null
+
 # Internal kinematics
 var jump_velocity: float
 var jump_gravity: float
@@ -125,6 +129,36 @@ func _physics_process(delta: float) -> void:
 				velocity.y += gravity * delta
 		else:
 			is_gliding = false
+			
+	if na_cortina:
+		# 1. Prende a posição do Caju ao marcador da cortina
+		global_position = ancora_atual.global_position
+		
+		# (Opcional) Virar o sprite dependendo da rotação
+		if cortina_atual.rotation > 0:
+			anim.flip_h = false
+		elif cortina_atual.rotation < 0:
+			anim.flip_h = true
+			
+		# Animação
+		if anim.animation != "clim": # Se tiver uma animação "hang", use-a aqui
+			anim.play("climb")
+			
+		# 2. Lógica para pular da cortina
+		if _is_jump_just_pressed():
+			na_cortina = false
+			
+			# Calcula o impulso baseado no ângulo em que a cortina está naquele exato frame.
+			# Multiplicamos o seno da rotação por uma força horizontal (ex: 400).
+			var forca_horizontal = sin(cortina_atual.rotation) * 450.0
+			
+			# Aplica o pulo vertical normal + a força do balanço horizontal
+			velocity.y = jump_velocity
+			velocity.x = forca_horizontal
+			
+			_coyote_timer = 0.0 # Evita pulo duplo fantasma
+			
+		return
 			
 	# Check landing for signals
 	if not _was_on_floor and is_on_floor():
@@ -316,3 +350,14 @@ func _handle_push_crates(delta: float) -> void:
 				var pushed = collider.push(Vector2(input_dir, 0.0), push_speed, delta)
 				if pushed:
 					velocity.x = input_dir * push_speed
+					
+func agarrar_cortina(cortina: Node2D, ancora: Marker2D) -> void:
+	# Só agarra se não estiver já pendurado e se estiver a cair (opcional, evita agarrar de baixo para cima)
+	if not na_cortina:
+		na_cortina = true
+		cortina_atual = cortina
+		ancora_atual = ancora
+		
+		# Zera a velocidade do Caju para ele parar de cair
+		velocity = Vector2.ZERO
+		is_gliding = false
