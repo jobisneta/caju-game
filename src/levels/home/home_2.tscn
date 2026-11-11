@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://ch3lqw3rgtkoq" path="res://assets/art/world/home/luminaria.png" id="6_qpk70"]
 [ext_resource type="Texture2D" uid="uid://cjx12c7kg0bmd" path="res://assets/art/world/home/shelf_2.png" id="7_ll5lq"]
 [ext_resource type="Texture2D" uid="uid://du380aepr3bs1" path="res://assets/art/world/home/shelf_3.png" id="7_qvkdx"]
+[ext_resource type="Texture2D" uid="uid://b4buqfkrfenfh" path="res://assets/art/world/home/chair.png" id="8_keoab"]
 [ext_resource type="Texture2D" uid="uid://cv4noqjb4nm5e" path="res://assets/art/world/home/escada1.png" id="9_0bqwe"]
 [ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://src/entities/player/caju.tscn" id="11_uncqa"]
 [ext_resource type="PackedScene" uid="uid://bp40bxaq7qoca" path="res://src/entities/enemies/glass_bottle/glass_bottle.tscn" id="12_gbhazard"]
@@ -34,6 +35,9 @@ size = Vector2(64, 10.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pi8jn"]
 size = Vector2(64, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vjuni"]
+size = Vector2(32, 4)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_pi8jn"]
 normal = Vector2(1, 0)
@@ -74,11 +78,12 @@ position = Vector2(-2, 0)
 shape = SubResource("RectangleShape2D_6or6s")
 
 [node name="Sprite2D" type="Sprite2D" parent="Environment/Floor2" unique_id=236787165]
-position = Vector2(-2, 0)
+position = Vector2(-0.5, 0)
+scale = Vector2(1.009375, 1)
 texture = ExtResource("4_xwcet")
 
 [node name="Luminaria" type="StaticBody2D" parent="Environment" unique_id=1891947479]
-position = Vector2(223, 24)
+position = Vector2(248, 28)
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Luminaria" unique_id=183789600]
@@ -89,19 +94,18 @@ shape = SubResource("RectangleShape2D_464tc")
 texture = ExtResource("6_qpk70")
 
 [node name="Prateleira" type="StaticBody2D" parent="Environment" unique_id=438107696]
-position = Vector2(312, 106)
+position = Vector2(309, 116)
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Prateleira" unique_id=1048066706]
-position = Vector2(2, -9)
 shape = SubResource("RectangleShape2D_dtg5i")
 
 [node name="Sprite2D" type="Sprite2D" parent="Environment/Prateleira" unique_id=2075226542]
-position = Vector2(2, 5)
+position = Vector2(0, 14)
 texture = ExtResource("7_ll5lq")
 
 [node name="Armario" type="StaticBody2D" parent="Environment" unique_id=1396647571]
-position = Vector2(418, 128)
+position = Vector2(412, 128)
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Armario" unique_id=1235414149]
@@ -112,15 +116,14 @@ shape = SubResource("RectangleShape2D_25nce")
 texture = ExtResource("5_p1ry8")
 
 [node name="Prateleira2" type="StaticBody2D" parent="Environment" unique_id=737460771]
-position = Vector2(245, 142)
+position = Vector2(544, 82)
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Prateleira2" unique_id=654363089]
-position = Vector2(2, -9)
 shape = SubResource("RectangleShape2D_dtg5i")
 
 [node name="Sprite2D" type="Sprite2D" parent="Environment/Prateleira2" unique_id=919742644]
-position = Vector2(2, 5)
+position = Vector2(0, 14)
 texture = ExtResource("7_ll5lq")
 
 [node name="Estante" type="StaticBody2D" parent="Environment" unique_id=138010927]
@@ -133,11 +136,21 @@ texture = ExtResource("7_qvkdx")
 position = Vector2(0, -46)
 shape = SubResource("RectangleShape2D_pi8jn")
 
+[node name="Cadeira" type="StaticBody2D" parent="Environment" unique_id=159018480]
+position = Vector2(206, 141)
+
+[node name="Sprite2D" type="Sprite2D" parent="Environment/Cadeira" unique_id=135644933]
+texture = ExtResource("8_keoab")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Cadeira" unique_id=1092157406]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_vjuni")
+
 [node name="GlassBottle4" parent="Environment" unique_id=760144183 instance=ExtResource("12_gbhazard")]
 position = Vector2(124, 95)
 
 [node name="GlassBottle3" parent="Environment" unique_id=917908215 instance=ExtResource("12_gbhazard")]
-position = Vector2(124, 139)
+position = Vector2(128, 117)
 
 [node name="GlassBottle2" parent="Environment" unique_id=1979197508 instance=ExtResource("12_gbhazard")]
 position = Vector2(146, 117)
@@ -162,7 +175,7 @@ shape = SubResource("WorldBoundaryShape2D_vjuni")
 [node name="Items" type="Node2D" parent="." unique_id=338428424]
 
 [node name="Bottle" parent="Items" unique_id=2115471042 instance=ExtResource("2_33cqm")]
-position = Vector2(418, 68)
+position = Vector2(565, 72)
 
 [node name="escada" type="Area2D" parent="." unique_id=1048669535]
 position = Vector2(26, 89)
