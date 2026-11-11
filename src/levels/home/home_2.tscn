@@ -83,7 +83,7 @@ scale = Vector2(1.009375, 1)
 texture = ExtResource("4_xwcet")
 
 [node name="Luminaria" type="StaticBody2D" parent="Environment" unique_id=1891947479]
-position = Vector2(248, 28)
+position = Vector2(247, 18)
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Luminaria" unique_id=183789600]

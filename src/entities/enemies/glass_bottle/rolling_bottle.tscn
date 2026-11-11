@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://cx6r0vy2a1m4k"]
+
+[ext_resource type="Script" path="res://src/entities/enemies/glass_bottle/rolling_bottle.gd" id="1_rbscript"]
+[ext_resource type="Texture2D" uid="uid://b8ewkbocxqst7" path="res://assets/art/world/objects/glass_bottle.png" id="2_cna1u"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 6.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hitbox"]
+radius = 7.0
+
+[node name="RollingBottle" type="CharacterBody2D"]
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("1_rbscript")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_cna1u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_body")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_hitbox")

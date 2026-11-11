@@ -41,6 +41,7 @@ signal interacted(target: Node2D)
 @export_group("Game Feel")
 @export var coyote_time: float = 0.12
 @export var jump_buffer_time: float = 0.10
+@export var damage_knockback_impulse: float = 140.0
 
 @export_group("State")
 @export var is_active: bool = false
@@ -368,6 +369,9 @@ func take_damage(amount: int = 1, force: bool = false) -> void:
 	# Só ativa invulnerabilidade se o personagem sobreviveu ao dano
 	if not is_lethal:
 		trigger_invulnerability(1.0)
+		velocity.y = -damage_knockback_impulse
+		if na_escada:
+			na_escada = false
 
 func heal(amount: int = 1) -> void:
 	if is_inside_tree() and has_node("/root/GameManager"):

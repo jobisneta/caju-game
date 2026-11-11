@@ -558,6 +558,72 @@ func _ready() -> void:
 	assert(lethal_player.is_invulnerable == false, "[FAIL] Lethal damage must not activate invulnerability")
 	lethal_player.queue_free()
 	print("[PASS] Test 28: Lethal Game Over defensive tree-shielding verified without errors.")
+
+	# Test 29: Leve impulso para cima (-140 px/s) ao receber dano e liberação da escada
+	GameManager.reset_shared_health()
+	var knockback_player: CharacterBody2D = load("res://src/entities/player/caju.tscn").instantiate()
+	add_child(knockback_player)
+	knockback_player.velocity = Vector2.ZERO
+	assert(knockback_player.damage_knockback_impulse == 140.0, "[FAIL] Player default damage_knockback_impulse must be 140.0")
+	knockback_player.take_damage(1)
+	assert(knockback_player.velocity.y < 0.0, "[FAIL] Player velocity.y must be negative (upward) on damage")
+	assert(abs(knockback_player.velocity.y - (-140.0)) < 0.01, "[FAIL] Player velocity.y must be exactly -140.0")
 	
-	print("[TEST] ALL 28 INTEGRATION TESTS PASSED WITH 100% SUCCESS!")
+	# Teste de liberação da escada ao tomar dano
+	knockback_player.is_invulnerable = false
+	knockback_player.na_escada = true
+	knockback_player.take_damage(1)
+	assert(knockback_player.na_escada == false, "[FAIL] Player must be detached from ladder on damage")
+	assert(knockback_player.velocity.y < 0.0, "[FAIL] Player must receive upward impulse even when on ladder")
+	knockback_player.queue_free()
+	print("[PASS] Test 29: Upward knockback impulse on damage and ladder detach verified.")
+
+	# Test 30: Garrafa rolante (queda, rolagem, rotação, dano e destruição na parede) + Spawner de Home 2
+	GameManager.reset_shared_health()
+	var rb_scene = load("res://src/entities/enemies/glass_bottle/rolling_bottle.tscn")
+	assert(rb_scene != null, "[FAIL] rolling_bottle.tscn must exist and load successfully")
+	var rb_instance = rb_scene.instantiate()
+	add_child(rb_instance)
+	assert(rb_instance is RollingBottle, "[FAIL] rb_instance must be of class RollingBottle")
+	assert(rb_instance.current_state == RollingBottle.BottleState.FALLING, "[FAIL] Initial state must be FALLING")
+	assert(rb_instance.collision_layer == 16, "[FAIL] RollingBottle layer must be 16 (hazards)")
+	assert(rb_instance.collision_mask == 1, "[FAIL] RollingBottle mask must be 1 (world)")
+	
+	# Queda com gravidade
+	rb_instance._physics_process(0.1)
+	assert(rb_instance.velocity.y > 0.0, "[FAIL] RollingBottle must gain positive Y velocity while falling")
+	assert(rb_instance.velocity.x == 0.0, "[FAIL] RollingBottle horizontal velocity must be 0 while falling")
+	
+	# Transição e rolagem para a direita
+	rb_instance.current_state = RollingBottle.BottleState.ROLLING
+	rb_instance._physics_process(0.1)
+	assert(rb_instance.velocity.x == rb_instance.roll_speed, "[FAIL] RollingBottle must roll at roll_speed")
+	assert(rb_instance.sprite.rotation != 0.0, "[FAIL] RollingBottle sprite must rotate while rolling")
+	
+	# Aplicação de dano no Caju
+	var victim_player: CharacterBody2D = load("res://src/entities/player/caju.tscn").instantiate()
+	add_child(victim_player)
+	GameManager.reset_shared_health()
+	rb_instance._on_hitbox_body_entered(victim_player)
+	assert(GameManager.shared_health == 2, "[FAIL] RollingBottle must deal 1 damage to shared health on contact")
+	assert(victim_player.velocity.y < 0.0, "[FAIL] Player damaged by RollingBottle must receive upward knockback")
+	victim_player.queue_free()
+	
+	# Quebra da garrafa
+	rb_instance.break_bottle()
+	assert(rb_instance.current_state == RollingBottle.BottleState.BREAKING, "[FAIL] State must be BREAKING after break_bottle()")
+	assert(rb_instance._is_breaking == true, "[FAIL] _is_breaking must be true")
+	rb_instance.queue_free()
+	
+	# Teste do Spawner em LevelHome2
+	var t30_home2_scene = load("res://src/levels/home/home_2.tscn")
+	var t30_home2_instance = t30_home2_scene.instantiate()
+	add_child(t30_home2_instance)
+	assert(t30_home2_instance.has_method("spawn_rolling_bottle_at"), "[FAIL] LevelHome2 must have spawn_rolling_bottle_at method")
+	var spawned_rb = t30_home2_instance.spawn_rolling_bottle_at(Vector2(144, 100))
+	assert(spawned_rb != null and spawned_rb is RollingBottle, "[FAIL] spawn_rolling_bottle_at must instantiate a RollingBottle")
+	t30_home2_instance.queue_free()
+	print("[PASS] Test 30: Rolling bottle kinematics, damage, break and LevelHome2 spawner verified.")
+	
+	print("[TEST] ALL 30 INTEGRATION TESTS PASSED WITH 100% SUCCESS!")
 	get_tree().quit(0)
