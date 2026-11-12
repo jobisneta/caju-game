@@ -10,9 +10,11 @@ signal broken
 enum BottleState { FALLING, ROLLING, BREAKING }
 
 @export var roll_speed: float = 110.0
+@export var roll_direction: float = 1.0
 @export var gravity: float = 500.0
 @export var damage: int = 1
-@export var max_x_position: float = 640.0
+@export var min_x_position: float = 0.0
+@export var max_x_position: float = 920.0
 
 var current_state: BottleState = BottleState.FALLING
 var _is_breaking: bool = false
@@ -49,14 +51,18 @@ func _physics_process(delta: float) -> void:
 			else:
 				velocity.y = 0.0
 				
-			velocity.x = roll_speed
+			velocity.x = roll_speed * roll_direction
 			move_and_slide()
 			
 			if sprite:
-				sprite.rotation += (roll_speed / 8.0) * delta
+				sprite.rotation += (roll_speed * roll_direction / 8.0) * delta
 				
-			if is_on_wall() or global_position.x >= max_x_position:
-				break_bottle()
+			if roll_direction > 0.0:
+				if is_on_wall() or global_position.x >= max_x_position:
+					break_bottle()
+			else:
+				if is_on_wall() or global_position.x <= min_x_position:
+					break_bottle()
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if current_state == BottleState.BREAKING:

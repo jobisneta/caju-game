@@ -18,10 +18,16 @@ var _caju_at_top: bool = false
 var _completed: bool = false
 var _bottle_spawn_timer: Timer = null
 var _shelf_bottle_positions: Array[Vector2] = []
+var _shelf2_spawn_timer: Timer = null
+var _shelf2_bottle_positions: Array[Vector2] = []
+var _shelf2_active: bool = false
 
 func _ready() -> void:
 	if has_node("Caju"):
 		caju = get_node("Caju")
+		caju.set_camera_limits(0, 920, 0, 180)
+		if caju.has_method("make_active"):
+			caju.make_active()
 
 	if caju and caju.has_method("make_active"):
 		caju.make_active()
@@ -31,6 +37,11 @@ func _ready() -> void:
 	_setup_player_hud()
 	_setup_items_hud()
 	_setup_bottle_spawner()
+	
+	if has_node("/root/EventBus"):
+		var eb = get_node("/root/EventBus")
+		if not eb.item_collected.is_connected(_on_item_collected):
+			eb.item_collected.connect(_on_item_collected)
 
 func _setup_tutorial_popup() -> void:
 	var popup = TutorialPopupClass.new()
@@ -90,6 +101,7 @@ func _on_escada_body_exited(body: Node2D) -> void:
 		body.na_escada = false
 
 func _setup_bottle_spawner() -> void:
+	# Estante 1 (Garrafas 1 a 4) - rolam para a direita
 	_shelf_bottle_positions.clear()
 	var shelf_bottle_names: Array[String] = [
 		"Environment/GlassBottle1",
@@ -103,10 +115,10 @@ func _setup_bottle_spawner() -> void:
 			
 	if _shelf_bottle_positions.is_empty():
 		_shelf_bottle_positions = [
-			Vector2(163, 95),
-			Vector2(146, 117),
-			Vector2(128, 117),
-			Vector2(124, 95)
+			Vector2(255, 95),
+			Vector2(238, 117),
+			Vector2(220, 117),
+			Vector2(216, 95)
 		]
 		
 	_bottle_spawn_timer = Timer.new()
@@ -115,6 +127,32 @@ func _setup_bottle_spawner() -> void:
 	add_child(_bottle_spawn_timer)
 	_bottle_spawn_timer.timeout.connect(_on_bottle_spawn_timer_timeout)
 	_schedule_next_bottle_spawn()
+
+	# Estante 2 (Garrafas 5 a 8) - rolam para a esquerda após coletar o item
+	_shelf2_bottle_positions.clear()
+	var shelf2_bottle_names: Array[String] = [
+		"Environment/GlassBottle5",
+		"Environment/GlassBottle6",
+		"Environment/GlassBottle7",
+		"Environment/GlassBottle8"
+	]
+	for path in shelf2_bottle_names:
+		if has_node(path):
+			_shelf2_bottle_positions.append(get_node(path).global_position)
+			
+	if _shelf2_bottle_positions.is_empty():
+		_shelf2_bottle_positions = [
+			Vector2(707, 95),
+			Vector2(689, 117),
+			Vector2(723, 117),
+			Vector2(724, 95)
+		]
+
+	_shelf2_spawn_timer = Timer.new()
+	_shelf2_spawn_timer.name = "BottleSpawnTimer2"
+	_shelf2_spawn_timer.one_shot = true
+	add_child(_shelf2_spawn_timer)
+	_shelf2_spawn_timer.timeout.connect(_on_shelf2_spawn_timer_timeout)
 
 func _schedule_next_bottle_spawn() -> void:
 	if _completed or not is_instance_valid(_bottle_spawn_timer):
@@ -132,11 +170,39 @@ func _spawn_rolling_bottle() -> RollingBottle:
 	if _shelf_bottle_positions.is_empty():
 		return null
 	var spawn_pos: Vector2 = _shelf_bottle_positions.pick_random()
-	return spawn_rolling_bottle_at(spawn_pos)
+	return spawn_rolling_bottle_at(spawn_pos, 1.0)
 
-func spawn_rolling_bottle_at(pos: Vector2) -> RollingBottle:
+func _on_item_collected(_item_name: String, _collector: CharacterBody2D) -> void:
+	if _completed or _shelf2_active:
+		return
+	_shelf2_active = true
+	# Delay inicial de 1.0 a 1.5s após a coleta do item antes da primeira garrafa cair
+	if is_instance_valid(_shelf2_spawn_timer):
+		var initial_delay: float = randf_range(1.0, 1.5)
+		_shelf2_spawn_timer.start(initial_delay)
+
+func _schedule_next_shelf2_spawn() -> void:
+	if _completed or not _shelf2_active or not is_instance_valid(_shelf2_spawn_timer):
+		return
+	var wait_time: float = randf_range(2.0, 3.5)
+	_shelf2_spawn_timer.start(wait_time)
+
+func _on_shelf2_spawn_timer_timeout() -> void:
+	if _completed or not _shelf2_active:
+		return
+	_spawn_rolling_bottle_shelf2()
+	_schedule_next_shelf2_spawn()
+
+func _spawn_rolling_bottle_shelf2() -> RollingBottle:
+	if _shelf2_bottle_positions.is_empty():
+		return null
+	var spawn_pos: Vector2 = _shelf2_bottle_positions.pick_random()
+	return spawn_rolling_bottle_at(spawn_pos, -1.0)
+
+func spawn_rolling_bottle_at(pos: Vector2, direction: float = 1.0) -> RollingBottle:
 	var bottle: RollingBottle = RollingBottleScene.instantiate() as RollingBottle
 	bottle.global_position = pos
+	bottle.roll_direction = direction
 	var container = get_node_or_null("Environment")
 	if container:
 		container.add_child(bottle)
@@ -150,6 +216,12 @@ func _on_level_finished() -> void:
 	_completed = true
 	if is_instance_valid(_bottle_spawn_timer):
 		_bottle_spawn_timer.stop()
+	if is_instance_valid(_shelf2_spawn_timer):
+		_shelf2_spawn_timer.stop()
+	if has_node("/root/EventBus"):
+		var eb = get_node("/root/EventBus")
+		if eb.item_collected.is_connected(_on_item_collected):
+			eb.item_collected.disconnect(_on_item_collected)
 	print("Parabéns! Fase 2 concluída! Transitando para Fase 3...")
 	
 	if has_node("/root/EventBus"):

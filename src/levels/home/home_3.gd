@@ -17,7 +17,7 @@ var _completed: bool = false
 func _ready() -> void:
 	if has_node("Caju"):
 		caju = get_node("Caju")
-		caju.set_camera_limits(0, 1280, 0, 180)
+		caju.set_camera_limits(0, 1024, 0, 180)
 		if caju.has_method("make_active"):
 			caju.make_active()
 	else:
