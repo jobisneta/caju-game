@@ -46,6 +46,8 @@ signal interacted(target: Node2D)
 @export_group("State")
 @export var is_active: bool = false
 
+@onready var som_pulo = get_node_or_null("som_pulo")
+
 var na_escada: bool = false
 var is_gliding: bool = false
 const VELOCIDADE_ESCALADA = 150.0 # Ajuste a velocidade como preferir
@@ -186,6 +188,8 @@ func _physics_process(delta: float) -> void:
 			ancora_atual = null
 			
 			velocity.y = jump_velocity
+			if som_pulo:
+				som_pulo.play()
 			if abs(forca_horizontal) >= 30.0:
 				velocity.x = forca_horizontal
 			else:
@@ -281,6 +285,8 @@ func _execute_jump() -> void:
 	velocity.y = jump_velocity
 	_coyote_timer = 0.0
 	_jump_buffer_timer = 0.0
+	if som_pulo:
+		som_pulo.play()
 	if has_node("/root/EventBus"):
 		get_node("/root/EventBus").player_jumped.emit(self)
 

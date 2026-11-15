@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://v2han5yvfdj3" path="res://assets/art/characters/tody/tody_andando.png" id="4_d4wbx"]
 [ext_resource type="Texture2D" uid="uid://b6md6vtvgrrig" path="res://assets/art/ui/personagem_tody.png" id="5_tody_portr"]
 [ext_resource type="AudioStream" uid="uid://blkd0uuvvr2mq" path="res://assets/sounds/game_over_sound.wav" id="6_glcvx"]
+[ext_resource type="AudioStream" uid="uid://cnbhnvwcadq38" path="res://assets/sounds/pulo.wav" id="7_ylimc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dtg5i"]
 size = Vector2(32, 39)
@@ -128,3 +129,6 @@ position_smoothing_speed = 3.0
 
 [node name="som_derrota" type="AudioStreamPlayer2D" parent="." unique_id=1264094801]
 stream = ExtResource("6_glcvx")
+
+[node name="som_pulo" type="AudioStreamPlayer2D" parent="." unique_id=130566584]
+stream = ExtResource("7_ylimc")

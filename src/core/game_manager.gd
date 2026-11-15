@@ -4,6 +4,7 @@ extends Node
 ## Coordinates player registry, character switching, score, shared health and global gameplay state.
 
 const SOM_DERROTA = preload("res://assets/sounds/game_over_sound.wav")
+const SOM_ITEM = preload ("res://assets/sounds/pickup.mp3")
 
 var cena_para_reiniciar: String = ""
 var active_player: CharacterBody2D = null
@@ -24,6 +25,8 @@ func _ready() -> void:
 		var bus = get_node("/root/EventBus")
 		if not bus.level_completed.is_connected(_on_level_completed):
 			bus.level_completed.connect(_on_level_completed)
+		if not bus.item_collected.is_connected(_on_item_collected):
+			bus.item_collected.connect(_on_item_collected)
 
 func _unhandled_input(event: InputEvent) -> void:
 	var tree: SceneTree = get_tree()
@@ -93,6 +96,14 @@ func collect_bottle(collector: CharacterBody2D) -> void:
 	if has_node("/root/EventBus"):
 		EventBus.item_collected.emit("bottle", collector)
 		EventBus.level_items_updated.emit(level_collected_items, level_total_items)
+
+func _on_item_collected(_item_type: Variant = null, _collector: Variant = null) -> void:
+	var audio = AudioStreamPlayer.new()
+	audio.stream = SOM_ITEM
+	audio.volume_db = -3.5
+	add_child(audio)
+	audio.play()
+	audio.finished.connect(audio.queue_free)
 
 # --- Sistema de Vida Compartilhada e Morte ---
 
