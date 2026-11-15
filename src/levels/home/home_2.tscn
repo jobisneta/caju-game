@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://cv4noqjb4nm5e" path="res://assets/art/world/home/escada1.png" id="9_0bqwe"]
 [ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://src/entities/player/caju.tscn" id="11_uncqa"]
 [ext_resource type="PackedScene" uid="uid://bp40bxaq7qoca" path="res://src/entities/enemies/glass_bottle/glass_bottle.tscn" id="12_gbhazard"]
+[ext_resource type="AudioStream" uid="uid://2w74yjm877cg" path="res://assets/sounds/musica_casa.ogg" id="12_keoab"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6b1k3"]
 texture = ExtResource("3_xlg7c")
@@ -219,6 +220,11 @@ texture = ExtResource("9_0bqwe")
 
 [node name="Caju" parent="." unique_id=189020559 instance=ExtResource("11_uncqa")]
 position = Vector2(802, 160)
+
+[node name="musica_fundo" type="AudioStreamPlayer" parent="." unique_id=770026099]
+stream = ExtResource("12_keoab")
+volume_db = -10.0
+autoplay = true
 
 [connection signal="body_entered" from="escada" to="." method="_on_escada_body_entered"]
 [connection signal="body_exited" from="escada" to="." method="_on_escada_body_exited"]

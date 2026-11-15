@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://src/entities/player/caju.tscn" id="5_x6kwn"]
 [ext_resource type="PackedScene" uid="uid://c6v2oak8kiki1" path="res://src/entities/player/kiki.tscn" id="6_ldnl6"]
 [ext_resource type="PackedScene" path="res://src/ui/player_hud.tscn" id="7_ty5dn"]
+[ext_resource type="AudioStream" uid="uid://c5f1fywimfbqq" path="res://assets/sounds/musica_telhado.mp3" id="8_x6kwn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_taheu"]
 texture = ExtResource("2_x6kwn")
@@ -238,5 +239,10 @@ scale = Vector2(1.8125, 1.8125)
 texture = ExtResource("3_wbjs8")
 
 [node name="PlayerHUD" parent="." unique_id=279387564 instance=ExtResource("7_ty5dn")]
+
+[node name="musica_fundo" type="AudioStreamPlayer" parent="." unique_id=418126726]
+stream = ExtResource("8_x6kwn")
+volume_db = -10.0
+autoplay = true
 
 [connection signal="body_entered" from="limite_baixo" to="." method="_on_queda_area_body_entered"]

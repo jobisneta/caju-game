@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" path="res://src/ui/player_hud.tscn" id="10_tefyx"]
 [ext_resource type="Script" uid="uid://cdyme22tybtux" path="res://src/entities/items/pushable_crate.gd" id="11_crate"]
 [ext_resource type="PackedScene" uid="uid://c6v2j8xap2lkn" path="res://src/ui/items_hud.tscn" id="12_ihud"]
+[ext_resource type="AudioStream" uid="uid://2w74yjm877cg" path="res://assets/sounds/musica_casa.ogg" id="16_1nxye"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6b1k3"]
 texture = ExtResource("2_cn4pm")
@@ -233,6 +234,11 @@ is_active = true
 [node name="PlayerHUD" parent="." unique_id=1362306743 instance=ExtResource("10_tefyx")]
 
 [node name="ItemsHUD" parent="." unique_id=1498302181 instance=ExtResource("12_ihud")]
+
+[node name="musica_fundo" type="AudioStreamPlayer" parent="." unique_id=1735002879]
+stream = ExtResource("16_1nxye")
+volume_db = -10.0
+autoplay = true
 
 [connection signal="body_entered" from="escada" to="." method="_on_escada_body_entered"]
 [connection signal="body_exited" from="escada" to="." method="_on_escada_body_exited"]
