@@ -3,6 +3,7 @@ extends Player
 @export_group("Habilidade da Mãe")
 @export var cena_mae_coruja: PackedScene
 @export var chamadas_maximas: int = 3
+@onready var som_assobio = $som_assobio
 
 var chamadas_restantes: int = 3
 var mae_instancia = null
@@ -32,7 +33,9 @@ func usar_habilidade_galho() -> void:
 		
 	if estado_habilidade == 0:
 		if chamadas_restantes > 0:
-			print("Kiki: Fiu fiu! (Assobio)") 
+			som_assobio.play(1.9)
+			await get_tree().create_timer(1.5).timeout
+			som_assobio.stop()
 			
 			if cena_mae_coruja:
 				mae_instancia = cena_mae_coruja.instantiate()
