@@ -3,12 +3,16 @@ extends Node
 ## Global Game Manager for Caju Game.
 ## Coordinates player registry, character switching, score, shared health and global gameplay state.
 
+const SOM_DERROTA = preload("res://assets/sounds/game_over_sound.wav")
+
+var cena_para_reiniciar: String = ""
 var active_player: CharacterBody2D = null
 var players: Array[CharacterBody2D] = []
 var collected_bottles: int = 0
 var score: int = 0
 var level_total_items: int = 0
 var level_collected_items: int = 0
+
 
 @export var shared_max_health: int = 3
 var shared_health: int = 3
@@ -118,6 +122,7 @@ func _on_level_completed(_level_name: Variant = null) -> void:
 
 func trigger_game_over() -> void:
 	print("GameManager: Game Over! Vida compartilhada zerada.")
+	
 	reset_shared_health()
 	
 	var current_scene_path: String = ""
@@ -129,12 +134,34 @@ func trigger_game_over() -> void:
 func _deferred_change_or_reload_scene(current_scene_path: String) -> void:
 	if not is_inside_tree():
 		return
-	# Para mortes na casa (home_1, home_2, home_3), deve retornar a home_1.tscn
+		
+	# 1. Define qual checkpoint será carregado quando o jogador apertar uma tecla no Game Over
 	if "home" in current_scene_path:
-		print("GameManager: Morte na Casa detectada. Retornando para home_1.tscn...")
-		get_tree().change_scene_to_file("res://src/levels/home/home_1.tscn")
-	elif "test" in current_scene_path:
-		print("GameManager: Modo de teste detectado, suprimindo reload de cena no Game Over.")
+		print("GameManager: Morte na Casa detectada. Checkpoint -> home_1.tscn")
+		cena_para_reiniciar = "res://src/levels/home/home_1.tscn"
+	elif "telhado" in current_scene_path or "roof" in current_scene_path:
+		print("GameManager: Morte no telhado detectada. Checkpoint -> roof_1.tscn")
+		cena_para_reiniciar = "res://src/levels/telhado/roof_1.tscn"
+	elif "jardim" in current_scene_path or "garden" in current_scene_path:
+		print("GameManager: Morte no jardim detectada. Checkpoint -> garden_1.tscn")
+		cena_para_reiniciar = "res://src/levels/jardim/garden_1.tscn"
 	else:
-		print("GameManager: Morte em fase exterior. Reiniciando fase atual...")
-		get_tree().reload_current_scene()
+		print("GameManager: Morte em fase exterior. Checkpoint -> ", current_scene_path)
+		cena_para_reiniciar = current_scene_path
+		
+	# 2. Toca o som de derrota sem cortar
+	var audio = AudioStreamPlayer.new()
+	audio.stream = SOM_DERROTA
+	add_child(audio)
+	audio.play()
+	audio.finished.connect(audio.queue_free)
+	
+	# 3. Abre a tela de Game Over
+	get_tree().change_scene_to_file("res://src/ui/tela_game_over.tscn")
+
+func reiniciar_apos_gameover() -> void:
+	# Restaura a vida máxima e atualiza o HUD
+	reset_shared_health()
+	
+	if cena_para_reiniciar != "":
+		get_tree().call_deferred("change_scene_to_file", cena_para_reiniciar)

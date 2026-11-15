@@ -70,6 +70,7 @@ var _was_on_floor: bool = false
 # Node references with fallback for node name variations
 @onready var anim: AnimatedSprite2D = get_node_or_null("AnimatedSprite2D") if get_node_or_null("AnimatedSprite2D") else get_node_or_null("AnimatedSprite2D2")
 @onready var camera: Camera2D = get_node_or_null("Camera2D")
+@onready var som_derrota: AudioStreamPlayer = get_node_or_null("SomDerrota")
 
 func _ready() -> void:
 	add_to_group("player")
@@ -372,6 +373,9 @@ func take_damage(amount: int = 1, force: bool = false) -> void:
 		velocity.y = -damage_knockback_impulse
 		if na_escada:
 			na_escada = false
+	else:
+		if som_derrota:
+			som_derrota.play()
 
 func heal(amount: int = 1) -> void:
 	if is_inside_tree() and has_node("/root/GameManager"):

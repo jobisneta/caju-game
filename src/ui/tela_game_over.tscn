@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://0bmbc6avd2ay"]
+
+[ext_resource type="Script" uid="uid://cqibhqhu3txth" path="res://src/ui/tela_game_over.gd" id="1_2im5a"]
+[ext_resource type="Texture2D" uid="uid://dkqfscktaf2gr" path="res://assets/art/ui/tela_game_over.png" id="1_hjhmk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2im5a"]
+atlas = ExtResource("1_hjhmk")
+region = Rect2(0, 0, 320, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ts6n3"]
+atlas = ExtResource("1_hjhmk")
+region = Rect2(320, 0, 320, 180)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dtg5i"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2im5a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ts6n3")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 2.0
+}]
+
+[node name="TelaGameOver" type="Control" unique_id=193761675]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2im5a")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1973057850]
+position = Vector2(158, 91)
+sprite_frames = SubResource("SpriteFrames_dtg5i")
+autoplay = "default"
