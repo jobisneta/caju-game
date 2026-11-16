@@ -39,6 +39,17 @@ size = Vector2(215, 20)
 a = Vector2(-30, -30)
 b = Vector2(24, 24)
 
+[sub_resource type="Gradient" id="Gradient_x6kwn"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dtg5i"]
+gradient = SubResource("Gradient_x6kwn")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_pi8jn"]
 normal = Vector2(1, 0)
 
@@ -192,6 +203,10 @@ shape = SubResource("SegmentShape2D_dtg5i")
 [node name="Caju" parent="." unique_id=189020559 instance=ExtResource("5_x6kwn")]
 position = Vector2(91, 51)
 
+[node name="VisaoIluminada" type="PointLight2D" parent="Caju" unique_id=1989126118]
+texture = SubResource("GradientTexture2D_dtg5i")
+texture_scale = 0.7
+
 [node name="Kiki" parent="." unique_id=124830769 instance=ExtResource("6_ldnl6")]
 position = Vector2(140, 43)
 
@@ -244,5 +259,8 @@ texture = ExtResource("3_wbjs8")
 stream = ExtResource("8_x6kwn")
 volume_db = -10.0
 autoplay = true
+
+[node name="FiltroEscuro" type="CanvasModulate" parent="." unique_id=4158297]
+color = Color(0, 0, 0.22352941, 1)
 
 [connection signal="body_entered" from="limite_baixo" to="." method="_on_queda_area_body_entered"]

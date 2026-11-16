@@ -9,6 +9,12 @@ extends Node2D
 const TutorialPopupClass = preload("res://src/ui/tutorial_popup.gd")
 const PlayerHUDClass = preload("res://src/ui/player_hud.gd")
 
+@onready var filtro_escuro: CanvasModulate = $FiltroEscuro
+@onready var luz_caju: PointLight2D = $Caju/LuzVisao
+const VISAO_CAJU := Color(0.08, 0.09, 0.16, 1.0) # Bem escuro (só vê perto da luz)
+const VISAO_KIKI := Color(0.65, 0.72, 0.88, 1.0) # Noite leve (enxerga o telhado todo)
+const ENERGIA_LUZ_CAJU: float = 0.9
+
 const EXIT_X_THRESHOLD: float = 3100.0
 
 @export var caju: CharacterBody2D
@@ -22,6 +28,10 @@ func _ready() -> void:
 	if has_node("Caju"):
 		caju = get_node("Caju")
 		caju.set_camera_limits(0, 3178, 0, 180)
+		for filho in $Caju.get_children():
+			if filho is PointLight2D:
+				luz_caju = filho
+				break
 	else:
 		push_error("LevelTelhado: Caju não foi encontrado!")
 	
@@ -42,6 +52,45 @@ func _ready() -> void:
 	# Instancia o popup de tutorial com botão '?'
 	_setup_tutorial_popup()
 	_setup_player_hud()
+	
+	if has_node("/root/EventBus"):
+		var bus = get_node("/root/EventBus")
+		if not bus.player_swapped.is_connected(_on_player_swapped):
+			bus.player_swapped.connect(_on_player_swapped)
+			
+	# Aplica a visão correta assim que a fase começa
+	if has_node("/root/GameManager"):
+		_atualizar_visao(get_node("/root/GameManager").active_player, true)
+
+
+func _on_player_swapped(novo_jogador: Node2D) -> void:
+	_atualizar_visao(novo_jogador, false)
+
+func _atualizar_visao(jogador: Node2D, instantaneo: bool) -> void:
+	if not is_instance_valid(jogador):
+		return
+		
+	var eh_caju: bool = ("character_id" in jogador and jogador.character_id == "caju")
+	var cor_alvo: Color = VISAO_CAJU if eh_caju else VISAO_KIKI
+	var energia_alvo: float = ENERGIA_LUZ_CAJU if eh_caju else 0.0
+	
+	if instantaneo:
+		if filtro_escuro:
+			filtro_escuro.color = cor_alvo
+		if luz_caju:
+			luz_caju.energy = energia_alvo
+			luz_caju.enabled = eh_caju
+	else:
+		var tween = create_tween().set_parallel(true)
+		if filtro_escuro:
+			tween.tween_property(filtro_escuro, "color", cor_alvo, 0.3)
+		if luz_caju:
+			if eh_caju:
+				luz_caju.enabled = true
+			tween.tween_property(luz_caju, "energy", energia_alvo, 0.3)
+			if not eh_caju:
+				tween.chain().tween_callback(func(): luz_caju.enabled = false)
+
 
 func _setup_tutorial_popup() -> void:
 	if not has_node("TutorialPopup"):

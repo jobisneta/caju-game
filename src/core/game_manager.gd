@@ -5,6 +5,7 @@ extends Node
 
 const SOM_DERROTA = preload("res://assets/sounds/game_over_sound.wav")
 const SOM_ITEM = preload ("res://assets/sounds/pickup.mp3")
+const SOM_PERDE_VIDA = preload("res://assets/sounds/lose_life.mp3")
 const SAVE_PATH: String = "user://savegame.cfg"
 
 var cena_para_reiniciar: String = ""
@@ -176,6 +177,14 @@ func take_shared_damage(amount: int = 1) -> void:
 	shared_health = clampi(shared_health - amount, 0, shared_max_health)
 	print("GameManager: Dano compartilhado sofrido! Vida restante: ", shared_health, "/", shared_max_health)
 	
+	var audio = AudioStreamPlayer.new()
+	audio.stream = SOM_PERDE_VIDA
+	audio.bus = &"SFX"
+	audio.volume_db = -10.0 
+	add_child(audio)
+	audio.play()
+	audio.finished.connect(audio.queue_free)
+	
 	if has_node("/root/EventBus"):
 		EventBus.player_health_changed.emit(active_player, shared_health, shared_max_health)
 		
@@ -229,6 +238,7 @@ func _deferred_change_or_reload_scene(current_scene_path: String) -> void:
 	var audio = AudioStreamPlayer.new()
 	audio.stream = SOM_DERROTA
 	audio.bus = &"SFX"
+	audio.volume_db = -15.0 
 	add_child(audio)
 	audio.play()
 	audio.finished.connect(audio.queue_free)
