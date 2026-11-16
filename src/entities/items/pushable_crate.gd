@@ -10,6 +10,7 @@ signal crate_fallen
 @export var requires_right_side: bool = true
 
 var _is_fallen: bool = false
+var som_tocado: bool = false
 
 func _ready() -> void:
 	add_to_group("interactable")
@@ -31,6 +32,17 @@ func interact(player: CharacterBody2D) -> void:
 func fall_to_target() -> void:
 	if _is_fallen:
 		return
+		
+	if not som_tocado and has_node("/root/GameManager"):
+		som_tocado = true
+		var audio = AudioStreamPlayer.new()
+		audio.stream = preload("res://assets/sounds/som_caixa.mp3")
+		audio.bus = &"SFX"
+		get_node("/root/GameManager").add_child(audio)
+		audio.play()
+		audio.finished.connect(audio.queue_free)
+			
+			
 	_is_fallen = true
 	
 	var col: CollisionShape2D = get_node_or_null("CollisionShape2D")
@@ -59,7 +71,6 @@ func _on_fall_completed() -> void:
 		var target_sprite: Sprite2D = target_box.get_node_or_null("Sprite2D")
 		if target_sprite:
 			target_sprite.visible = true
-	
 	crate_fallen.emit()
 	visible = false
 	queue_free()

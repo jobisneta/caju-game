@@ -4,6 +4,8 @@ extends Node2D
 ## Main house level controller for Caju Game (Fase 1).
 ## Manages active character, ladder interaction, tutorial popup,
 ## and scene transition when both characters reach the top of the ladder.
+@onready var som_cair: AudioStreamPlayer = get_node_or_null("SomCair")
+var som_tocado: bool = false
 
 const TutorialPopupClass = preload("res://src/ui/tutorial_popup.gd")
 const PlayerHUDClass = preload("res://src/ui/player_hud.gd")
