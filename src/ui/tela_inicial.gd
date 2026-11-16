@@ -9,5 +9,6 @@ func _ready() -> void:
 
 
 func _on_botao_jogar_pressed() -> void:
+	if has_node("/root/SettingsManager"):
+		SettingsManager.play_click_sound()
 	get_tree().change_scene_to_file("res://src/ui/menu_principal.tscn")
-	pass # Replace with function body.

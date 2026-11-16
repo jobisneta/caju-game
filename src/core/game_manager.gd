@@ -1,10 +1,11 @@
 extends Node
 
 ## Global Game Manager for Caju Game.
-## Coordinates player registry, character switching, score, shared health and global gameplay state.
+## Coordinates player registry, character switching, score, shared health, save system and global gameplay state.
 
 const SOM_DERROTA = preload("res://assets/sounds/game_over_sound.wav")
 const SOM_ITEM = preload ("res://assets/sounds/pickup.mp3")
+const SAVE_PATH: String = "user://savegame.cfg"
 
 var cena_para_reiniciar: String = ""
 var active_player: CharacterBody2D = null
@@ -13,7 +14,6 @@ var collected_bottles: int = 0
 var score: int = 0
 var level_total_items: int = 0
 var level_collected_items: int = 0
-
 
 @export var shared_max_health: int = 3
 var shared_health: int = 3
@@ -27,6 +27,65 @@ func _ready() -> void:
 			bus.level_completed.connect(_on_level_completed)
 		if not bus.item_collected.is_connected(_on_item_collected):
 			bus.item_collected.connect(_on_item_collected)
+
+# ==================== Sistema de Save / Load ====================
+
+## Retorna verdadeiro se existir um arquivo de save válido
+func has_save() -> bool:
+	if not FileAccess.file_exists(SAVE_PATH):
+		return false
+	var cfg = ConfigFile.new()
+	var err = cfg.load(SAVE_PATH)
+	if err != OK:
+		return false
+	var lvl = cfg.get_value("game", "current_level", "")
+	return lvl != "" and ResourceLoader.exists(lvl)
+
+## Salva os dados do jogo atual
+func save_game(scene_path: String = "") -> void:
+	if scene_path == "":
+		if get_tree() and get_tree().current_scene:
+			scene_path = get_tree().current_scene.scene_file_path
+	if not scene_path.begins_with("res://src/levels/"):
+		return
+		
+	var cfg = ConfigFile.new()
+	cfg.set_value("game", "current_level", scene_path)
+	cfg.set_value("game", "shared_health", shared_health)
+	cfg.set_value("game", "score", score)
+	cfg.set_value("game", "collected_bottles", collected_bottles)
+	cfg.save(SAVE_PATH)
+
+## Carrega o save e continua o jogo a partir da última fase salva
+func load_and_continue_game() -> void:
+	if not has_save():
+		start_new_game()
+		return
+		
+	var cfg = ConfigFile.new()
+	if cfg.load(SAVE_PATH) == OK:
+		var lvl = cfg.get_value("game", "current_level", "res://src/levels/home/home_1.tscn")
+		shared_health = cfg.get_value("game", "shared_health", shared_max_health)
+		score = cfg.get_value("game", "score", 0)
+		collected_bottles = cfg.get_value("game", "collected_bottles", 0)
+		get_tree().change_scene_to_file(lvl)
+	else:
+		start_new_game()
+
+## Inicia um novo jogo com vida cheia e salva a primeira fase
+func start_new_game() -> void:
+	reset_shared_health()
+	score = 0
+	collected_bottles = 0
+	save_game("res://src/levels/home/home_1.tscn")
+	get_tree().change_scene_to_file("res://src/levels/home/home_1.tscn")
+
+## Deleta o save (ex: ao terminar o jogo)
+func delete_save() -> void:
+	if FileAccess.file_exists(SAVE_PATH):
+		DirAccess.remove_absolute(SAVE_PATH)
+
+# ==================== Gerenciamento de Jogadores ====================
 
 func _unhandled_input(event: InputEvent) -> void:
 	var tree: SceneTree = get_tree()
@@ -53,6 +112,11 @@ func register_player(player: CharacterBody2D) -> void:
 		if active_player == null:
 			if ("is_active" in player and player.is_active) or players.size() == 1:
 				active_player = player
+				
+	# Salva automaticamente o progresso ao carregar a fase
+	var tree = get_tree()
+	if tree and tree.current_scene and tree.current_scene.scene_file_path.begins_with("res://src/levels/"):
+		save_game(tree.current_scene.scene_file_path)
 
 func unregister_player(player: CharacterBody2D) -> void:
 	players.erase(player)
@@ -101,6 +165,7 @@ func _on_item_collected(_item_type: Variant = null, _collector: Variant = null) 
 	var audio = AudioStreamPlayer.new()
 	audio.stream = SOM_ITEM
 	audio.volume_db = -3.5
+	audio.bus = &"SFX"
 	add_child(audio)
 	audio.play()
 	audio.finished.connect(audio.queue_free)
@@ -128,8 +193,8 @@ func reset_shared_health() -> void:
 		EventBus.player_health_changed.emit(active_player, shared_health, shared_max_health)
 
 func _on_level_completed(_level_name: Variant = null) -> void:
-	# Vida é automaticamente restaurada ao passar de fase
-	reset_shared_health()
+	# As vidas NÃO se regeneram no início de cada fase.
+	pass
 
 func trigger_game_over() -> void:
 	print("GameManager: Game Over! Vida compartilhada zerada.")
@@ -146,7 +211,7 @@ func _deferred_change_or_reload_scene(current_scene_path: String) -> void:
 	if not is_inside_tree():
 		return
 		
-	# 1. Define qual checkpoint será carregado quando o jogador apertar uma tecla no Game Over
+	# Define qual checkpoint será carregado quando o jogador reiniciar após Game Over
 	if "home" in current_scene_path:
 		print("GameManager: Morte na Casa detectada. Checkpoint -> home_1.tscn")
 		cena_para_reiniciar = "res://src/levels/home/home_1.tscn"
@@ -160,18 +225,17 @@ func _deferred_change_or_reload_scene(current_scene_path: String) -> void:
 		print("GameManager: Morte em fase exterior. Checkpoint -> ", current_scene_path)
 		cena_para_reiniciar = current_scene_path
 		
-	# 2. Toca o som de derrota sem cortar
+	# Toca o som de derrota
 	var audio = AudioStreamPlayer.new()
 	audio.stream = SOM_DERROTA
+	audio.bus = &"SFX"
 	add_child(audio)
 	audio.play()
 	audio.finished.connect(audio.queue_free)
 	
-	# 3. Abre a tela de Game Over
 	get_tree().change_scene_to_file("res://src/ui/tela_game_over.tscn")
 
 func reiniciar_apos_gameover() -> void:
-	# Restaura a vida máxima e atualiza o HUD
 	reset_shared_health()
 	
 	if cena_para_reiniciar != "":

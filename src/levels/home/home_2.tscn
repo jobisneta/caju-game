@@ -175,18 +175,6 @@ position = Vector2(238, 117)
 [node name="GlassBottle1" parent="Environment" unique_id=702071793 instance=ExtResource("12_gbhazard")]
 position = Vector2(255, 95)
 
-[node name="GlassBottle5" parent="Environment" unique_id=1350600278 instance=ExtResource("12_gbhazard")]
-position = Vector2(707, 95)
-
-[node name="GlassBottle6" parent="Environment" unique_id=1993723507 instance=ExtResource("12_gbhazard")]
-position = Vector2(689, 117)
-
-[node name="GlassBottle7" parent="Environment" unique_id=569084949 instance=ExtResource("12_gbhazard")]
-position = Vector2(723, 117)
-
-[node name="GlassBottle8" parent="Environment" unique_id=71917860 instance=ExtResource("12_gbhazard")]
-position = Vector2(724, 95)
-
 [node name="LeftWall" type="StaticBody2D" parent="Environment" unique_id=1539741054]
 position = Vector2(-1, 88)
 collision_mask = 0
@@ -221,9 +209,9 @@ texture = ExtResource("9_0bqwe")
 [node name="Caju" parent="." unique_id=189020559 instance=ExtResource("11_uncqa")]
 position = Vector2(802, 160)
 
-[node name="musica_fundo" type="AudioStreamPlayer" parent="." unique_id=770026099]
+[node name="musica_fundo" type="AudioStreamPlayer" parent="." unique_id=1069644096]
 stream = ExtResource("12_keoab")
-volume_db = -10.0
+volume_db = -6.0
 autoplay = true
 
 [connection signal="body_entered" from="escada" to="." method="_on_escada_body_entered"]

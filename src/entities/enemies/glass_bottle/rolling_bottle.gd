@@ -67,6 +67,9 @@ func _physics_process(delta: float) -> void:
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if current_state == BottleState.BREAKING:
 		return
+	# Garrafa parada não dá dano
+	if velocity.length() < 25.0:
+		return
 	if body and body.is_in_group("player") and body.has_method("take_damage"):
 		body.take_damage(damage)
 

@@ -18,9 +18,7 @@ var _caju_at_top: bool = false
 var _completed: bool = false
 var _bottle_spawn_timer: Timer = null
 var _shelf_bottle_positions: Array[Vector2] = []
-var _shelf2_spawn_timer: Timer = null
-var _shelf2_bottle_positions: Array[Vector2] = []
-var _shelf2_active: bool = false
+var _has_collected_item: bool = false
 
 func _ready() -> void:
 	if has_node("Caju"):
@@ -101,7 +99,7 @@ func _on_escada_body_exited(body: Node2D) -> void:
 		body.na_escada = false
 
 func _setup_bottle_spawner() -> void:
-	# Estante 1 (Garrafas 1 a 4) - rolam para a direita
+	# Todas as garrafas caem da PRIMEIRA estante e sempre na mesma direção (para a direita)
 	_shelf_bottle_positions.clear()
 	var shelf_bottle_names: Array[String] = [
 		"Environment/GlassBottle1",
@@ -128,36 +126,16 @@ func _setup_bottle_spawner() -> void:
 	_bottle_spawn_timer.timeout.connect(_on_bottle_spawn_timer_timeout)
 	_schedule_next_bottle_spawn()
 
-	# Estante 2 (Garrafas 5 a 8) - rolam para a esquerda após coletar o item
-	_shelf2_bottle_positions.clear()
-	var shelf2_bottle_names: Array[String] = [
-		"Environment/GlassBottle5",
-		"Environment/GlassBottle6",
-		"Environment/GlassBottle7",
-		"Environment/GlassBottle8"
-	]
-	for path in shelf2_bottle_names:
-		if has_node(path):
-			_shelf2_bottle_positions.append(get_node(path).global_position)
-			
-	if _shelf2_bottle_positions.is_empty():
-		_shelf2_bottle_positions = [
-			Vector2(707, 95),
-			Vector2(689, 117),
-			Vector2(723, 117),
-			Vector2(724, 95)
-		]
-
-	_shelf2_spawn_timer = Timer.new()
-	_shelf2_spawn_timer.name = "BottleSpawnTimer2"
-	_shelf2_spawn_timer.one_shot = true
-	add_child(_shelf2_spawn_timer)
-	_shelf2_spawn_timer.timeout.connect(_on_shelf2_spawn_timer_timeout)
-
 func _schedule_next_bottle_spawn() -> void:
 	if _completed or not is_instance_valid(_bottle_spawn_timer):
 		return
-	var wait_time: float = randf_range(1.5, 3.0)
+	var wait_time: float
+	if _has_collected_item:
+		# Frequência aumentada após pegar a garrafa item (0.4s a 0.7s)
+		wait_time = randf_range(0.4, 0.7)
+	else:
+		# Frequência base da primeira prateleira (0.9s a 1.4s)
+		wait_time = randf_range(0.9, 1.4)
 	_bottle_spawn_timer.start(wait_time)
 
 func _on_bottle_spawn_timer_timeout() -> void:
@@ -170,34 +148,16 @@ func _spawn_rolling_bottle() -> RollingBottle:
 	if _shelf_bottle_positions.is_empty():
 		return null
 	var spawn_pos: Vector2 = _shelf_bottle_positions.pick_random()
+	# Sempre da mesma prateleira e mesma direção (1.0 = para a direita)
 	return spawn_rolling_bottle_at(spawn_pos, 1.0)
 
 func _on_item_collected(_item_name: String, _collector: CharacterBody2D) -> void:
-	if _completed or _shelf2_active:
+	if _completed or _has_collected_item:
 		return
-	_shelf2_active = true
-	# Delay inicial de 1.0 a 1.5s após a coleta do item antes da primeira garrafa cair
-	if is_instance_valid(_shelf2_spawn_timer):
-		var initial_delay: float = randf_range(1.0, 1.5)
-		_shelf2_spawn_timer.start(initial_delay)
-
-func _schedule_next_shelf2_spawn() -> void:
-	if _completed or not _shelf2_active or not is_instance_valid(_shelf2_spawn_timer):
-		return
-	var wait_time: float = randf_range(2.0, 3.5)
-	_shelf2_spawn_timer.start(wait_time)
-
-func _on_shelf2_spawn_timer_timeout() -> void:
-	if _completed or not _shelf2_active:
-		return
-	_spawn_rolling_bottle_shelf2()
-	_schedule_next_shelf2_spawn()
-
-func _spawn_rolling_bottle_shelf2() -> RollingBottle:
-	if _shelf2_bottle_positions.is_empty():
-		return null
-	var spawn_pos: Vector2 = _shelf2_bottle_positions.pick_random()
-	return spawn_rolling_bottle_at(spawn_pos, -1.0)
+	_has_collected_item = true
+	# Aumenta imediatamente a frequência das garrafas caindo
+	if is_instance_valid(_bottle_spawn_timer):
+		_bottle_spawn_timer.start(randf_range(0.2, 0.5))
 
 func spawn_rolling_bottle_at(pos: Vector2, direction: float = 1.0) -> RollingBottle:
 	var bottle: RollingBottle = RollingBottleScene.instantiate() as RollingBottle
@@ -216,8 +176,6 @@ func _on_level_finished() -> void:
 	_completed = true
 	if is_instance_valid(_bottle_spawn_timer):
 		_bottle_spawn_timer.stop()
-	if is_instance_valid(_shelf2_spawn_timer):
-		_shelf2_spawn_timer.stop()
 	if has_node("/root/EventBus"):
 		var eb = get_node("/root/EventBus")
 		if eb.item_collected.is_connected(_on_item_collected):

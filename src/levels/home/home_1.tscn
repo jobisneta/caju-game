@@ -237,7 +237,7 @@ is_active = true
 
 [node name="musica_fundo" type="AudioStreamPlayer" parent="." unique_id=1735002879]
 stream = ExtResource("16_1nxye")
-volume_db = -10.0
+volume_db = -6.0
 autoplay = true
 
 [connection signal="body_entered" from="escada" to="." method="_on_escada_body_entered"]
