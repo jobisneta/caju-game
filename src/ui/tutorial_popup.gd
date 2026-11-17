@@ -9,6 +9,7 @@ const TEXTURE_FUNDO_JANELA = preload("res://assets/art/ui/fundo_janela.png")
 const TEXTURE_FUNDO_BOTAO = preload("res://assets/art/ui/fundo_botao.png")
 const TEXTURE_BOTAO_AJUDA = preload("res://assets/art/ui/botao_ajuda.png")
 const TEXTURE_BOTAO_AJUDA_PRESS = preload("res://assets/art/ui/botao_ajuda_press.png")
+const FONT = preload("res://assets/art/ui/PixelifySans-VariableFont_wght.ttf")
 
 var overlay: ColorRect
 var center_container: CenterContainer
@@ -70,6 +71,7 @@ func _build_ui() -> void:
 	var title = Label.new()
 	title.text = "✦ COMO JOGAR ✦"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_override("font", FONT)
 	title.add_theme_font_size_override("font_size", 9)
 	title.add_theme_color_override("font_color", Color(0.24, 0.16, 0.10))
 	vbox.add_child(title)
@@ -86,11 +88,12 @@ func _build_ui() -> void:
 	var controls_text = Label.new()
 	controls_text.text = "• Mover: W / A / S / D  ou  ← / ↑ / ↓ / →\n• Interagir: P (ou E)\n• Trocar Personagem: TAB"
 	controls_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	controls_text.add_theme_font_override("font", FONT) # <--- Aplicando a fonte
 	controls_text.add_theme_font_size_override("font_size", 7)
 	controls_text.add_theme_color_override("font_color", Color(0.22, 0.19, 0.18))
 	vbox.add_child(controls_text)
 	
-	# Separador sutil com tom terrosohsep = HSeparator.new()
+	# Separador sutil com tom terroso
 	hsep = HSeparator.new()
 	hsep.add_theme_stylebox_override("separator", sep_style)
 	vbox.add_child(hsep)
@@ -98,6 +101,7 @@ func _build_ui() -> void:
 	var objective_text = Label.new()
 	objective_text.text = "Colete os pertences e suba a escada\naté o topo para passar de fase!"
 	objective_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	objective_text.add_theme_font_override("font", FONT) # <--- Aplicando a fonte
 	objective_text.add_theme_font_size_override("font_size", 7)
 	objective_text.add_theme_color_override("font_color", Color(0.22, 0.19, 0.18))
 	vbox.add_child(objective_text)
@@ -105,6 +109,7 @@ func _build_ui() -> void:
 	# Botão fechar estilizado com fundo_botao.png
 	close_button = Button.new()
 	close_button.text = "Entendido"
+	close_button.add_theme_font_override("font", FONT) # <--- Aplicando a fonte
 	close_button.add_theme_font_size_override("font_size", 7)
 	close_button.add_theme_color_override("font_color", Color(0.24, 0.16, 0.10))
 	close_button.add_theme_color_override("font_hover_color", Color(0.15, 0.10, 0.05))
