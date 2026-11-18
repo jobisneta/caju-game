@@ -6,6 +6,7 @@ extends CanvasLayer
 ## following the design in inspirations/itens_HUD.png.
 
 const DEFAULT_ITEM_TEXTURE = preload("res://assets/art/world/objects/bottle.png")
+const FONT = preload("res://assets/art/ui/PixelifySans-VariableFont_wght.ttf")
 
 @export var total_items: int = 1
 @export var current_items: int = 0
@@ -17,17 +18,16 @@ var label_count: Label
 var _is_flashing: bool = false
 
 func _ready() -> void:
-	layer = 10 # Mesma camada da PlayerHUD (abaixo do popup de tutorial que é 100)
+	layer = 10 # Mesma camada da PlayerHUD
 	
-	if not label_prompt or not label_count:
-		_build_ui()
-	
+	_build_ui()
 	_connect_events()
 	_update_display()
 
 func _build_ui() -> void:
+	# Se já existe o RootControl, apenas fazemos o bind e garantimos os estilos
 	if get_node_or_null("RootControl"):
-		_bind_existing_nodes()
+		_bind_existing_nodes_and_styles()
 		return
 
 	var root_control = Control.new()
@@ -52,6 +52,7 @@ func _build_ui() -> void:
 	label_prompt = Label.new()
 	label_prompt.name = "LabelPrompt"
 	label_prompt.text = prompt_text
+	label_prompt.add_theme_font_override("font", FONT) # <--- Fonte aplicada
 	label_prompt.add_theme_font_size_override("font_size", 7)
 	label_prompt.add_theme_color_override("font_color", Color(0.12, 0.10, 0.08))
 	vbox.add_child(label_prompt)
@@ -72,14 +73,27 @@ func _build_ui() -> void:
 	label_count = Label.new()
 	label_count.name = "LabelCount"
 	label_count.text = "%d / %d" % [current_items, total_items]
+	label_count.add_theme_font_override("font", FONT) # <--- Fonte aplicada
 	label_count.add_theme_font_size_override("font_size", 8)
 	label_count.add_theme_color_override("font_color", Color(0.12, 0.10, 0.08))
 	hbox.add_child(label_count)
 
-func _bind_existing_nodes() -> void:
+func _bind_existing_nodes_and_styles() -> void:
 	label_prompt = get_node_or_null("RootControl/MarginContainer/VBoxContainer/LabelPrompt")
 	item_icon = get_node_or_null("RootControl/MarginContainer/VBoxContainer/ItemRow/ItemIcon")
 	label_count = get_node_or_null("RootControl/MarginContainer/VBoxContainer/ItemRow/LabelCount")
+	
+	# Garante que a fonte seja injetada mesmo se os nós já existiam na cena
+	if label_prompt:
+		label_prompt.text = prompt_text
+		label_prompt.add_theme_font_override("font", FONT)
+		label_prompt.add_theme_font_size_override("font_size", 7)
+		label_prompt.add_theme_color_override("font_color", Color(0.12, 0.10, 0.08))
+		
+	if label_count:
+		label_count.add_theme_font_override("font", FONT)
+		label_count.add_theme_font_size_override("font_size", 8)
+		label_count.add_theme_color_override("font_color", Color(0.12, 0.10, 0.08))
 
 func _connect_events() -> void:
 	if has_node("/root/EventBus"):
@@ -113,12 +127,11 @@ func flash_warning() -> void:
 	var alert_color = Color(0.85, 0.15, 0.15)
 	var default_color = Color(0.12, 0.10, 0.08)
 
-	
 	var tween = create_tween()
-	tween.tween_property(label_prompt, "theme_override_colors/font_color", alert_color, 0.15)
-	tween.parallel().tween_property(label_count, "theme_override_colors/font_color", alert_color, 0.15)
+	tween.tween_method(func(c): label_prompt.add_theme_color_override("font_color", c), default_color, alert_color, 0.15)
+	tween.parallel().tween_method(func(c): label_count.add_theme_color_override("font_color", c), default_color, alert_color, 0.15)
 	tween.parallel().tween_property(item_icon, "modulate", alert_color, 0.15)
-	tween.tween_property(label_prompt, "theme_override_colors/font_color", default_color, 0.25)
-	tween.parallel().tween_property(label_count, "theme_override_colors/font_color", default_color, 0.25)
+	tween.tween_method(func(c): label_prompt.add_theme_color_override("font_color", c), alert_color, default_color, 0.25)
+	tween.parallel().tween_method(func(c): label_count.add_theme_color_override("font_color", c), alert_color, default_color, 0.25)
 	tween.parallel().tween_property(item_icon, "modulate", Color.WHITE, 0.25)
 	tween.finished.connect(func(): _is_flashing = false)
