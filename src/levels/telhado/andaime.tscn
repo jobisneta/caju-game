@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bvgr5y36qe0i2"]
+
+[ext_resource type="Script" uid="uid://b0gqie4jlt0ey" path="res://src/levels/telhado/andaime.gd" id="1_andaime"]
+[ext_resource type="Texture2D" uid="uid://dcrj0o53a103t" path="res://assets/art/world/telhado/andaime.png" id="2_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ladder"]
+size = Vector2(55, 106)
+
+[node name="Andaime" type="Node2D" unique_id=514660446]
+script = ExtResource("1_andaime")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=964707845]
+texture = ExtResource("2_tex")
+
+[node name="AreaEscada" type="Area2D" parent="." unique_id=627185687]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaEscada" unique_id=382743033]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_ladder")

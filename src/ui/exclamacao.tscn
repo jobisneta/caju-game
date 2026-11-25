@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/ui/exclamacao.png" id="1_tex"]
+
+[sub_resource type="GDScript" id="GDScript_exc"]
+script/source = "extends Node2D
+
+func _ready() -> void:
+	var tween = create_tween().set_loops()
+	tween.tween_property($Sprite2D, \"position:y\", -3.0, 0.5).set_trans(Tween.TRANS_SINE)
+	tween.tween_property($Sprite2D, \"position:y\", 3.0, 0.5).set_trans(Tween.TRANS_SINE)
+"
+
+[node name="Exclamacao" type="Node2D"]
+script = SubResource("GDScript_exc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_tex")
