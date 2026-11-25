@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://lw4sddsjswpc"]
+[gd_scene format=4 uid="uid://jinxufdxgejc"]
 
 [ext_resource type="Script" uid="uid://cnaq8gn6bplt3" path="res://src/levels/telhado/roof_1.gd" id="1_m0388"]
 [ext_resource type="Texture2D" uid="uid://by8xhss6lmcqf" path="res://assets/art/world/telhado/ceu_estrelado.png" id="2_x6kwn"]
@@ -139,7 +139,7 @@ shape = SubResource("RectangleShape2D_dtg5i")
 shape = SubResource("SegmentShape2D_dtg5i")
 
 [node name="telhado_tipo2" type="Sprite2D" parent="." unique_id=1612343023]
-position = Vector2(555, 152)
+position = Vector2(623, 152)
 texture = ExtResource("4_6l4g0")
 region_enabled = true
 region_rect = Rect2(0, 60, 320, 60)

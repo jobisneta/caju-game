@@ -127,6 +127,7 @@ sprite_frames = SubResource("SpriteFrames_kiki")
 animation = &"climb"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=98712345]
+zoom = Vector2(0.67, 0.67)
 process_callback = 0
 limit_left = 0
 limit_top = 0

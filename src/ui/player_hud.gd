@@ -7,9 +7,9 @@ extends CanvasLayer
 
 const TEXTURE_CORACAO_CHEIO = preload("res://assets/art/ui/coracao_cheio.png")
 const TEXTURE_CORACAO_VAZIO = preload("res://assets/art/ui/coracao_vazio.png")
-const TEXTURE_PORTRAIT_CAJU = preload("res://assets/art/ui/dialogo_caju.png")
-const TEXTURE_PORTRAIT_KIKI = preload("res://assets/art/ui/dialogo_kiki.png")
-const TEXTURE_PORTRAIT_TODY = preload("res://assets/art/ui/dialogo_tody.png")
+const TEXTURE_PORTRAIT_CAJU = preload("res://assets/art/ui/personagem_caju.png")
+const TEXTURE_PORTRAIT_KIKI = preload("res://assets/art/ui/personagem_kiki.png")
+const TEXTURE_PORTRAIT_TODY = preload("res://assets/art/ui/personagem_tody.png")
 
 @export var max_health: int = 3
 var current_health: int = 3

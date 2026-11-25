@@ -15,6 +15,14 @@ func _ready():
 	# Isso impede que o meio dele fique enroscado nas quinas do telhado!
 	set_collision_mask_value(1, false)
 	set_collision_layer_value(1, false)
+	
+	_ignorar_personagens.call_deferred()
+
+
+func _ignorar_personagens() -> void:
+	for p in get_tree().get_nodes_in_group("player"):
+		ray_esq.add_exception(p)
+		ray_dir.add_exception(p)
 
 func _physics_process(delta: float) -> void:
 	if caindo:

@@ -2,7 +2,7 @@ extends Player
 
 @export_group("Habilidade da Mãe")
 @export var cena_mae_coruja: PackedScene
-@export var chamadas_maximas: int = 3
+@export var chamadas_maximas: int = 40
 @onready var som_assobio = $som_assobio
 
 var chamadas_restantes: int = 3
