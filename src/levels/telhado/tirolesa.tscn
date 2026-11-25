@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/levels/telhado/tirolesa.gd" id="1_tirolesa"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_trig"]
+radius = 18.0
+
+[node name="Tirolesa" type="Node2D"]
+script = ExtResource("1_tirolesa")
+
+[node name="LinhaCabo" type="Line2D" parent="."]
+width = 2.0
+default_color = Color(0.85, 0.55, 0.15, 0.95)
+
+[node name="AreaGatilho" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaGatilho"]
+shape = SubResource("CircleShape2D_trig")
