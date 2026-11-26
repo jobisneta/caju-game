@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://ch3lqw3rgtkoq" path="res://assets/art/world/home/luminaria.png" id="6_qpk70"]
 [ext_resource type="Texture2D" uid="uid://cjx12c7kg0bmd" path="res://assets/art/world/home/shelf_2.png" id="7_ll5lq"]
 [ext_resource type="Texture2D" uid="uid://du380aepr3bs1" path="res://assets/art/world/home/shelf_3.png" id="7_qvkdx"]
+[ext_resource type="Texture2D" uid="uid://rtw1ffmcij6r" path="res://assets/art/world/home/shelf.png" id="7_tmhep"]
 [ext_resource type="Texture2D" uid="uid://b4buqfkrfenfh" path="res://assets/art/world/home/chair.png" id="8_keoab"]
 [ext_resource type="Texture2D" uid="uid://cv4noqjb4nm5e" path="res://assets/art/world/home/escada1.png" id="9_0bqwe"]
 [ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://src/entities/player/caju.tscn" id="11_uncqa"]
@@ -146,7 +147,7 @@ shape = SubResource("RectangleShape2D_pi8jn")
 position = Vector2(704, 128)
 
 [node name="Sprite2D" type="Sprite2D" parent="Environment/Estante2" unique_id=150200849]
-texture = ExtResource("7_qvkdx")
+texture = ExtResource("7_tmhep")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Estante2" unique_id=123167119]
 position = Vector2(0, -46)
