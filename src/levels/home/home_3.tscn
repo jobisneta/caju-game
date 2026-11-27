@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://yc42dfdv06n7" path="res://src/entities/items/cortina/cortina.tscn" id="4_cortina"]
 [ext_resource type="Texture2D" uid="uid://b4buqfkrfenfh" path="res://assets/art/world/home/chair.png" id="4_d6xpi"]
 [ext_resource type="Texture2D" uid="uid://bhx7vp50sc3au" path="res://assets/art/world/home/janela.png" id="5_ctc7o"]
+[ext_resource type="PackedScene" uid="uid://b0wu4ooev0hsb" path="res://src/entities/enemies/floor_water/floor_water.tscn" id="6_btn3d"]
 [ext_resource type="Texture2D" uid="uid://cjx12c7kg0bmd" path="res://assets/art/world/home/shelf_2.png" id="7_adq47"]
 [ext_resource type="Texture2D" uid="uid://rtw1ffmcij6r" path="res://assets/art/world/home/shelf.png" id="8_36j0p"]
 [ext_resource type="AudioStream" uid="uid://2w74yjm877cg" path="res://assets/sounds/musica_casa.ogg" id="9_36j0p"]
@@ -16,6 +17,8 @@
 [ext_resource type="Texture2D" uid="uid://bjusljfxultd1" path="res://assets/raw/crate.png" id="12_btn3d"]
 [ext_resource type="AudioStream" uid="uid://lslo7ow8xd3j" path="res://assets/sounds/som_caixa.mp3" id="13_f7a83"]
 [ext_resource type="Texture2D" uid="uid://6hl6xfvjbl0o" path="res://assets/art/world/home/cama.png" id="14_mbrlr"]
+[ext_resource type="PackedScene" uid="uid://c8m3k2v7w1xyq" path="res://src/entities/items/bottle/bottle.tscn" id="15_f7a83"]
+[ext_resource type="Texture2D" uid="uid://c8554dq0c57d2" path="res://assets/art/world/home/janela_saida.png" id="17_mbrlr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_d6xpi"]
 texture = ExtResource("1_34n0u")
@@ -51,6 +54,15 @@ size = Vector2(31, 31)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o7rs1"]
 size = Vector2(113, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_88cs8"]
+size = Vector2(5.4375, 3.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_janela_saida"]
+size = Vector2(5, 28)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_luz_saida"]
+blend_mode = 1
 
 [node name="Home3" type="Node2D" unique_id=793194412]
 script = ExtResource("1_t4ir5")
@@ -112,6 +124,9 @@ texture = ExtResource("4_d6xpi")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Cadeira" unique_id=918167506]
 position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_pi8jn")
+
+[node name="FloorWater" parent="." unique_id=969155852 instance=ExtResource("6_btn3d")]
+position = Vector2(273, 178)
 
 [node name="Janela" type="Sprite2D" parent="." unique_id=1621269727]
 position = Vector2(272, 44)
@@ -218,6 +233,12 @@ position = Vector2(-0.5, -0.5)
 shape = SubResource("RectangleShape2D_itlou")
 disabled = true
 
+[node name="Items" type="Node2D" parent="." unique_id=1526115161]
+
+[node name="Bottle" parent="Items" unique_id=1010436583 instance=ExtResource("15_f7a83")]
+visible = false
+position = Vector2(958, 168)
+
 [node name="Cama" type="StaticBody2D" parent="." unique_id=1137431924]
 position = Vector2(1060, 152)
 
@@ -229,8 +250,34 @@ position = Vector2(-1.5, -4.5)
 shape = SubResource("RectangleShape2D_o7rs1")
 one_way_collision = true
 
+[node name="JanelaSaida" type="StaticBody2D" parent="." unique_id=1599576318]
+position = Vector2(1112, 62)
+scale = Vector2(2, 2)
+
+[node name="Sprite2D" type="Sprite2D" parent="JanelaSaida" unique_id=450903087]
+texture = ExtResource("17_mbrlr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="JanelaSaida" unique_id=2037052987]
+position = Vector2(2.5, 20)
+shape = SubResource("RectangleShape2D_88cs8")
+
+[node name="AreaSaida" type="Area2D" parent="JanelaSaida" unique_id=1599576319]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="JanelaSaida/AreaSaida" unique_id=1599576320]
+position = Vector2(2.5, 0)
+shape = SubResource("RectangleShape2D_janela_saida")
+
+[node name="LuzJanelaSaida" type="Polygon2D" parent="." unique_id=1599576321]
+z_index = 2
+material = SubResource("CanvasItemMaterial_luz_saida")
+color = Color(0.6666667, 0.64705884, 1, 0.49411765)
+polygon = PackedVector2Array(1116, 26, 1116, 98, 1112, 98, 1084, 145, 1003, 145)
+vertex_colors = PackedColorArray(0.76, 0.88, 1, 0.34, 0.76, 0.88, 1, 0.28, 0.76, 0.88, 1, 0.03, 0.76, 0.88, 1, 0.03)
+
 [node name="Caju" parent="." unique_id=189020559 instance=ExtResource("3_lggft")]
-position = Vector2(19, 71)
+position = Vector2(30, 159)
 
 [node name="musica_fundo" type="AudioStreamPlayer" parent="." unique_id=1786189942]
 stream = ExtResource("9_36j0p")

@@ -662,6 +662,135 @@ func _ready() -> void:
 	assert(left_spawned_rb.roll_direction == -1.0, "[FAIL] Spawned bottle must have roll_direction = -1.0")
 	t31_home2_instance.queue_free()
 	print("[PASS] Test 31: Left-rolling bottles and post-item conditional spawner in LevelHome2 verified.")
+
+	# Test 32: FloorWater em home_3.tscn (camadas, dano inicial com knockback e dano contínuo pós-invulnerabilidade)
+	GameManager.reset_shared_health()
+	var t32_home3_scene = load("res://src/levels/home/home_3.tscn")
+	var t32_home3: Node2D = t32_home3_scene.instantiate()
+	add_child(t32_home3)
+	await get_tree().physics_frame
 	
-	print("[TEST] ALL 31 INTEGRATION TESTS PASSED WITH 100% SUCCESS!")
+	var floor_water: Node = t32_home3.get_node_or_null("FloorWater")
+	assert(floor_water != null and floor_water is FloorWater, "[FAIL] FloorWater must exist and use FloorWater script in home_3.tscn")
+	assert(floor_water.hitbox != null, "[FAIL] FloorWater must have Hitbox Area2D")
+	assert(floor_water.hitbox.collision_layer == 16, "[FAIL] FloorWater Hitbox layer must be 16 (hazards)")
+	assert(floor_water.hitbox.collision_mask == 2, "[FAIL] FloorWater Hitbox mask must be 2 (player)")
+	
+	var fw_caju: CharacterBody2D = t32_home3.get_node_or_null("Caju")
+	fw_caju.velocity = Vector2.ZERO
+	floor_water._on_hitbox_body_entered(fw_caju)
+	assert(GameManager.shared_health == 2, "[FAIL] FloorWater must deal 1 shared damage on contact")
+	assert(fw_caju.velocity.y < 0.0, "[FAIL] Player damaged by FloorWater must receive upward knockback")
+	assert(fw_caju.is_invulnerable == true, "[FAIL] Player must become invulnerable after FloorWater damage")
+	
+	# Enquanto invulnerável, não deve tomar novo dano
+	floor_water._try_damage_body(fw_caju)
+	assert(GameManager.shared_health == 2, "[FAIL] FloorWater must respect player invulnerability")
+	
+	# Após terminar invulnerabilidade ainda em contato, deve repetir dano
+	fw_caju.is_invulnerable = false
+	floor_water._try_damage_body(fw_caju)
+	assert(GameManager.shared_health == 1, "[FAIL] FloorWater must deal repeated damage once invulnerability ends")
+	print("[PASS] Test 32: FloorWater hazard layers, damage, knockback and repeated contact damage verified.")
+
+	# Test 33: CaixaPos1 quebrável (+90° para direita) revelando Bottle + ItemsHUD desde o início em home_3.tscn
+	GameManager.reset_shared_health()
+	var h3_items_hud: CanvasLayer = t32_home3.get_node_or_null("ItemsHUD")
+	assert(h3_items_hud != null, "[FAIL] LevelHome3 must instantiate ItemsHUD on _ready()")
+	assert(GameManager.level_total_items == 1 and GameManager.level_collected_items == 0, "[FAIL] LevelHome3 must start with 0/1 items")
+	assert(not GameManager.are_all_level_items_collected(), "[FAIL] LevelHome3 items must not be collected initially")
+	
+	var h3_bottle: Area2D = t32_home3.get_node_or_null("Items/Bottle")
+	assert(h3_bottle != null, "[FAIL] Items/Bottle must exist in home_3.tscn")
+	assert(h3_bottle.visible == false, "[FAIL] Items/Bottle must start hidden in home_3.tscn")
+	var h3_bottle_col: CollisionShape2D = h3_bottle.get_node_or_null("CollisionShape2D")
+	assert(h3_bottle_col != null and h3_bottle_col.disabled == true, "[FAIL] Hidden Bottle collision must be disabled until revealed")
+	
+	# Garante que tocar na Bottle oculta não coleta o item
+	h3_bottle._on_body_entered(fw_caju)
+	assert(GameManager.level_collected_items == 0, "[FAIL] Hidden Bottle must not be collectible before crate breaks")
+	
+	var h3_caixa1: PushableCrate = t32_home3.get_node_or_null("CaixaPos1") as PushableCrate
+	var h3_caixa2: StaticBody2D = t32_home3.get_node_or_null("CaixaPos2") as StaticBody2D
+	assert(h3_caixa1 != null and h3_caixa2 != null, "[FAIL] CaixaPos1 and CaixaPos2 must exist in home_3.tscn")
+	assert(h3_caixa1.requires_left_side == true and h3_caixa1.requires_right_side == false, "[FAIL] Home 3 CaixaPos1 must require left-side interaction")
+	assert(h3_caixa1.break_on_land == true, "[FAIL] Home 3 CaixaPos1 must have break_on_land = true")
+	assert(h3_caixa1.reveal_item == h3_bottle, "[FAIL] Home 3 CaixaPos1 reveal_item must reference Items/Bottle")
+	
+	# Rejeita interação à direita
+	fw_caju.global_position = h3_caixa1.global_position + Vector2(20.0, 0.0)
+	h3_caixa1.interact(fw_caju)
+	assert(h3_caixa1._is_fallen == false, "[FAIL] Home 3 CaixaPos1 must reject interaction from the right side")
+	
+	# Aceita interação à esquerda e cai rotacionando +90° para direita
+	fw_caju.global_position = h3_caixa1.global_position + Vector2(-20.0, 0.0)
+	h3_caixa1.interact(fw_caju)
+	assert(h3_caixa1._is_fallen == true, "[FAIL] Home 3 CaixaPos1 must fall when interacted from the left side")
+	
+	await get_tree().create_timer(0.60).timeout
+	assert(h3_caixa2.get_node("Sprite2D").visible == false, "[FAIL] CaixaPos2 must remain hidden since crate breaks on land")
+	assert(h3_caixa2.get_node("CollisionShape2D").disabled == true, "[FAIL] CaixaPos2 collision must remain disabled since crate breaks on land")
+	assert(h3_bottle.visible == true, "[FAIL] Items/Bottle must become visible after crate breaks")
+	assert(h3_bottle_col.disabled == false, "[FAIL] Items/Bottle collision must be enabled after crate breaks")
+	
+	# Coleta a garrafa revelada
+	h3_bottle._on_body_entered(fw_caju)
+	assert(GameManager.level_collected_items == 1, "[FAIL] Revealed Bottle must be collectible")
+	assert(GameManager.are_all_level_items_collected(), "[FAIL] All items in home_3 must be collected after picking revealed Bottle")
+	print("[PASS] Test 33: Breakable CaixaPos1 (+90 deg right), hidden Bottle reveal and ItemsHUD in home_3 verified.")
+
+	# Test 34: Spawner de RollingBottle para a esquerda em home_3.tscn quebrando em x <= 570
+	assert(t32_home3.has_method("spawn_rolling_bottle_at"), "[FAIL] LevelHome3 must have spawn_rolling_bottle_at method")
+	assert(t32_home3._bottle_spawn_timer != null, "[FAIL] LevelHome3 must create BottleSpawnTimer on _ready()")
+	var h3_rb: RollingBottle = t32_home3.spawn_rolling_bottle_at(Vector2(888, 95))
+	assert(h3_rb != null and h3_rb is RollingBottle, "[FAIL] LevelHome3 must spawn valid RollingBottle")
+	assert(h3_rb.roll_direction == -1.0, "[FAIL] LevelHome3 RollingBottle must roll left (-1.0)")
+	assert(h3_rb.min_x_position == 570.0, "[FAIL] LevelHome3 RollingBottle must break at min_x_position = 570.0")
+	
+	# Simula rolagem para a esquerda e chegada em x = 570
+	h3_rb.current_state = RollingBottle.BottleState.ROLLING
+	h3_rb.global_position = Vector2(620, 170)
+	h3_rb._physics_process(0.05)
+	assert(h3_rb.velocity.x < 0.0, "[FAIL] Home 3 RollingBottle must move left")
+	assert(h3_rb.current_state == RollingBottle.BottleState.ROLLING, "[FAIL] Home 3 RollingBottle must keep rolling before x = 570")
+	
+	h3_rb.global_position.x = 570.0
+	h3_rb._physics_process(0.05)
+	assert(h3_rb.current_state == RollingBottle.BottleState.BREAKING, "[FAIL] Home 3 RollingBottle must break when reaching x <= 570")
+	t32_home3.queue_free()
+	print("[PASS] Test 34: Home 3 left-rolling GlassBottle spawner and x <= 570 break verified.")
+
+	# Test 35: JanelaSaida, LuzJanelaSaida e indicador flutuante exclamacao.png
+	var t35_home3: Node2D = load("res://src/levels/home/home_3.tscn").instantiate()
+	add_child(t35_home3)
+	var area_saida: Area2D = t35_home3.get_node_or_null("JanelaSaida/AreaSaida") as Area2D
+	assert(area_saida != null and area_saida.collision_mask == 2, "[FAIL] JanelaSaida/AreaSaida must exist with collision_mask = 2")
+	var luz_saida: Polygon2D = t35_home3.get_node_or_null("LuzJanelaSaida") as Polygon2D
+	assert(luz_saida != null and luz_saida.visible == true, "[FAIL] LuzJanelaSaida Polygon2D must exist and be visible")
+	assert(luz_saida.material is CanvasItemMaterial and (luz_saida.material as CanvasItemMaterial).blend_mode == CanvasItemMaterial.BLEND_MODE_ADD, "[FAIL] LuzJanelaSaida must use additive CanvasItemMaterial")
+	
+	var t35_caju: CharacterBody2D = t35_home3.get_node_or_null("Caju")
+	assert(t35_caju.interact_indicator != null, "[FAIL] Player must have InteractIndicator Sprite2D")
+	assert(t35_caju.interact_indicator.texture.resource_path.ends_with("exclamacao.png"), "[FAIL] InteractIndicator must use exclamacao.png")
+	assert(t35_caju.interact_indicator.visible == false, "[FAIL] InteractIndicator must start hidden when far from interactables")
+	
+	# Aproxima da CaixaPos1 pelo lado inválido (direita) vs válido (esquerda)
+	var t35_caixa: PushableCrate = t35_home3.get_node_or_null("CaixaPos1") as PushableCrate
+	t35_caju.global_position = t35_caixa.global_position + Vector2(20.0, 0.0)
+	t35_caju._update_interact_indicator(0.016)
+	assert(t35_caju.interact_indicator.visible == false, "[FAIL] InteractIndicator must stay hidden on invalid side of crate")
+	t35_caju.global_position = t35_caixa.global_position + Vector2(-20.0, 0.0)
+	t35_caju._update_interact_indicator(0.016)
+	assert(t35_caju.interact_indicator.visible == true, "[FAIL] InteractIndicator must appear on valid side of crate")
+	
+	# Valida bloqueio na JanelaSaida sem itens e liberação após coletar item
+	t35_home3._on_janela_saida_body_entered(t35_caju)
+	assert(t35_home3._completed == false, "[FAIL] JanelaSaida must block exit when items are not collected")
+	GameManager.collect_bottle(t35_caju)
+	t35_home3._on_janela_saida_body_entered(t35_caju)
+	assert(t35_home3._completed == true, "[FAIL] JanelaSaida must complete level when all items are collected")
+	t35_home3.queue_free()
+	print("[PASS] Test 35: JanelaSaida exit, LuzJanelaSaida moonlight beam, and exclamacao.png indicator verified.")
+	
+	print("[TEST] ALL 35 INTEGRATION TESTS PASSED WITH 100% SUCCESS!")
 	get_tree().quit(0)

@@ -132,10 +132,10 @@ func _schedule_next_bottle_spawn() -> void:
 	var wait_time: float
 	if _has_collected_item:
 		# Frequência aumentada após pegar a garrafa item (0.4s a 0.7s)
-		wait_time = randf_range(0.8, 1.0)
+		wait_time = randf_range(1.0, 1.5)
 	else:
 		# Frequência base da primeira prateleira (0.9s a 1.4s)
-		wait_time = randf_range(1.0, 1.5)
+		wait_time = randf_range(1.4, 1.6)
 	_bottle_spawn_timer.start(wait_time)
 
 func _on_bottle_spawn_timer_timeout() -> void:

@@ -51,6 +51,8 @@ signal interacted(target: Node2D)
 var na_escada: bool = false
 var is_gliding: bool = false
 const VELOCIDADE_ESCALADA = 150.0 # Ajuste a velocidade como preferir
+const EXCLAMATION_TEXTURE: Texture2D = preload("res://assets/art/ui/exclamacao.png")
+const INDICATOR_BASE_OFFSET: Vector2 = Vector2(0.0, -24.0)
 
 var na_cortina: bool = false
 var cortina_atual: Node2D = null
@@ -58,6 +60,8 @@ var ancora_atual: Marker2D = null
 
 var is_invulnerable: bool = false
 var last_safe_position: Vector2 = Vector2.ZERO
+var interact_indicator: Sprite2D = null
+var _indicator_time: float = 0.0
 
 # Internal kinematics
 var jump_velocity: float
@@ -77,6 +81,7 @@ var _was_on_floor: bool = false
 func _ready() -> void:
 	add_to_group("player")
 	_calculate_kinematics()
+	_setup_interact_indicator()
 	last_safe_position = global_position
 	
 	# Register with GameManager if present and sync shared health
@@ -89,6 +94,17 @@ func _ready() -> void:
 		make_active()
 	else:
 		make_inactive()
+
+func _setup_interact_indicator() -> void:
+	interact_indicator = get_node_or_null("InteractIndicator") as Sprite2D
+	if not interact_indicator:
+		interact_indicator = Sprite2D.new()
+		interact_indicator.name = "InteractIndicator"
+		interact_indicator.texture = EXCLAMATION_TEXTURE
+		interact_indicator.position = INDICATOR_BASE_OFFSET
+		interact_indicator.z_index = 15
+		interact_indicator.visible = false
+		add_child(interact_indicator)
 
 func _calculate_kinematics() -> void:
 	jump_velocity = - (2.0 * jump_height) / jump_time_to_peak
@@ -210,6 +226,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	_handle_push_crates(delta)
 	_update_animation()
+	_update_interact_indicator(delta)
 
 func _process_active_input(delta: float) -> void:
 	# Horizontal movement with acceleration and friction
@@ -234,13 +251,13 @@ func _process_active_input(delta: float) -> void:
 	if _is_jump_just_released() and velocity.y < 0.0:
 		velocity.y *= 0.5
 
-	# Interaction with items / objects (Key 'E')
+	# Interaction with items / objects (Key 'P' / 'E')
 	if Input.is_action_just_pressed("interact"):
 		interact_with_nearby()
 
-func interact_with_nearby() -> bool:
+func get_nearby_interactable() -> Node2D:
 	if not is_inside_tree():
-		return false
+		return null
 	var space_state = get_world_2d().direct_space_state
 	var query = PhysicsShapeQueryParameters2D.new()
 	var shape = CircleShape2D.new()
@@ -255,23 +272,41 @@ func interact_with_nearby() -> bool:
 	var results = space_state.intersect_shape(query, 16)
 	for hit in results:
 		var collider = hit.collider
-		if collider and collider != self and collider.has_method("interact"):
-			collider.interact(self)
-			interacted.emit(collider)
-			if has_node("/root/EventBus"):
-				get_node("/root/EventBus").player_interacted.emit(self, collider)
-			return true
+		if collider is Node2D and collider != self and collider.has_method("interact"):
+			if not collider.has_method("can_interact") or collider.can_interact(self):
+				return collider as Node2D
 	
 	# Checagem adicional: nós no grupo "interactable" no alcance
 	var interactables = get_tree().get_nodes_in_group("interactable")
 	for node in interactables:
 		if node is Node2D and node != self and global_position.distance_to(node.global_position) <= 36.0:
 			if node.has_method("interact"):
-				node.interact(self)
-				interacted.emit(node)
-				if has_node("/root/EventBus"):
-					get_node("/root/EventBus").player_interacted.emit(self, node)
-				return true
+				if not node.has_method("can_interact") or node.can_interact(self):
+					return node as Node2D
+	return null
+
+func _update_interact_indicator(delta: float) -> void:
+	if not interact_indicator:
+		return
+	var should_show: bool = is_active and not na_cortina and get_nearby_interactable() != null
+	interact_indicator.visible = should_show
+	if should_show:
+		_indicator_time += delta
+		interact_indicator.position = INDICATOR_BASE_OFFSET + Vector2(0.0, sin(_indicator_time * 6.0) * 2.0)
+	else:
+		_indicator_time = 0.0
+		interact_indicator.position = INDICATOR_BASE_OFFSET
+
+func interact_with_nearby() -> bool:
+	if not is_inside_tree():
+		return false
+	var target: Node2D = get_nearby_interactable()
+	if target:
+		target.interact(self)
+		interacted.emit(target)
+		if has_node("/root/EventBus"):
+			get_node("/root/EventBus").player_interacted.emit(self, target)
+		return true
 
 	if has_node("/root/EventBus"):
 		get_node("/root/EventBus").player_interacted.emit(self, null)
@@ -344,6 +379,8 @@ func make_inactive() -> void:
 	is_active = false
 	if camera:
 		camera.enabled = false
+	if interact_indicator:
+		interact_indicator.visible = false
 	deactivated.emit()
 
 func set_camera_limits(left: int, right: int, top: int, bottom: int) -> void:
