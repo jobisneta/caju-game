@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://8blgcnd8rdmg"]
+
+[ext_resource type="Script" path="res://src/entities/enemies/grass_cutter/grass_cutter.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://do1ij5kgb18b2" path="res://assets/art/world/objects/cortador_grama.png" id="1_xnykh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pi8jn"]
+size = Vector2(40, 15)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hitbox"]
+size = Vector2(40, 18)
+
+[node name="GrassCutter" type="CharacterBody2D" unique_id=1741716846]
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=397117758]
+scale = Vector2(1, 0.8)
+texture = ExtResource("1_xnykh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1143462331]
+position = Vector2(1, 13.5)
+shape = SubResource("RectangleShape2D_pi8jn")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=1143462332]
+collision_layer = 16
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1143462333]
+position = Vector2(1, 12)
+shape = SubResource("RectangleShape2D_hitbox")

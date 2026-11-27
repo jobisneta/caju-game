@@ -11,6 +11,8 @@ signal crate_fallen
 @export var requires_left_side: bool = false
 @export var break_on_land: bool = false
 @export var reveal_item: Node2D = null
+@export var allowed_character_id: String = ""
+@export var spawn_scene_on_land: PackedScene = null
 
 var _is_fallen: bool = false
 var som_tocado: bool = false
@@ -23,6 +25,9 @@ func _ready() -> void:
 func can_interact(player: CharacterBody2D) -> bool:
 	if _is_fallen:
 		return false
+	if not allowed_character_id.is_empty() and player:
+		if not ("character_id" in player) or player.character_id != allowed_character_id:
+			return false
 	if requires_right_side and player:
 		if player.global_position.x <= global_position.x + 4.0:
 			return false
@@ -76,6 +81,21 @@ func fall_to_target() -> void:
 	tween.chain().tween_callback(_on_fall_completed)
 
 func _on_fall_completed() -> void:
+	if spawn_scene_on_land:
+		var spawned: Node2D = spawn_scene_on_land.instantiate() as Node2D
+		if spawned:
+			var target_pos: Vector2 = target_box.global_position if target_box else global_position
+			var parent_node: Node = get_parent()
+			if parent_node and parent_node.get_parent() is Node2D:
+				parent_node = parent_node.get_parent()
+			if parent_node:
+				parent_node.add_child(spawned)
+				spawned.global_position = target_pos
+		crate_fallen.emit()
+		visible = false
+		queue_free()
+		return
+
 	if break_on_land:
 		if reveal_item:
 			if reveal_item.has_method("reveal"):

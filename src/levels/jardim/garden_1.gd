@@ -9,8 +9,9 @@ extends Node2D
 const TutorialPopupClass = preload("res://src/ui/tutorial_popup.gd")
 const PlayerHUDClass = preload("res://src/ui/player_hud.gd")
 const CaixaDialogoClass = preload("res://src/ui/caixa_dialogo.tscn")
+const PushableBoxScene: PackedScene = preload("res://src/entities/items/box/pushable_box.tscn")
 
-const EXIT_X_THRESHOLD: float = 1060.0
+const EXIT_X_THRESHOLD: float = 1470.0
 
 @export var caju: CharacterBody2D
 @export var tody: CharacterBody2D
@@ -25,13 +26,13 @@ func _ready() -> void:
 	# Localiza o personagem na cena
 	if has_node("Caju"):
 		caju = get_node("Caju")
-		caju.set_camera_limits(0, 1115, 0, 180)
+		caju.set_camera_limits(0, 1470, 0, 180)
 	else:
 		push_error("LevelJardim: Caju não foi encontrado!")
 	
 	if has_node("Tody"):
 		tody = get_node("Tody")
-		tody.set_camera_limits(0, 1115, 0, 180)
+		tody.set_camera_limits(0, 1470, 0, 180)
 	else:
 		push_error("LevelJardim: Tody não foi encontrado!")
 
@@ -53,9 +54,25 @@ func _ready() -> void:
 	_setup_player_hud()
 	_setup_dialogo()
 	_setup_corrente_visual()
+	_setup_crate_link()
 	
 	# Dispara o diálogo no início da fase do quintal
 	call_deferred("iniciar_dialogo_inicial")
+
+func _setup_crate_link() -> void:
+	var caixa1: Node = get_node_or_null("Plataformas/CaixaPos1")
+	var caixa2: StaticBody2D = get_node_or_null("Plataformas/CaixaPos2") as StaticBody2D
+	if caixa1 and caixa2:
+		if "target_box" in caixa1:
+			caixa1.target_box = caixa2
+		if "requires_right_side" in caixa1:
+			caixa1.requires_right_side = false
+		if "requires_left_side" in caixa1:
+			caixa1.requires_left_side = true
+		if "allowed_character_id" in caixa1:
+			caixa1.allowed_character_id = "caju"
+		if "spawn_scene_on_land" in caixa1:
+			caixa1.spawn_scene_on_land = PushableBoxScene
 
 func _setup_dialogo() -> void:
 	if not has_node("CaixaDialogo"):

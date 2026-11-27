@@ -9,7 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://cnbhnvwcadq38" path="res://assets/sounds/pulo.wav" id="7_umxgd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dtg5i"]
-size = Vector2(22, 20)
+size = Vector2(22, 21)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nn3xb"]
 atlas = ExtResource("2_j7u74")
@@ -106,7 +106,7 @@ script = ExtResource("1_7gxvo")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1913726606]
 show_behind_parent = true
-position = Vector2(-1, 6)
+position = Vector2(-1, 5.5)
 shape = SubResource("RectangleShape2D_dtg5i")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1001546926]

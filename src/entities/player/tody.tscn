@@ -9,7 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://cnbhnvwcadq38" path="res://assets/sounds/pulo.wav" id="7_ylimc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dtg5i"]
-size = Vector2(32, 39)
+size = Vector2(32, 35)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d4wbx"]
 atlas = ExtResource("2_d4wbx")
@@ -107,11 +107,11 @@ character_id = "tody"
 character_name = "Tody"
 portrait_texture = ExtResource("5_tody_portr")
 can_push_crates = true
+jump_height = 38.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1913726606]
-visible = false
 show_behind_parent = true
-position = Vector2(-1, -0.5)
+position = Vector2(-1, 1.5)
 shape = SubResource("RectangleShape2D_dtg5i")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1001546926]

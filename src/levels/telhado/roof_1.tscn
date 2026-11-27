@@ -4,6 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://by8xhss6lmcqf" path="res://assets/art/world/telhado/ceu_estrelado.png" id="2_x6kwn"]
 [ext_resource type="Texture2D" uid="uid://b83x8633rk04h" path="res://assets/art/world/telhado/arvore_noite.png" id="3_wbjs8"]
 [ext_resource type="Texture2D" uid="uid://crj2jfgr3c0of" path="res://assets/art/world/telhado/telhado.png" id="4_6l4g0"]
+[ext_resource type="Texture2D" uid="uid://bhwhd4si2lnmd" path="res://assets/art/world/telhado/arvore_copa.png" id="4_epy1m"]
+[ext_resource type="Texture2D" uid="uid://boaohc6gxq2wa" path="res://assets/art/world/telhado/arvore_esq.png" id="5_ldnl6"]
 [ext_resource type="PackedScene" uid="uid://cmlkcuy4xqkcj" path="res://src/entities/player/caju.tscn" id="5_x6kwn"]
 [ext_resource type="PackedScene" uid="uid://c6v2oak8kiki1" path="res://src/entities/player/kiki.tscn" id="6_ldnl6"]
 [ext_resource type="PackedScene" path="res://src/ui/player_hud.tscn" id="7_ty5dn"]
@@ -16,6 +18,9 @@ texture_region_size = Vector2i(320, 180)
 
 [sub_resource type="TileSet" id="TileSet_dtg5i"]
 sources/0 = SubResource("TileSetAtlasSource_taheu")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vjuni"]
+size = Vector2(34, 2.25)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_gfli6"]
 a = Vector2(51, -21)
@@ -117,6 +122,23 @@ z_index = 1
 position = Vector2(85.00001, 126)
 scale = Vector2(1.1125001, 1.1125001)
 texture = ExtResource("3_wbjs8")
+
+[node name="Trees" type="Node2D" parent="." unique_id=1402018650]
+
+[node name="Arvore1" type="StaticBody2D" parent="Trees" unique_id=1409996305]
+position = Vector2(1602, 119)
+
+[node name="Sprite2D" type="Sprite2D" parent="Trees/Arvore1" unique_id=993560196]
+position = Vector2(0, -40)
+texture = ExtResource("4_epy1m")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Trees/Arvore1" unique_id=1486866914]
+position = Vector2(0, 40)
+texture = ExtResource("5_ldnl6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Trees/Arvore1" unique_id=1994554101]
+position = Vector2(-21, 41)
+shape = SubResource("RectangleShape2D_vjuni")
 
 [node name="telhado_tipo1" type="Sprite2D" parent="." unique_id=56811431]
 position = Vector2(152, 152)
